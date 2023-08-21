@@ -1,7 +1,22 @@
 const arr1 = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]; // true
 const arr2 = [1, 2, 3, 4]; // false
 
+/**
+ * 1. we declare a new map, a build in data structure that allows us to store key value pairs of any data type.
+ * 2. we iterate over the nums array using a for of
+ * 3. we do a check to determine if the current num / iterable is already present in the map using .get method
+ * 4. if the get returns something else other than undefined, it tells us that the num has been encountered before, hence a duplciate.
+ * 5. if the num is not found in the map, we add it to the map with a value of 1, to keep track of the encountered numbers
+ *
+ */
 function hashmap(nums: number[]): boolean {
+  const map = new Map();
+  for (let num of nums) {
+    if (map.get(num) !== undefined) {
+      return true;
+    }
+    map.set(num, 1);
+  }
   return false;
 }
 /**
@@ -24,3 +39,4 @@ function bruteforce(nums: number[]): boolean {
 }
 
 console.log("Bruce force : " + bruteforce(arr1));
+console.log("Hash map : " + hashmap(arr1));
