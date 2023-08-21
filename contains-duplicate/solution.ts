@@ -38,5 +38,18 @@ function bruteforce(nums: number[]): boolean {
   return false;
 }
 
+/**
+ * 1. in this solution, we create a new "set" with the nums array
+ * 2. a Set is a data structure that contains unique set of values.
+ * 3. when we compare the size to the length
+ * 4. if the size is different from the length, it means that there are duplicates.
+ * this is because in a set, duplicate values are automatically removed.
+ */
+function set(nums: number[]): boolean {
+  const results = new Set(nums);
+  return results.size !== nums.length;
+}
+
 console.log("Bruce force : " + bruteforce(arr1));
 console.log("Hash map : " + hashmap(arr1));
+console.log("set : " + set(arr1));
