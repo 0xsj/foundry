@@ -42,5 +42,37 @@ const hashMap = (nums: number[], target: number): number[] => {
   return [];
 };
 
+/**
+ * 1. create a copy of the original array with the indces for sorting. we do this so we can associate each number with its original index.
+ * 2. we sort the new array based on the first element of each sub array. we sort via ascending order. we need to do this for the two pointer two work properly.
+ * 3. left, right - we initialize two pointers. we scan the new array from beginning and end of the array.
+ * 4. we start a while loop, that will coontinue until the left pointer is less than the right.
+ * 5. we calculate the sum of numbers pointed by left and right, and checks if they add up to the target.
+ * 6. if we have a match, we return the pair of numbers that add up to the target.
+ * 7. we continue, incrementing / decrementing the left / right respectively until we find something.
+ */
+
+const twoPointer = (nums: number[], target: number): number[] => {
+  const newArray = nums.map((num, index) => [num, index]);
+  newArray.sort((a, b) => a[0] - b[0]);
+
+  let left = 0;
+  let right = newArray.length - 1;
+
+  while (left < right) {
+    const sum = newArray[left][0] + newArray[right][0];
+
+    if (sum === target) {
+      return [newArray[left][1], newArray[right][1]];
+    } else if (sum < target) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return [];
+};
+
 console.log("hashmap : ", hashMap(nums, target));
 console.log("bruteforce  : ", bruteForce(nums, target));
+console.log("two pointer : ", twoPointer(nums, target));
