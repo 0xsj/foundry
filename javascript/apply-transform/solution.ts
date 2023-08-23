@@ -22,13 +22,27 @@ class ApplyTransform {
     return results;
   }
 
-  // arrayForEach(): {}
-  // arrayReduce() {}
-  // arrayFrom() {}
-  // arrayForOf {}
-  // arrayFilter {}
-  // recursive {}
-  // flatMap
+  arrayForEach(): number[] {
+    return [];
+  }
+  arrayReduce(): number[] {
+    return [];
+  }
+  arrayFrom(): number[] {
+    return [];
+  }
+  arrayForOf(): number[] {
+    return [];
+  }
+  arrayFilter(): number[] {
+    return [];
+  }
+  recursive(): number[] {
+    return [];
+  }
+  flatMap(): number[] {
+    return [];
+  }
 }
 
 const test = new ApplyTransform(arr, add);
