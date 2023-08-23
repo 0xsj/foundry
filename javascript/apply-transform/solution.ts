@@ -71,7 +71,10 @@ class ApplyTransform {
     const { arr, fn } = this;
     return Array.from(arr, (value, index) => fn(value, index));
   }
-  /** */
+  /**
+   * 1.for ..of construct in javascript used for iterating over iterable objects
+   * 2. arr.enteries() is a method that returns an iterator for the entries of the array
+   */
   arrayForOf(): number[] {
     const { arr, fn } = this;
     let results: number[] = [];
@@ -80,12 +83,25 @@ class ApplyTransform {
     }
     return results;
   }
-  /** */
+  /**
+   * 1. filter creates a new array
+   * 2. it will take a callback function, which in this case is just () => true
+   * 3. map the results from the filter into a new array, and apply the fn to every element
+   */
   arrayFilter(): number[] {
     const { arr, fn } = this;
     return arr.filter(() => true).map(fn);
   }
-  /** */
+  /**
+   * 1. essentially a function that calls it self.
+   * 2. we use the index 0 here, for the starting point. this is because this index is going to be accumulated when this is called
+   * 3. we are making sure that we go up until the array length. otherwise this is infinite
+   * 4. currentResult - we are calling fn, passing in the element of the current index from arr, and the index itself.
+   * 5. recursive - we are calling this function, but accumulating the value by +1.
+   * this will go up until the arr.length is the same as the index being passed in.
+   * 6. construct and return an array. It places currentResult as the first element of the array
+   * and spreads the elements of the recursiveResult array (which contains the results of the recursive calls) after it. This effectively combines all the results into a single array
+   */
   recursive(index = 0): number[] {
     const { arr, fn } = this;
     if (index === arr.length) {
@@ -94,9 +110,13 @@ class ApplyTransform {
     const currentResult = fn(arr[index], index);
     const recursiveResult = this.recursive(index + 1);
     return [currentResult, ...recursiveResult];
-  } /** */
+  }
+  /*
+   * flatmap - a call back is run , and the resulting array is flattened / merged essentially.
+   */
   flatMap(): number[] {
-    return [];
+    const { arr, fn } = this;
+    return arr.flatMap((value, index) => fn(value, index));
   }
 }
 
