@@ -73,15 +73,27 @@ class ApplyTransform {
   }
   /** */
   arrayForOf(): number[] {
-    return [];
+    const { arr, fn } = this;
+    let results: number[] = [];
+    for (const [index, value] of arr.entries()) {
+      results.push(fn(value, index));
+    }
+    return results;
   }
   /** */
   arrayFilter(): number[] {
-    return [];
+    const { arr, fn } = this;
+    return arr.filter(() => true).map(fn);
   }
   /** */
-  recursive(): number[] {
-    return [];
+  recursive(index = 0): number[] {
+    const { arr, fn } = this;
+    if (index === arr.length) {
+      return [];
+    }
+    const currentResult = fn(arr[index], index);
+    const recursiveResult = this.recursive(index + 1);
+    return [currentResult, ...recursiveResult];
   } /** */
   flatMap(): number[] {
     return [];
@@ -91,7 +103,7 @@ class ApplyTransform {
 const test = new ApplyTransform(arr, add);
 
 console.log(test.arrayPush());
-console.log(test.arrayFrom());
+console.log(test.recursive());
 if (JSON.stringify(test.arrayPush()) === JSON.stringify(test.arrayFrom())) {
   console.log("same");
 }
