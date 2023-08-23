@@ -1,7 +1,11 @@
 const arr = [1, 2, 3];
-
+const arr2 = [0, 10, 20, 30];
 const add = function plusone(n: any) {
   return n + 1;
+};
+
+const greaterThan10 = (n: number) => {
+  return n > 10;
 };
 
 class ApplyTransform {
@@ -41,21 +45,44 @@ class ApplyTransform {
     });
     return results;
   }
+  /**
+   * 1. array reduce takes in a callback function
+   * 2. the callback takes in results, currentValue, and index as paramters.
+   * 3. inside of the callback, we call the fn function and pass in the current value, and the index
+   * 4. [] at the end is the accumulator. the reduce function starts with an empty array
+   * in our case, we also added 1337 as a value in the array. our results from calling fn gets pushed after 1337.
+   */
   arrayReduce(): number[] {
-    return [];
+    const { arr, fn } = this;
+    return arr.reduce<number[]>(
+      (result, currentValue, index) => {
+        result.push(fn(currentValue, index));
+        return result;
+      },
+      [1337]
+    );
   }
+  /**
+   * 1. Array.from, creates an array from an iterable object.
+   * the iterable in this case is arr, our numbers array
+   * the mapping function takes in value, index, and passes that into the callback fn()
+   */
   arrayFrom(): number[] {
-    return [];
+    const { arr, fn } = this;
+    return Array.from(arr, (value, index) => fn(value, index));
   }
+  /** */
   arrayForOf(): number[] {
     return [];
   }
+  /** */
   arrayFilter(): number[] {
     return [];
   }
+  /** */
   recursive(): number[] {
     return [];
-  }
+  } /** */
   flatMap(): number[] {
     return [];
   }
@@ -64,4 +91,7 @@ class ApplyTransform {
 const test = new ApplyTransform(arr, add);
 
 console.log(test.arrayPush());
-console.log(test.arrayForEach());
+console.log(test.arrayFrom());
+if (JSON.stringify(test.arrayPush()) === JSON.stringify(test.arrayFrom())) {
+  console.log("same");
+}
