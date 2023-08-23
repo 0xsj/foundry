@@ -54,4 +54,14 @@ function filter_reduce(arr: number[], fn: (n: number, i: number) => any): number
   }, []);
 }
 
-console.log(filter_reduce(num2, greaterThanCB));
+function filtered_arrayForOf(arr: number[], fn: (n: number, i: number) => any): number[] {
+  let results: number[] = [];
+  for (const [index, value] of arr.entries()) {
+    if (fn(value, index)) {
+      results.push(value);
+    }
+  }
+  return results;
+}
+
+console.log(filtered_arrayForOf(num2, greaterThanCB));
