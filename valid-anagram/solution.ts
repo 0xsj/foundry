@@ -29,17 +29,32 @@ class ValidAnagram {
     return this.s.split("").sort().join("") === this.t.split("").sort().join("");
   }
   hashMap(): boolean {
-    if (this.s.length !== this.t.length) {
-      // immediate check
+    const { s, t } = this;
+    if (s.length !== t.length) {
       return false;
     }
+    // create a map to store character counts of string
     const charCount = new Map<string, number>();
-    for (const char of this.s) {
+    for (const char of s) {
       charCount.set(char, (charCount.get(char) || 0) + 1);
     }
-    return false;
+
+    // we do the same for t
+    const otherCharCount = new Map<string, number>();
+    for (const char of t) {
+      otherCharCount.set(char, (otherCharCount.get(char) || 0) + 1);
+    }
+
+    for (const [char, count] of charCount) {
+      if (otherCharCount.get(char) !== count) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 
 const example = new ValidAnagram("hello", "oellh");
 console.log(example.bruceForce());
+console.log(example.hashMap());
