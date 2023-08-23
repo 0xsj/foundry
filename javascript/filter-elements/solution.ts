@@ -18,6 +18,9 @@ class FilterElements {
   }
 }
 
+/**
+ *
+ */
 function filtered_for(arr: number[], fn: (n: number, i: number) => any): number[] {
   return arr.filter((num, index) => fn(num, index));
 }
@@ -54,6 +57,9 @@ function filter_reduce(arr: number[], fn: (n: number, i: number) => any): number
   }, []);
 }
 
+/**
+ *
+ */
 function filtered_arrayForOf(arr: number[], fn: (n: number, i: number) => any): number[] {
   let results: number[] = [];
   for (const [index, value] of arr.entries()) {
@@ -64,4 +70,25 @@ function filtered_arrayForOf(arr: number[], fn: (n: number, i: number) => any): 
   return results;
 }
 
-console.log(filtered_arrayForOf(num2, greaterThanCB));
+/**
+ *
+ */
+function filter_recursive(arr: number[], fn: (n: number, i: number) => any, index = 0): number[] {
+  if (index === arr.length) {
+    return [];
+  }
+
+  const currentResult = fn(arr[index], index);
+  const recursiveResult = filter_recursive(arr, fn, index + 1);
+  return [currentResult, ...recursiveResult];
+}
+
+/**
+ *
+ */
+
+function filter_flatmap(arr: number[], fn: (n: number, i: number) => any, index = 0): number[] {
+  return arr.map((value, index) => (fn(value, index) ? [value] : [])).flatMap((value) => value);
+}
+
+console.log(filter_flatmap(num2, greaterThanCB));
