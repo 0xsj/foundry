@@ -1,4 +1,4 @@
-const panama = "A man, a plan, a sscanal: Panama";
+const panama = "A man, a plan, a canal: Panama";
 
 function isPalindrome(s: string): boolean {
   // get rid of all special characters if any.
@@ -28,4 +28,37 @@ function isPalindrome(s: string): boolean {
   return true;
 }
 
-console.log(isPalindrome(panama));
+function isPalindrome_outside(s: string): boolean {
+  let strings = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+  let left = 0;
+  let right = s.length - 1;
+
+  while (left < right) {
+    if (strings[left] !== strings[right]) {
+      return false;
+    }
+    left++;
+    right--;
+  }
+  return true;
+}
+
+console.log(isPalindrome_outside(panama));
+
+function isPalindrome(s: string): boolean {
+  // Convert the string to lowercase
+  s = s.toLowerCase();
+
+  // Create an array of alphanumeric characters
+  const alphanumericChars = s.split("").filter(isAlphanumeric);
+
+  return alphanumericChars.reduce((acc, char, index, arr) => {
+    const oppositeIndex = arr.length - 1 - index;
+    return acc && char === arr[oppositeIndex];
+  }, true);
+}
+
+function isAlphanumeric(char: string): boolean {
+  // Helper function to check if a character is alphanumeric
+  return /^[a-z0-9]$/.test(char);
+}
