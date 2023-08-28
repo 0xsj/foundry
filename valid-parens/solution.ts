@@ -38,4 +38,36 @@ function isValid(s: string): boolean {
   return stack.length === 0;
 }
 
-console.log(isValid(s));
+console.log(isValid(t));
+
+/**
+ * 1. cleaner solution
+ */
+
+function containsParentheses(s: string): boolean {
+  type ParenMap = Record<string, string>;
+
+  const parenMap: ParenMap = {
+    "(": ")",
+    "{": "}",
+    "[": "]",
+  };
+  const stack: string[] = [];
+
+  for (const char of s) {
+    if (parenMap[char]) {
+      stack.push(char);
+    } else if (Object.values(parenMap).includes(char)) {
+      const top = stack.pop();
+      if (!top || parenMap[top] !== char) {
+        return false;
+      }
+    }
+  }
+
+  // If the stack is empty, all parentheses are properly balanced.
+  return stack.length === 0;
+}
+
+console.log(containsParentheses(s));
+console.log(containsParentheses(t));
