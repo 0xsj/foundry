@@ -13,19 +13,29 @@ const y = "()[]()";
 
 function isValid(s: string): boolean {
   const stack: string[] = [];
+
   const parenMap: Map<string, string> = new Map([
     ["(", ")"],
     ["{", "}"],
     ["[", "]"],
   ]);
 
+  const isClosing = (char: string) => {
+    return parenMap.has(char);
+  };
+
   for (const char of s) {
-    if (parenMap.has(char)) {
+    if (isClosing(char)) {
       stack.push(char);
-      console.log(stack);
+    } else {
+      const topOfStack = stack.pop();
+
+      if (!topOfStack || parenMap.get(topOfStack) !== char) {
+        return false;
+      }
     }
   }
-  return false;
+  return stack.length === 0;
 }
 
 console.log(isValid(s));
