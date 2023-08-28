@@ -13,17 +13,17 @@ func twoSum_bruceForce(nums []int, target int) []int {
 	return []int{}
 }
 
-func twoSum_hashMap(nums []int, target int) []int {
-	// m := make(map[int]int, 0)
+// func twoSum_hashMap(nums []int, target int) []int {
+// 	m := make(map[int]int, 0)
 
-	// for idx, num := range nums {
-	// 	m[num] = idx
-	// }
+// 	for idx, num := range nums {
+// 		m[num] = idx
+// 	}
 
-	// for indexX, num := range nums {
-	// 	if indexY, ok := m[target - num]
-	// }
-}
+// 	for indexX, num := range nums {
+// 		if indexY, ok := m[target - num]
+// 	}
+// }
 
 func main() {
 	array1 := []int{2, 7, 3, 5}
