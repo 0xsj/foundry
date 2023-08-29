@@ -1,6 +1,6 @@
 const panama = "A man, a plan, a canal: Panama";
 
-function isPalindrome(s: string): boolean {
+function isPalindromeString_try1(s: string): boolean {
   // get rid of all special characters if any.
   // we do not care about upper or lower case.
   // split the string into an array of characters, so that we can compute
