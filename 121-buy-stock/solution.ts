@@ -24,3 +24,28 @@ const maxProfit_try1 = (prices: number[]): number => {
 
   return max;
 };
+
+/**
+ * two pointer
+ * 1. set buy, max to 0
+ * 2. set sell to 1, the index of the selling point.
+ * 3. start a loop, and we comare if prices length is greater than the selling (1)
+ * 4. if the sell price is higher than the buy price, we set the max value
+ */
+
+const maxProfit_twoPointer = (prices: number[]): number => {
+  let buy = 0;
+  let sell = 1;
+  let max = 0;
+
+  while (sell < prices.length) {
+    if (prices[sell] > prices[buy]) {
+      max = Math.max(max, prices[sell] - prices[buy]);
+    } else {
+      buy = sell;
+    }
+    sell++;
+  }
+
+  return max;
+};
