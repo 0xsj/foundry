@@ -1,5 +1,5 @@
 const prices1 = [1, 2, 3, 4, 5, 6];
-const prices2 = [7, 1, 5, 6, 4, 3];
+const prices2 = [7, 1, 5, 3, 6, 4];
 const prices3 = [6, 3, 2, 3, 5, 7];
 
 // we are buying low, selling high.
@@ -27,20 +27,30 @@ const maxProfit_try1 = (prices: number[]): number => {
 
 /**
  * two pointer
- * 1. set buy, max to 0
+ * 1. set buy to 0, max to 0. buying point is representd as the beggining of the array
+ * in turn, the max is set to 0, because it represents the maximum profit we observed "so far"
  * 2. set sell to 1, the index of the selling point.
- * 3. start a loop, and we comare if prices length is greater than the selling (1)
- * 4. if the sell price is higher than the buy price, we set the max value
+ * 3. we start a while loop that continues as long as the sell index is less than the length of the prices array.
+ * 4. the first if check looks for whether or not the price at the sell index is greater than the price at the buy index.
+ * if this is true, we know that there is an opportunity by selling at the sell price.
+ * 5. we calculate the potential profits and upadate our max. we know that the max profit is the opportunity (because the selling price is greater than the buying price)
+ * 6. if the condition is false, the sell price is NOT higher than the b uy price. so there are no profits.
+ * 7. increment sell until the if block is false, we return the max
+ *
+ * time - O(n)
+ * space - O(1)
  */
 
 const maxProfit_twoPointer = (prices: number[]): number => {
-  let buy = 0;
-  let sell = 1;
-  let max = 0;
+  let buy = 0; // O(1)
+  let sell = 1; // O(1)
+  let max = 0; // O(1)
 
   while (sell < prices.length) {
+    // O(n)
     if (prices[sell] > prices[buy]) {
-      max = Math.max(max, prices[sell] - prices[buy]);
+      // O(1)
+      max = Math.max(max, prices[sell] - prices[buy]); // O(1)
     } else {
       buy = sell;
     }
