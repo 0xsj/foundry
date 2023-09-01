@@ -29,10 +29,17 @@ function isPalindromeString_try1(s: string): boolean {
   return true;
 }
 
+/**
+ * 1. first we process the input string by cleaning out non-alphanums, and convert all to lowercase
+ * 2. initialize 2 points in the array. the start and end of string.
+ * 3. we enter a while loop, and compares the characters in the left and right of the string
+ * 4. if the left / right are not the same. we immediately return false, because its not a palindrome.
+ * 5. we shift the left / right to continue if true
+ */
 function isPalindrome_outside(s: string): boolean {
   let strings = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
   let left = 0;
-  let right = s.length - 1;
+  let right = strings.length - 1;
 
   while (left < right) {
     if (strings[left] !== strings[right]) {
