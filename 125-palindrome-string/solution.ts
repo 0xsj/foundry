@@ -9,6 +9,7 @@ function isPalindromeString_try1(s: string): boolean {
   const stringsArray = s
     .replace(/[&\/\\#,+()$~%.'":*?<>{}\s]/g, "")
     .toLowerCase()
+
     .split("");
   // once these steps are done, we can take the right side of the array, and left.
 
