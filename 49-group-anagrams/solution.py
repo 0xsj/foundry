@@ -3,6 +3,7 @@ from typing import List
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # here we get key is a tuple representing char Count in the words + value that is a list of anagrams
         res = defaultdict(list)  # mapping charCount to list of anagrams
 
         for s in strs:

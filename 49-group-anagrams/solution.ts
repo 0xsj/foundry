@@ -3,8 +3,22 @@ let strs = ["eat", "tea", "tan", "ate", "nat", "bat"];
 
 /** */
 function groupAnagrams(strs: string[]): string[][] {
-  // we can first sort each of the characters
-  // after the sorting, it should look like
-  // ['aet', aet, ant, ...]
-  return [];
+  const wordCount = new Map<string, string[]>();
+  for (const str of strs) {
+    for (const char of str) {
+      const count = Array(26).fill(0);
+
+      const index = char.charCodeAt(0) - "a".charCodeAt(0);
+      count[index]++;
+
+      const key = count.toString();
+      if (!wordCount.has(key)) {
+        wordCount.set(key, []);
+      }
+      wordCount.get(key)?.push(str);
+    }
+  }
+  return Array.from(wordCount.values());
 }
+
+groupAnagrams(strs);
