@@ -25,4 +25,26 @@ function groupAnagrams(strs: string[]): string[][] {
   return Array.from(anagramGroup.values());
 }
 
+const groupAnagrams_hashmap = (strs: string[]): string[][] => {
+  let anagramGroup = new Map<string, string[]>();
+
+  for (let s of strs) {
+    let frequency = Array.from({ length: 26 }, () => 0);
+
+    for (let i = 0; i < s.length; i++) {
+      frequency[s.charCodeAt(i) - 97]++;
+    }
+
+    let key = frequency.toString();
+
+    if (!anagramGroup.has(key)) {
+      anagramGroup.set(key, []);
+    }
+
+    anagramGroup.get(key)?.push(s);
+  }
+
+  return Array.from(anagramGroup.values());
+};
+
 console.log(groupAnagrams(strs));
