@@ -3,22 +3,26 @@ let strs = ["eat", "tea", "tan", "ate", "nat", "bat"];
 
 /** */
 function groupAnagrams(strs: string[]): string[][] {
-  const wordCount = new Map<string, string[]>();
+  const anagramGroup = new Map<string, string[]>();
+
   for (const str of strs) {
+    const charFrequency = Array(26).fill(0);
+
     for (const char of str) {
-      const count = Array(26).fill(0);
-
       const index = char.charCodeAt(0) - "a".charCodeAt(0);
-      count[index]++;
-
-      const key = count.toString();
-      if (!wordCount.has(key)) {
-        wordCount.set(key, []);
-      }
-      wordCount.get(key)?.push(str);
+      charFrequency[index]++;
     }
+
+    const key = charFrequency.join(",");
+
+    if (!anagramGroup.has(key)) {
+      anagramGroup.set(key, []);
+    }
+
+    anagramGroup.get(key)?.push(str);
   }
-  return Array.from(wordCount.values());
+
+  return Array.from(anagramGroup.values());
 }
 
-groupAnagrams(strs);
+console.log(groupAnagrams(strs));
