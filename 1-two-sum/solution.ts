@@ -1,4 +1,4 @@
-const nums = [2, 7, 11, 15];
+const dnums = [2, 7, 11, 15];
 const target = 9;
 
 /**
@@ -73,6 +73,27 @@ const twoPointer = (nums: number[], target: number): number[] => {
   return [];
 };
 
+const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
+  for (let i = 0; i < nums.length; i++) {
+    let complement = target - nums[i];
+    let left = i + 1;
+    let right = nums.length - 1;
+
+    while (left <= right) {
+      let middle = Math.floor((left + right) / 2);
+
+      if (nums[middle] === complement) {
+        return [nums[i], nums[middle]]; // Found the two numbers
+      } else if (nums[middle] < complement) {
+        left = middle + 1;
+      } else {
+        right = middle - 1;
+      }
+    }
+  }
+
+  return []; // If no such pair exists
+};
 console.log("hashmap : ", hashMap(nums, target));
 console.log("bruteforce  : ", bruteForce(nums, target));
 console.log("two pointer : ", twoPointer(nums, target));
