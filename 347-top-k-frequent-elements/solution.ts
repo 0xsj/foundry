@@ -2,12 +2,14 @@ function topKFrequent(nums: number[], k: number): number[] {
   const map = new Map();
 
   for (const num of nums) {
-    const numFrequency = Array(9).fill(0);
-    console.log(numFrequency);
-    //
+    map.set(num, map.get(num || 0) + 1);
   }
 
-  return [];
+  const sortedUniqueNumbers = Array.from(map.keys()).sort((a, b) => {
+    return map.get(b)! - map.get(a)!;
+  });
+
+  return sortedUniqueNumbers.slice(0, k);
 }
 
-topKFrequent([], 2);
+topKFrequent([1, 2, 3, 4], 2);
