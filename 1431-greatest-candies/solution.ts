@@ -42,4 +42,11 @@ function kidsWithCandies_arrayFrom(candies: number[], extraCandies: number) {
   return Array.from(arr, (value) => fn(value));
 }
 function kidsWithCandies_filter() {}
-function kidsWithCandies_flatMap(candies: number[], extraCandies: number) {}
+function kidsWithCandies_flatMap(candies: number[], extraCandies: number) {
+  const maxValue = Math.max(...candies);
+  const fn = (n: number) => {
+    return n + extraCandies >= maxValue;
+  };
+
+  return candies.flatMap((value) => fn(value));
+}
