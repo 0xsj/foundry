@@ -32,3 +32,14 @@ function kidsWithCandies_reduce(candies: number[], extraCandies: number) {
 console.log(kidsWithCandies_reduce([2, 3, 5, 1, 3], 3));
 console.log(kidsWithCandies_reduce([4, 2, 1, 1, 2], 1));
 console.log(kidsWithCandies_reduce([12, 1, 12], 10));
+
+function kidsWithCandies_arrayFrom(candies: number[], extraCandies: number) {
+  const maxValue = Math.max(...candies);
+  const fn = (n: number) => {
+    return n + extraCandies >= maxValue;
+  };
+
+  return Array.from(arr, (value) => fn(value));
+}
+function kidsWithCandies_filter() {}
+function kidsWithCandies_flatMap(candies: number[], extraCandies: number) {}
