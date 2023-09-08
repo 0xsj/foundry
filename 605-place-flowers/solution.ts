@@ -1,35 +1,19 @@
-function canPlaceFlowers_brute(flowerbed: number[], n: number): boolean {
-  let i = 0;
+function canPlaceFlowers(flowerbed: number[], n: number): boolean {
   let count = 0;
+  let i = 0;
 
   while (i < flowerbed.length) {
-    if (
-      flowerbed[i] === 0 &&
-      (i === 0 || flowerbed[i - 1] === 0) &&
-      (i === flowerbed.length - 1 || flowerbed[i + 1] === 0)
-    ) {
-      flowerbed[i] = 1;
-      count++;
+    if (flowerbed[i] === 0) {
+      const prevEmpty = i === 0 || flowerbed[i - 1] === 0;
+      const nextEmpty = i === flowerbed.length - 1 || flowerbed[i + 1] === 0;
+
+      if (prevEmpty && nextEmpty) {
+        flowerbed[i] = 1;
+        count++;
+      }
     }
-    i += 2;
+    i++;
   }
 
   return count >= n;
-}
-
-function canPlaceFlowers_(flowerbed: number[], n: number): boolean {
-  const len = flowerbed.length;
-  let existingFlowers = 0;
-
-  // Calculate the number of existing flowers
-  for (let i = 0; i < len; i++) {
-    if (flowerbed[i] === 1) {
-      existingFlowers++;
-    }
-  }
-
-  // Calculate the maximum number of flowers that can be placed
-  const maxFlowers = Math.floor((len + 1) / 2) - existingFlowers;
-
-  return maxFlowers >= n;
 }
