@@ -94,6 +94,3 @@ const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
 
   return []; // If no such pair exists
 };
-console.log("hashmap : ", hashMap(nums, target));
-console.log("bruteforce  : ", bruteForce(nums, target));
-console.log("two pointer : ", twoPointer(nums, target));
