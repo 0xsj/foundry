@@ -43,6 +43,25 @@ function isSubsequence_2(s: string, t: string): boolean {
  *
  */
 
+function isSubsequence_hashMap(s: string, t: string): boolean {}
+
 /**
  *
  */
+
+function isSubsequence_map(s: string, t: string): boolean {}
+/**
+ *
+ */
+
+function isSubsequence_set(s: string, t: string): boolean {}
+/**
+ *
+ */
+
+function isSubsequence_twoPointer(s: string, t: string): boolean {}
+/**
+ *
+ */
+
+function isSubsequence_divide(s: string, t: string): boolean {}
