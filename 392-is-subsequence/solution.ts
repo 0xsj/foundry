@@ -130,6 +130,7 @@ function isSubsequence_twoPointer(s: string, t: string): boolean {
 }
 /**
  * divide and conquer
+ * 1.
  */
 
 function isSubsequence(s: string, t: string): boolean {
