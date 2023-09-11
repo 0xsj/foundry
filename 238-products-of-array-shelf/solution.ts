@@ -15,6 +15,7 @@ function productExceptSelf_try1(nums: number[]): number[] {
   return resultArray;
 }
 
+/** */
 function productExceptSelf_try2(nums: number[]): number[] {
   const n = nums.length;
   const result = new Array(n).fill(1);
