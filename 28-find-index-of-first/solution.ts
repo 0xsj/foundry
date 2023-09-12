@@ -10,4 +10,18 @@ function strStr_try1(haystack: string, needle: string): number {
   return -1;
 }
 
-console.log(strStr_try1("hello", "ll"));
+/**
+ *
+ */
+
+function strStr_try2(haystack: string, needle: string): number {
+  for (let i = 0; i <= haystack.length - needle.length; i++) {
+    if (haystack.substring(i, i + needle.length)) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+console.log(strStr_try2("hello", "ll"));
