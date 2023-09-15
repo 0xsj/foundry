@@ -21,3 +21,4 @@ function isPalindromeNumber_try1(x: number): boolean {
 }
 
 console.log(isPalindromeNumber_try1(1211));
+
