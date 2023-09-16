@@ -27,6 +27,11 @@ func twoSum_bruceForce(nums []int, target int) []int {
 
 func twoSum_hashMap(nums []int, target int) []int {
 	m := make(map[int]int, 0)
+
+	for index, num := range nums {
+		m[num] = index
+	}
+
 	fmt.Println(m)
 
 	return []int{-1, 1}
@@ -34,9 +39,11 @@ func twoSum_hashMap(nums []int, target int) []int {
 
 func main() {
 	array1 := []int{2, 7, 3, 5}
-	// array2 := []int{3, 6, 1, 0}
+	array2 := []int{3, 6, 1, 0}
 
 	target := 9
+	target2 := 7
 
-	fmt.Println(twoSum_bruceForce(array1, target))
+	fmt.Println(twoSum_hashMap(array1, target))  // [0, 1]
+	fmt.Println(twoSum_hashMap(array2, target2)) // [0, 1]
 }
