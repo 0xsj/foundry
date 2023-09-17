@@ -42,13 +42,21 @@ class Solution:
         return []
 
 
-
-
-
-
-
     def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
-        return
+        for i in range(len(nums)):
+            complement = target - nums[i]
+            left, right = i + 1, len(nums) - 1
+
+            while left <= right:
+                middle = (left + right) // 2
+
+                if nums[middle] == complement:
+                    return [nums[i], nums[middle]]
+                elif nums[middle] < complement:
+                    left = middle + 1
+                else:
+                    right = middle - 1
+        return []
 
         
 solution = Solution()
