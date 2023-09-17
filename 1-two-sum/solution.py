@@ -42,22 +42,22 @@ class Solution:
 
         return []
 
-    ## binary search
-    def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
-        for i in range(len(nums)):
-            complement = target - nums[i]
-            left, right = i + 1, len(nums) - 1
+    ## binary search TODO: why u no work?
+    # def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
+    #     for i in range(len(nums)):
+    #         complement = target - nums[i]
+    #         left, right = i + 1, len(nums) - 1
 
-            while left <= right:
-                middle = (left + right) // 2
+    #         while left <= right:
+    #             middle = (left + right) // 2
 
-                if nums[middle] == complement:
-                    return [nums[i], nums[middle]]
-                elif nums[middle] < complement:
-                    left = middle + 1
-                else:
-                    right = middle - 1
-        return []
+    #             if nums[middle] == complement:
+    #                 return [nums[i], nums[middle]]
+    #             elif nums[middle] < complement:
+    #                 left = middle + 1
+    #             else:
+    #                 right = middle - 1
+    #     return []
 
         
 solution = Solution()
