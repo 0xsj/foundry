@@ -1,21 +1,14 @@
 class Solution:
     def isPalindrome(self, x: int) -> bool:
-        left = 0
-        right = -1
-
-        # get rid of fail cases negative integers cannot be palindromes
+        # Check for negative integers
         if x < 0:
             return False
-
-        res = str(x).split(" ")[0]
-
         
+        # Convert the integer to a string
+        x_str = str(x)
+        
+        # Compare the string with its reverse
+        return x_str == x_str[::-1]
 
-        print(res)
-
-
-        return False
-    
 solution = Solution()
-
-solution.isPalindrome(121)
+print(solution.isPalindrome(121))  # This will print True
