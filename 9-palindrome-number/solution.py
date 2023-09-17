@@ -1,14 +1,15 @@
 class Solution:
     def isPalindrome(self, x: int) -> bool:
-        # Check for negative integers
         if x < 0:
             return False
         
-        # Convert the integer to a string
         x_str = str(x)
         
-        # Compare the string with its reverse
-        return x_str == x_str[::-1]
-
+        # Check if the string representation of the integer has a trailing zero
+        if x_str != x_str[::-1]:
+            return False
+        
+        return True
+    
 solution = Solution()
 print(solution.isPalindrome(121))  # This will print True
