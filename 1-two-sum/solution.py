@@ -22,12 +22,35 @@ class Solution:
             indicies[num] = i
         return [-1, 1]   
 
+
     def twoSum_try3(self, nums: List[int], target: int) -> List[int]:
-        return
+        new_array = [(num, index) for index, num in enumerate(nums)]
+        new_array = sorted(new_array, key=lambda x: x[0])
+
+        left, right = 0, len(new_array) - 1
+
+        while left < right:
+            current_sum = new_array[left][0] + new_array[right][0]
+
+            if current_sum == target:
+                return [new_array[left][1], new_array[right][1]]
+            elif current_sum < target:
+                left += 1
+            else:
+                right -= 1
+
+        return []
+
+
+
+
+
+
+
     def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
         return
 
         
 solution = Solution()
 
-print(solution.twoSum_try2(nums, target))
+print(solution.twoSum_try3(nums, target))
