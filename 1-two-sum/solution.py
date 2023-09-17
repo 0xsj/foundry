@@ -13,7 +13,15 @@ class Solution:
         return [-1, 1]
     
     def twoSum_try2(self, nums: List[int], target: int) -> List[int]:
-        return
+        n = len(nums)
+        indicies = {}
+        for i, num in enumerate(nums):
+            diff = target - num
+            if diff in indicies:
+                return [indicies[diff], i]
+            indicies[num] = i
+        return [-1, 1]   
+
     def twoSum_try3(self, nums: List[int], target: int) -> List[int]:
         return
     def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
@@ -22,4 +30,4 @@ class Solution:
         
 solution = Solution()
 
-print(solution.twoSum_try1(nums, target))
+print(solution.twoSum_try2(nums, target))
