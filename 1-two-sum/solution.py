@@ -12,11 +12,11 @@ class Solution:
                     return [i, j]
         return [-1, 1]
     
-    def twoSum_try2():
+    def twoSum_try2(self, nums: List[int], target: int) -> List[int]:
         return
-    def twoSum_try3():
+    def twoSum_try3(self, nums: List[int], target: int) -> List[int]:
         return
-    def twoSum_try4():
+    def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
         return
 
         
