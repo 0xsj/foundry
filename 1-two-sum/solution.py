@@ -12,6 +12,7 @@ class Solution:
                     return [i, j]
         return [-1, 1]
     
+    ## hashmap
     def twoSum_try2(self, nums: List[int], target: int) -> List[int]:
         n = len(nums)
         indicies = {}
@@ -22,7 +23,7 @@ class Solution:
             indicies[num] = i
         return [-1, 1]   
 
-
+    ## two-pointer
     def twoSum_try3(self, nums: List[int], target: int) -> List[int]:
         new_array = [(num, index) for index, num in enumerate(nums)]
         new_array = sorted(new_array, key=lambda x: x[0])
@@ -41,7 +42,7 @@ class Solution:
 
         return []
 
-
+    ## binary search
     def twoSum_try4(self, nums: List[int], target: int) -> List[int]:
         for i in range(len(nums)):
             complement = target - nums[i]
