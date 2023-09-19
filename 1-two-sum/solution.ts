@@ -73,6 +73,9 @@ const twoPointer = (nums: number[], target: number): number[] => {
   return [];
 };
 
+/**
+ * 1.
+ */
 const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
   for (let i = 0; i < nums.length; i++) {
     let complement = target - nums[i];

@@ -22,3 +22,25 @@ function isPalindromeNumber_try1(x: number): boolean {
 
 console.log(isPalindromeNumber_try1(1211));
 
+/**
+ *
+ */
+
+const isPalindromeNumber_try2 = (x: number): boolean => {
+  if (x < 0) {
+    return false;
+  }
+
+  const original = x;
+  let reversed = 0;
+
+  while (x > 0) {
+    const lastDigit = x % 10;
+    reversed = reversed * 10 + lastDigit;
+    x = Math.floor(x / 10);
+  }
+
+  return original === reversed;
+};
+
+console.log(isPalindromeNumber_try2(1211));
