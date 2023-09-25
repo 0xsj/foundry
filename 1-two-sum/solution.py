@@ -21,7 +21,7 @@ class Solution:
             if diff in indicies:
                 return [indicies[diff], i]
             indicies[num] = i
-        return [-1, 1]   
+        return [-1, 1]
 
     ## two-pointer
     def twoSum_try3(self, nums: List[int], target: int) -> List[int]:
