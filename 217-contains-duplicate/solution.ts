@@ -8,6 +8,7 @@ const arr2 = [1, 2, 3, 4]; // false
  * 4. if the get returns something else other than undefined, it tells us that the num has been encountered before, hence a duplciate.
  * 5. if the num is not found in the map, we add it to the map with a value of 1, to keep track of the encountered numbers
  *
+ * O(n)
  */
 function hashmap(nums: number[]): boolean {
   const map = new Map();
@@ -26,6 +27,9 @@ function hashmap(nums: number[]): boolean {
  * j = i + 1 - This is done to ensure that you compare each element at index i with all elements that come after it in the array
  * 4. if the value at the index from the first for loop matches the nested for loop, we know we have a duplciate. we return true.
  * 5. else, we return false.
+ *
+ *  Time =  O(n^2)
+ *
  */
 function bruteforce(nums: number[]): boolean {
   for (let i = 0; i < nums.length; i++) {
@@ -44,6 +48,8 @@ function bruteforce(nums: number[]): boolean {
  * 3. when we compare the size to the length
  * 4. if the size is different from the length, it means that there are duplicates.
  * this is because in a set, duplicate values are automatically removed.
+ *
+ * O(n)
  */
 function set(nums: number[]): boolean {
   const results = new Set(nums);

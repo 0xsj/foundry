@@ -6,6 +6,8 @@ const target = 9;
  * 2. we then can start a nested loop inside, with the index incremented by 1
  * 3. if the sum of nums[i] and nums[j] === target, we return the indicies
  * 4. else we return [-1, 1], to satisfy the requirement of the number[]
+ *
+ * Time = O(n^2)
  */
 const bruteForce = (nums: number[], target: number): number[] => {
   for (let i = 0; i < nums.length; i++) {
@@ -29,13 +31,15 @@ const bruteForce = (nums: number[], target: number): number[] => {
  * - diff! - gets the index frosm the indicides map that corresponds to the complement diff.
  * - i - current index in the nums array , where we found the current number nums[i]
  *
+ * O(n)
+ *
  */
 const hashMap = (nums: number[], target: number): number[] => {
   const indicies = new Map<number, number>();
   for (let i = 0; i < nums.length; i++) {
     const diff = target - nums[i];
     if (indicies.has(diff)) {
-      return [indicies.get(diff)!, i];
+      return [indicies.get(diff)!, i]; // non-null assertion
     }
     indicies.set(nums[i], i);
   }
@@ -50,6 +54,8 @@ const hashMap = (nums: number[], target: number): number[] => {
  * 5. we calculate the sum of numbers pointed by left and right, and checks if they add up to the target.
  * 6. if we have a match, we return the pair of numbers that add up to the target.
  * 7. we continue, incrementing / decrementing the left / right respectively until we find something.
+ *
+ * O(n log n)
  */
 
 const twoPointer = (nums: number[], target: number): number[] => {
@@ -74,7 +80,14 @@ const twoPointer = (nums: number[], target: number): number[] => {
 };
 
 /**
- * 1.
+ * 1. start iterating over the nums array
+ * 2. we initialize 3 variables, complement, left, right
+ * 3. complement tells us whether or not when added to the current element being considered in nums, array would result in target sum
+ * 4. we then start a while loop that continues as long as the left pointer is less than or equal to the right pointer
+ * 5. the middle index is calculated using the average of the left / right values. we are dividng the space in halves
+ * 6. if the middle index is equal to the complement, we know that we find the answer
+ * 7. if the middle index is less than the complement, we move the left pointer to the right of the index
+ * 8. if greater, the right pointer is moved to the left
  */
 const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
   for (let i = 0; i < nums.length; i++) {
