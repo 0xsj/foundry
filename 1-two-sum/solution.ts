@@ -110,3 +110,5 @@ const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
 
   return []; // If no such pair exists
 };
+
+hashMap(dnums, target);
