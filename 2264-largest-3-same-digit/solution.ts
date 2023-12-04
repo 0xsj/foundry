@@ -48,5 +48,17 @@
 //   return match;
 // }
 
+function largestGoodInteger(num: string): string {
+  const dict = new Set(["999", "888", "777", "666", "555", "444", "333", "222", "111", "000"]);
+
+  for (const match of dict) {
+    if (num.includes(match)) {
+      return match;
+    }
+  }
+
+  return "";
+}
+
 console.log(largestGoodInteger("6777133339"));
 console.log(largestGoodInteger("6000133339"));
