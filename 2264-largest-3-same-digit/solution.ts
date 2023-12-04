@@ -60,5 +60,20 @@ function largestGoodInteger(num: string): string {
   return "";
 }
 
-console.log(largestGoodInteger("6777133339"));
-console.log(largestGoodInteger("6000133339"));
+function largestGoodInteger2(num: string): string {
+  let greatest = "";
+
+  for (let i = 0; i < num.length - 2; i++) {
+    const current = `${num[i]}${num[i + 1]}${num[i + 2]}`;
+
+    if (current.length === 3 && (Number(current) > Number(greatest) || greatest === "")) {
+      greatest = current;
+    }
+  }
+
+  return greatest;
+}
+
+// Example usage:
+console.log(largestGoodInteger("6777133339")); // Output: "733"
+console.log(largestGoodInteger("6000133339")); // Output: "333"
