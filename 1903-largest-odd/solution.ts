@@ -52,6 +52,24 @@ function largestOddNumber2(num: string): string {
   return "";
 }
 
-largestOddNumber("52");
-largestOddNumber("4206");
-largestOddNumber("35427");
+//two pointer;
+function largestOddNumber3(num: string): string {
+  let start = num.length - 1;
+  let end = start;
+
+  while (start >= 0) {
+    const digit = Number(num[start]);
+
+    if (digit % 2 === 1) {
+      return num.substring(start, end + 1);
+    }
+
+    start--;
+  }
+
+  return "";
+}
+
+largestOddNumber3("52");
+largestOddNumber3("4206");
+largestOddNumber3("35427");
