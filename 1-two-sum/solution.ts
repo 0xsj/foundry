@@ -1,6 +1,3 @@
-const dnums = [2, 7, 11, 15];
-const target = 9;
-
 /**
  * 1. we first start a loop through the nums array
  * 2. we then can start a nested loop inside, with the index incremented by 1
@@ -111,4 +108,40 @@ const binarySearchForTwoSum = (nums: number[], target: number): number[] => {
   return []; // If no such pair exists
 };
 
-hashMap(dnums, target);
+//
+const twoSum_recursion = (nums: number[], target: number): number[] => {
+  const binarySearch = (left: number, right: number): number => {
+    if (left <= right) {
+      let middle = Math.floor((left + right) / 2);
+      let complement = target - nums[middle];
+
+      if (complement === 0) {
+        return middle;
+      } else if (complement < 0) {
+        return binarySearch(left, middle - 1);
+      } else {
+        return binarySearch(middle + 1, right);
+      }
+    }
+
+    return -1; // Not found
+  };
+
+  const searchPairs = (start: number): number[] => {
+    if (start < nums.length) {
+      let complementIndex = binarySearch(start + 1, nums.length - 1);
+
+      if (complementIndex !== -1) {
+        return [start + 1, complementIndex + 1];
+      }
+
+      return searchPairs(start + 1);
+    }
+
+    return [];
+  };
+
+  return searchPairs(0);
+};
+
+console.log(twoSum_recursion([1, 2, 3, 4, 5, 6, 7, 8, 9], 9));
