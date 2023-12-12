@@ -39,6 +39,24 @@ function findNumbers2(nums: number[]): number {
 }
 
 // try 3
+function findNumbers3(nums: number[]): number {
+  let result = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    let numDigits = 0;
+    let num = nums[i];
+
+    while (num !== 0) {
+      num = Math.floor(num / 10);
+      numDigits++;
+    }
+
+    if (numDigits % 2 === 0) {
+      result++;
+    }
+  }
+  return result;
+}
 
 // findNumbers([]); // 0
 console.log(findNumbers2([773, 165, 42, 381, 123])); // 1
