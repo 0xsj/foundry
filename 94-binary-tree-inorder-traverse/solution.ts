@@ -12,6 +12,7 @@
  * }
  */
 
+// @ts-nocheck
 function inorderTraversal(root: TreeNode | null): number[] {
   const result: number[] = [];
 
