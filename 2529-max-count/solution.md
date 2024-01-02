@@ -16,3 +16,10 @@
 - if (nums[i] > 0) - if nums[i] is greater than 0, aka positive int, pos++
 - if (nums[i] < 0) - if nums[i] is less than 0, nums++
 - Math.max(neg, pos)
+
+## Try 2: two pointer
+
+- create a left and a right, where we are going to keep in track of the element in the array
+- while(left < right)
+- create a neg, pos, where we are going to keep in track of what we encounter
+- return the math.max
