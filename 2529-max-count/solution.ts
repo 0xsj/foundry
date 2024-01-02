@@ -78,8 +78,62 @@ function maximumCount3(nums: number[]): number {
   return Math.max(nums.filter((e) => e > 0).length, nums.filter((e) => e < 0).length);
 }
 
+// // binary search try 1
+// function maximumCount4(nums: number[]): number {
+//   let left = 0;
+//   let right = nums.length - 1;
+//   let boundary = -1;
+
+//   while (left <= right) {
+//     const mid = Math.floor((left + right) / 2);
+//     if (nums[mid] <= 0) {
+//       left = mid + 1;
+//     } else {
+//       right = mid - 1;
+//       boundary = mid;
+//     }
+//   }
+
+//   const pos = nums.length - (boundary + 1);
+//   const neg = boundary + 1;
+
+//   return Math.max(pos, neg);
+// }
+
+// binary search try 2
+
+function binarySearch(nums: number[], target: number): number {
+  let left = 0;
+  let right = nums.length - 1;
+
+  while (left < right) {
+    let middle = left + Math.floor((right - left) / 2);
+    if (nums[middle] < target) {
+      left = middle + 1;
+    } else {
+      right = middle;
+    }
+  }
+
+  return left;
+}
+
+function maximumCount4(nums: number[]): number {
+  let n = nums.length;
+
+  if (nums[0] == 0 && nums[n - 1] == 0) {
+    return 0;
+  }
+
+  if (nums[0] > 0 || nums[n - 1] < 0) {
+    return n;
+  }
+
+  return Math.max(binarySearch(nums, 0), n - binarySearch(nums, 1));
+}
+
 console.log(
-  maximumCount3([
+  maximumCount4([
     -1993, -1991, -1985, -1983, -1978, -1956, -1943, -1935, -1929, -1928, -1925, -1924, -1896,
     -1894, -1893, -1884, -1882, -1871, -1861, -1860, -1858, -1849, -1841, -1837, -1829, -1828,
     -1811, -1808, -1804, -1804, -1800, -1800, -1796, -1791, -1791, -1777, -1764, -1755, -1745,
@@ -114,4 +168,4 @@ console.log(
     1932, 1936, 1948, 1950, 1968, 1968, 1990, 1991, 1991,
   ])
 );
-console.log(maximumCount3([5, 20, 66, 1314]));
+console.log(maximumCount4([5, 20, 66, 1314]));
