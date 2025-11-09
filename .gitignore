@@ -60,6 +60,9 @@ project/project/
 a.out
 *.so
 *.dylib
+*.dSYM/
+*_test
+two_sum_test
 
 # C#
 bin/
