@@ -1,38 +1,86 @@
+# General
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.log
+
 # Node/TypeScript
 node_modules/
 dist/
 *.js
 *.d.ts
+!jest.config.js
+coverage/
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .pytest_cache/
 venv/
+env/
+*.egg-info/
+.coverage
+htmlcov/
 
 # Go
 *.exe
 *.test
+*.out
 
 # Rust
 target/
 Cargo.lock
+**/*.rs.bk
 
 # Java
 *.class
 target/
 .idea/
+*.iml
+.settings/
+.project
+.classpath
 
 # Scala
 target/
 project/target/
+project/project/
+.bsp/
+.metals/
+.scala-build/
 
 # C
 *.o
 *.out
 a.out
+*.so
+*.dylib
+
+# C#
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Swift
+.build/
+.swiftpm/
+*.xcodeproj
+*.xcworkspace
+.DS_Store
 
 # IDEs
 .vscode/
 .idea/
 *.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
