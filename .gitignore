@@ -1,0 +1,38 @@
+# Node/TypeScript
+node_modules/
+dist/
+*.js
+*.d.ts
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+
+# Go
+*.exe
+*.test
+
+# Rust
+target/
+Cargo.lock
+
+# Java
+*.class
+target/
+.idea/
+
+# Scala
+target/
+project/target/
+
+# C
+*.o
+*.out
+a.out
+
+# IDEs
+.vscode/
+.idea/
+*.swp
