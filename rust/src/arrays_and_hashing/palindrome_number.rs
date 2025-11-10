@@ -1,8 +1,32 @@
 // rust/src/arrays_and_hashing/palindrome_number.rs
 
 pub fn is_palindrome(x: i32) -> bool {
-    // Implementation will go here
-    todo!()
+    
+    if x < 0 {
+        return false;
+    }
+
+    if x % 10 == 0 && x != 0 {
+        return false;
+    }
+
+    let num_str = x.to_string();
+
+    let mut left = 0;
+    let mut right = num_str.len() - 1;
+
+    let bytes = num_str.as_bytes();
+
+    while left < right {
+        if bytes[left] != bytes[right] {
+            return false;
+        }
+
+        left += 1;
+        right -= 1;
+    }
+
+    true
 }
 
 #[cfg(test)]
