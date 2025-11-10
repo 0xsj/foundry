@@ -1,4 +1,5 @@
 // typescript/arrays-and-hashing/palindrome-number.test.ts
+import {isPalindrome} from './palindrome-number'
 
 describe('isPalindrome', () => {
   // Import the function (we'll create this next)
