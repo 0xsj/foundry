@@ -1,89 +1,78 @@
-# General
+# ===========================================================================
+# OS & Editor
+# ===========================================================================
 .DS_Store
+Thumbs.db
 *.swp
 *.swo
 *~
-.idea/
 .vscode/
-*.log
-
-# Node/TypeScript
-node_modules/
-dist/
-*.js
-*.d.ts
-!jest.config.js
-coverage/
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
-venv/
-env/
-*.egg-info/
-.coverage
-htmlcov/
-
-# Go
-*.exe
-*.test
-*.out
-
-# Rust
-target/
-Cargo.lock
-**/*.rs.bk
-
-# Java
-*.class
-target/
 .idea/
 *.iml
-.settings/
-.project
-.classpath
 
-# Scala
-target/
-project/target/
-project/project/
-.bsp/
-.metals/
-.scala-build/
-
-# C
-*.o
-*.out
-a.out
+# ===========================================================================
+# Go
+# ===========================================================================
+*.exe
+*.exe~
+*.dll
 *.so
 *.dylib
-*.dSYM/
-*_test
-two_sum_test
+*.test
+*.out
+vendor/
 
-# C#
-bin/
-obj/
-*.user
-*.suo
-.vs/
+# ===========================================================================
+# TypeScript / Node
+# ===========================================================================
+node_modules/
+dist/
+*.js.map
+*.tsbuildinfo
+.env
+.env.*
 
-# Swift
-.build/
-.swiftpm/
-*.xcodeproj
-*.xcworkspace
-.DS_Store
+# ===========================================================================
+# Rust
+# ===========================================================================
+target/
+Cargo.lock
+# Keep Cargo.lock for binaries, ignore for libraries
+# Uncomment if needed: !builds/**/Cargo.lock
 
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
+# ===========================================================================
+# Python
+# ===========================================================================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
 
-# OS
-.DS_Store
-Thumbs.db
+# ===========================================================================
+# Java
+# ===========================================================================
+*.class
+*.jar
+*.war
+build/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# ===========================================================================
+# Obsidian
+# ===========================================================================
+vault/.obsidian/workspace.json
+vault/.obsidian/workspaces.json
+vault/.obsidian/app.json
+
+# ===========================================================================
+# Foundry
+# ===========================================================================
+# Keep session logs and progress tracked
+# Keep anki exports tracked
