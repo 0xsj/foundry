@@ -13,8 +13,14 @@ interface Config {
 
 // Return a Config with application-level defaults.
 function defaults(): Config {
-  // TODO: implement
-  throw new Error("not implemented");
+  return {
+    host: "localhost",
+    port: 3000,
+    maxRetries: 3,
+    timeout: 10,
+    debug: true,
+    serviceName: 'users'
+  }
 }
 
 // Parse raw string key-value pairs into a typed Config.
@@ -23,7 +29,51 @@ function defaults(): Config {
 function loadConfig(raw: Record<string, string>): Config {
   // TODO: implement
   // Hint: parseInt, parseFloat, and what counts as a valid bool?
-  throw new Error("not implemented");
+  const config = defaults()
+
+  if (raw.host !== undefined) {
+    config.host = raw.host
+  }
+
+  if (raw.port !== undefined) {
+    const port = parseInt(raw.port, 10)
+    if (Number.isNaN(port)) {
+      throw new Error(`Invalid port: ${raw.port}`)
+    }
+    config.port = port;
+  }
+
+  if (raw.maxRetries !== undefined) {
+    const maxRetries = parseInt(raw.maxRetries, 10);
+    if (Number.isNaN(maxRetries)) {
+      throw new Error(`Invalid maxRetries: ${raw.maxRetries}`);
+    }
+    config.maxRetries = maxRetries;
+  }
+
+  if (raw.timeout !== undefined) {
+    const timeout = parseFloat(raw.timeout);
+    if (Number.isNaN(timeout)) {
+      throw new Error(`Invalid timeout: ${raw.timeout}`);
+    }
+    config.timeout = timeout;
+  }
+
+  if (raw.debug !== undefined) {
+    if (raw.debug === "true") {
+      config.debug = true;
+    } else if (raw.debug === "false") {
+      config.debug = false;
+    } else {
+      throw new Error(`Invalid debug value: ${raw.debug}`);
+    }
+  }
+
+  if (raw.serviceName !== undefined) {
+    config.serviceName = raw.serviceName;
+  }
+
+  return config
 }
 
 export { Config, defaults, loadConfig };

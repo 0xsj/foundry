@@ -209,9 +209,9 @@ modules:
   typescript:
     fundamentals:
       variables-and-types:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
+        status: completed
+        exercises_done: [config_loader]
+        last_reviewed: 2026-02-07
       control-flow:
         status: not_started
         exercises_done: []
