@@ -138,6 +138,8 @@ var m map[string]int
 // m["key"] = 1    // PANIC — must use make(map[string]int) first
 ```
 
+> **Common Pitfall:** This is one of the most common Go gotchas. See [[go-nil-map-panic]] in the vault for a deep dive on why this happens, how to fix it, and how to avoid it in production code.
+
 ### Your notes
 <!-- -->
 
