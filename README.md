@@ -10,11 +10,13 @@ The goal isn't to collect tutorials — it's to develop muscle memory through re
 
 ## Languages
 
-- **Go** — primary
-- **TypeScript** — primary
-- **Rust** — expanding perspective
-- **Python** — expanding perspective
-- **Java** — expanding perspective, employability
+- **Go** — primary (systems, concurrency, simplicity)
+- **TypeScript** — primary (web, productivity, type safety)
+- **Rust** — systems programming, memory safety
+- **Python** — data, scripting, ecosystem
+- **Scala** — JVM ecosystem, functional + OOP (replaces Java)
+- **Zig** — low-level systems, manual memory, comptime
+- **Haskell** — pure functional programming, type theory
 
 ## How It Works
 

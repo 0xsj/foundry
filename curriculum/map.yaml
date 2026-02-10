@@ -12,7 +12,7 @@ modules:
   fundamentals:
     variables-and-types:
       tier: 1
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: []
       description: >
         Primitive types, composite types, type inference, type systems
@@ -20,7 +20,7 @@ modules:
 
     control-flow:
       tier: 1
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Conditionals, loops, switch/match, early returns, guard clauses.
@@ -29,7 +29,7 @@ modules:
 
     functions-and-closures:
       tier: 1
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [control-flow]
       description: >
         Function signatures, multiple returns, closures and captures,
@@ -38,7 +38,7 @@ modules:
 
     error-handling:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures]
       variants:
         - sentinel-errors
@@ -56,7 +56,7 @@ modules:
 
     interfaces-and-traits:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures]
       description: >
         Contracts and polymorphism. Go's implicit interfaces, Rust's traits
@@ -65,7 +65,7 @@ modules:
 
     generics:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Parameterized types and functions. Go's type parameters and
@@ -75,7 +75,7 @@ modules:
 
     concurrency:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [error-handling, interfaces-and-traits]
       variants:
         - goroutines-and-channels
@@ -94,7 +94,7 @@ modules:
 
     memory-and-ownership:
       tier: 3
-      languages: [go, rust, java]
+      languages: [go, rust, scala, zig]
       prereqs: [variables-and-types, functions-and-closures]
       description: >
         How languages manage memory. Rust's ownership/borrowing/lifetimes,
@@ -103,7 +103,7 @@ modules:
 
     serialization:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Encoding and decoding data. JSON, protobuf, MessagePack.
@@ -113,7 +113,7 @@ modules:
 
     testing-fundamentals:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures, error-handling]
       description: >
         Testing philosophy and mechanics. Unit tests, table-driven tests,
@@ -123,7 +123,7 @@ modules:
 
     modules-and-packages:
       tier: 1
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Code organization. Go modules and packages, Rust's crate/module
@@ -137,7 +137,7 @@ modules:
   patterns:
     strategy:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Swap behavior at runtime via interchangeable implementations behind
@@ -146,7 +146,7 @@ modules:
 
     observer:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Notify dependents of state changes without tight coupling.
@@ -154,7 +154,7 @@ modules:
 
     factory:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Controlled construction of objects/values. Factory functions,
@@ -163,7 +163,7 @@ modules:
 
     builder:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Step-by-step construction of complex objects. Fluent APIs,
@@ -172,7 +172,7 @@ modules:
 
     decorator-middleware:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures, interfaces-and-traits]
       description: >
         Compose behavior by wrapping. HTTP middleware chains, logging
@@ -181,7 +181,7 @@ modules:
 
     repository:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits, error-handling]
       description: >
         Abstract data access behind a clean interface. Decouple business
@@ -190,7 +190,7 @@ modules:
 
     dependency-injection:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits, factory]
       description: >
         Invert control of dependencies. Constructor injection, functional
@@ -199,7 +199,7 @@ modules:
 
     iterator-generator:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures]
       description: >
         Lazy evaluation and streaming. Go's iter package and channel-based
@@ -208,7 +208,7 @@ modules:
 
     pub-sub:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [observer, concurrency]
       description: >
         Decouple producers from consumers. In-process event buses,
@@ -217,7 +217,7 @@ modules:
 
     circuit-breaker:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [error-handling, concurrency]
       description: >
         Prevent cascading failures. States (closed, open, half-open),
@@ -226,7 +226,7 @@ modules:
 
     chain-of-responsibility:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [interfaces-and-traits, decorator-middleware]
       description: >
         Pass requests through a chain of handlers. Validation pipelines,
@@ -240,7 +240,7 @@ modules:
   architecture:
     layered:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [repository, decorator-middleware, dependency-injection]
       description: >
         Traditional layered architecture. Presentation, business logic,
@@ -249,7 +249,7 @@ modules:
 
     hexagonal:
       tier: 5
-      languages: [go, typescript, rust, java]
+      languages: [go, typescript, rust, scala]
       prereqs: [layered, strategy, repository, dependency-injection]
       description: >
         Ports and adapters. Core domain isolated from infrastructure.
@@ -258,7 +258,7 @@ modules:
 
     cqrs:
       tier: 5
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [hexagonal, observer, pub-sub]
       description: >
         Separate read and write models. Command handlers, query handlers,
@@ -267,7 +267,7 @@ modules:
 
     event-driven:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [pub-sub, observer]
       description: >
         Architecture built around events. Event producers, consumers,
@@ -276,7 +276,7 @@ modules:
 
     event-sourcing:
       tier: 5
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [cqrs, event-driven]
       description: >
         Store state as a sequence of events. Event stores, projections,
@@ -284,7 +284,7 @@ modules:
 
     microservices:
       tier: 5
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [hexagonal, event-driven, circuit-breaker]
       description: >
         Service decomposition. Bounded contexts, API contracts,
@@ -302,7 +302,7 @@ modules:
 
     clean-architecture:
       tier: 5
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [hexagonal, dependency-injection]
       description: >
         Uncle Bob's concentric layers. Entities, use cases, interface
@@ -315,7 +315,7 @@ modules:
   dsa:
     arrays-and-hashing:
       tier: 1
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Array manipulation, hash maps, sets. Two pointers, sliding window,
@@ -323,7 +323,7 @@ modules:
 
     linked-lists:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [variables-and-types, control-flow]
       description: >
         Singly and doubly linked lists. Pointer manipulation, fast/slow
@@ -332,7 +332,7 @@ modules:
 
     stacks-and-queues:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [arrays-and-hashing]
       description: >
         LIFO and FIFO structures. Monotonic stacks, priority queues,
@@ -340,7 +340,7 @@ modules:
 
     trees:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [stacks-and-queues]
       description: >
         Binary trees, BSTs, balanced trees. Traversal (inorder, preorder,
@@ -349,7 +349,7 @@ modules:
 
     graphs:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [trees, stacks-and-queues]
       description: >
         Representations (adjacency list/matrix). BFS, DFS, topological
@@ -358,7 +358,7 @@ modules:
 
     sorting:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [arrays-and-hashing]
       description: >
         Comparison sorts (merge, quick, heap). Non-comparison sorts
@@ -367,7 +367,7 @@ modules:
 
     searching:
       tier: 2
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [sorting]
       description: >
         Binary search and its variations. Search in rotated arrays,
@@ -375,7 +375,7 @@ modules:
 
     dynamic-programming:
       tier: 4
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [arrays-and-hashing, trees]
       description: >
         Overlapping subproblems and optimal substructure. Memoization
@@ -384,7 +384,7 @@ modules:
 
     recursion-and-backtracking:
       tier: 3
-      languages: [go, typescript, rust, python, java]
+      languages: [go, typescript, rust, python, scala, zig, haskell]
       prereqs: [functions-and-closures, trees]
       description: >
         Recursive thinking, base cases, recursive decomposition.
@@ -398,7 +398,7 @@ modules:
   system-design:
     resilience-patterns:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [circuit-breaker, error-handling, concurrency]
       description: >
         Building reliable systems. Circuit breakers, retries with
@@ -407,7 +407,7 @@ modules:
 
     caching:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [repository]
       description: >
         Cache strategies (aside, through, behind). TTL, eviction policies
@@ -425,7 +425,7 @@ modules:
 
     message-queues:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [pub-sub, concurrency]
       description: >
         Queue semantics (at-most-once, at-least-once, exactly-once).
@@ -434,7 +434,7 @@ modules:
 
     database-patterns:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [repository]
       description: >
         SQL fundamentals: joins, indexing, query plans, N+1 detection.
@@ -443,7 +443,7 @@ modules:
 
     observability:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [decorator-middleware, error-handling]
       description: >
         Structured logging, metrics, distributed tracing. OpenTelemetry.
@@ -452,7 +452,7 @@ modules:
 
     security-fundamentals:
       tier: 4
-      languages: [go, typescript, java]
+      languages: [go, typescript, scala]
       prereqs: [decorator-middleware, error-handling]
       description: >
         Authentication vs authorization. JWT, OAuth2/OIDC flows.

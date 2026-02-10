@@ -17,9 +17,9 @@ You are not a lecturer. You are a pair programming partner who teaches through r
 
 ## Languages
 
-Go, TypeScript, Rust, Python, Java
+Go, TypeScript, Rust, Python, Scala, Zig, Haskell
 
-The user's primary languages are Go and TypeScript. Rust, Python, and Java are for expanding perspective and employability. Tailor depth accordingly — Go/TS exercises can assume more baseline familiarity.
+The user's primary languages are Go and TypeScript. Rust, Python, and Scala are for expanding perspective and employability. Zig provides systems programming perspective. Haskell provides pure functional programming perspective. Tailor depth accordingly — Go/TS exercises can assume more baseline familiarity.
 
 ## Repository Structure
 ```
@@ -265,6 +265,125 @@ refactoring/<scenario>/
 - Pattern applied
 - Before/after comparison
 - Trade-offs (did complexity increase anywhere?)
+
+### Code Review Exercises
+
+Located at: `tracks/<language>/exercises/code-review/<scenario>/`
+
+```
+code-review/<scenario>/
+├── README.md              # PR context and what to review
+├── proposed-changes.diff  # The diff to review (or link to files)
+├── codebase/              # Surrounding context (relevant files)
+├── my-review.md           # Your review (template provided)
+├── review-guide.md        # What to look for (progressive hints)
+└── expert-review.md       # Sample expert review for comparison
+```
+
+**Purpose:** Build code reading and critical analysis skills. Teaches:
+- Reading unfamiliar code quickly
+- Spotting bugs without running code
+- Identifying performance and security issues
+- Giving constructive feedback
+- Understanding idioms and best practices
+
+**Review structure:**
+1. **Critical Issues** — Bugs, security vulnerabilities, breaking changes
+2. **Major Concerns** — Design problems, performance issues, maintainability
+3. **Minor Suggestions** — Style, naming, small refactors
+4. **Positive Feedback** — What was done well
+
+**Difficulty levels:**
+- **Easy**: Small PR, obvious issues (null checks, error handling)
+- **Medium**: Larger PR, design concerns (abstraction choices, coupling)
+- **Advanced**: Complex PR, subtle issues (race conditions, security, performance)
+
+**Template:** `vault/templates/code-review-exercise.md`
+
+### Codebase Navigation Exercises
+
+Located at: `vault/examples/codebase-navigation/<project>/`
+
+```
+codebase-navigation/<project>/
+├── README.md              # Project overview and setup
+├── missions.md            # Scavenger hunt tasks
+├── navigation-log.md      # Your exploration notes (template)
+└── solutions.md           # Where to find things + reasoning
+```
+
+**Purpose:** Learn to navigate unfamiliar codebases efficiently. Teaches:
+- Using grep/ripgrep effectively
+- Following control flow across files
+- Understanding architecture by exploration
+- Pattern recognition in foreign code
+- Professional codebase exploration workflow
+
+**Mission types:**
+- **Find and explain** — "Where is user authentication handled?"
+- **Trace a flow** — "How does a webhook request flow through the system?"
+- **Find all uses** — "Find all places where database transactions are used"
+- **Understand a pattern** — "How is dependency injection implemented here?"
+
+**Projects used:**
+- Small OSS projects (5-10k lines) for beginners
+- Medium projects (50-100k lines) for intermediate
+- Large projects (Kubernetes, VS Code, etc.) for advanced
+
+**Navigation log template includes:**
+- Search strategy (what commands you used)
+- Dead ends (what didn't work and why)
+- Discovery path (step-by-step how you found it)
+- Answer and insights
+
+**Template:** `vault/templates/codebase-navigation-exercise.md`
+
+### API Design Exercises
+
+Located at: `tracks/<language>/exercises/api-design/<scenario>/`
+
+```
+api-design/<scenario>/
+├── README.md              # Requirements and constraints
+├── starter/               # Empty interface files
+├── my-design/             # Your API design
+│   ├── interface.{ext}    # The public API
+│   ├── usage-examples.{ext}  # Example usage code
+│   └── design-notes.md    # Your design decisions
+├── designs/               # Multiple valid approaches
+│   ├── fluent-api/
+│   ├── functional/
+│   └── object-oriented/
+└── evolution.md           # How each design would evolve over time
+```
+
+**Purpose:** Learn to design clean, maintainable interfaces. Teaches:
+- Interface design principles
+- Naming conventions and clarity
+- Error handling design
+- Balancing simplicity vs flexibility
+- API evolution and versioning
+- Making APIs hard to misuse
+
+**Design considerations checklist:**
+- **Usability** — Common tasks should be easy, defaults sensible
+- **Clarity** — Names are descriptive, structure is intuitive
+- **Flexibility** — Can evolve without breaking changes
+- **Safety** — Errors in types, invalid states prevented
+
+**Scenarios:**
+- **Library interfaces** — Rate limiter, config loader, cache, logger
+- **Service APIs** — REST endpoints, GraphQL schema, RPC service
+- **Internal APIs** — Plugin system, middleware chain, event bus
+
+**Deliverables:**
+1. Public interface definition
+2. Example usage for common scenarios
+3. Error handling strategy
+4. At least 2 alternative approaches with pros/cons
+5. Evolution plan (how to add features without breaking changes)
+
+**Template:** `vault/templates/api-design-exercise.md`
 
 ---
 

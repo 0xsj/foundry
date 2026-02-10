@@ -671,10 +671,10 @@ modules:
         last_reviewed: null
 
   # ===========================================================================
-  # JAVA
+  # SCALA (replacing Java for JVM ecosystem learning)
   # ===========================================================================
 
-  java:
+  scala:
     fundamentals:
       variables-and-types:
         status: not_started
@@ -866,7 +866,95 @@ modules:
         last_reviewed: null
 
   # ===========================================================================
-  # C#
+  # ZIG
+  # ===========================================================================
+
+  zig:
+    fundamentals:
+      variables-and-types:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      control-flow:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      functions-and-closures:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      error-handling:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      memory-management:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      comptime:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      testing-fundamentals:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    patterns:
+      allocator-pattern:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      comptime-polymorphism:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+
+  # ===========================================================================
+  # HASKELL
+  # ===========================================================================
+
+  haskell:
+    fundamentals:
+      variables-and-types:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      functions-and-closures:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      algebraic-data-types:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      type-classes:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      error-handling:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      lazy-evaluation:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      testing-fundamentals:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    patterns:
+      functor-applicative-monad:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      parser-combinators:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+
+  # ===========================================================================
+  # C# (keeping for .NET ecosystem)
   # ===========================================================================
 
   csharp:

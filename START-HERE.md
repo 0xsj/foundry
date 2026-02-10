@@ -101,8 +101,10 @@ foundry/
 │   ├── typescript/        ← TypeScript learning path
 │   ├── rust/              ← Rust learning path
 │   ├── python/            ← Python learning path
-│   ├── java/              ← Java learning path
-│   └── csharp/            ← C# learning path
+│   ├── scala/             ← Scala learning path (JVM ecosystem)
+│   ├── zig/               ← Zig learning path (systems programming)
+│   ├── haskell/           ← Haskell learning path (pure functional)
+│   └── csharp/            ← C# learning path (.NET ecosystem)
 ├── vault/                 ← Knowledge base (Obsidian compatible)
 │   ├── fundamentals/      ← Cross-language concept notes
 │   ├── pitfalls/          ← Common mistakes database
@@ -146,17 +148,22 @@ foundry/
 - ✅ **TypeScript** — variables-and-types complete with exercises
 - ✅ **Rust** — variables-and-types lesson + reference complete
 - ✅ **Python** — variables-and-types lesson + reference complete
-- ✅ **Java** — variables-and-types lesson + reference complete
-- ✅ **C#** — variables-and-types complete (NEW!)
+- ✅ **Scala** — replacing Java for JVM ecosystem (NEW!)
+- ✅ **Zig** — systems programming perspective (NEW!)
+- ✅ **Haskell** — pure functional perspective (NEW!)
+- ✅ **C#** — .NET ecosystem
 
 ### Enhancements Live
 - ✅ Standard exercises with solutions + variants
 - ✅ Debugging exercises (Go)
 - ✅ Refactoring exercises (Go)
+- ✅ **Code review practice exercises** (NEW!)
+- ✅ **Codebase navigation exercises** (NEW!)
+- ✅ **API design exercises** (NEW!)
 - ✅ Pitfalls database (2 entries)
 - ✅ Production examples (Kubernetes config)
 - ✅ Interview prep mapping
-- ✅ Rosetta stone (all 5 languages)
+- ✅ Rosetta stone (all languages)
 - ✅ Cross-language vault notes
 - ✅ Spaced repetition schema
 

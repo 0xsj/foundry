@@ -1,6 +1,6 @@
 # Cross-Language Rosetta Stone
 
-Quick reference for common operations. Click language headers for official docs.
+Quick reference for common operations across Go, TypeScript, Rust, Python, Scala, Zig, and Haskell. Click language headers for official docs.
 
 ---
 
