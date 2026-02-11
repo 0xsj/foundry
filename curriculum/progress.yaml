@@ -12,7 +12,7 @@
 #   exercises_done: [list]
 #   time_spent_minutes: N        # Optional tracking
 
-current_focus: rust
+current_focus: zig
 sessions_completed: 0
 last_session: null
 
@@ -872,7 +872,8 @@ modules:
   zig:
     fundamentals:
       variables-and-types:
-        status: not_started
+        status: in_progress
+        started_date: 2026-02-11
         exercises_done: []
         last_reviewed: null
       control-flow:
@@ -916,7 +917,8 @@ modules:
   haskell:
     fundamentals:
       variables-and-types:
-        status: not_started
+        status: in_progress
+        started_date: 2026-02-11
         exercises_done: []
         last_reviewed: null
       functions-and-closures:
