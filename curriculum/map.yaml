@@ -12,7 +12,7 @@ modules:
   fundamentals:
     variables-and-types:
       tier: 1
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: []
       description: >
         Primitive types, composite types, type inference, type systems
@@ -20,7 +20,7 @@ modules:
 
     control-flow:
       tier: 1
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Conditionals, loops, switch/match, early returns, guard clauses.
@@ -29,16 +29,16 @@ modules:
 
     functions-and-closures:
       tier: 1
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [control-flow]
       description: >
         Function signatures, multiple returns, closures and captures,
         higher-order functions, variadic arguments. Go's defer,
-        Rust's Fn/FnMut/FnOnce, Java's lambdas.
+        Rust's Fn/FnMut/FnOnce, C#'s delegates and lambdas.
 
     error-handling:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures]
       variants:
         - sentinel-errors
@@ -56,26 +56,26 @@ modules:
 
     interfaces-and-traits:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures]
       description: >
         Contracts and polymorphism. Go's implicit interfaces, Rust's traits
         and trait bounds, TypeScript's structural typing and interfaces,
-        Java's interfaces and abstract classes, Python's ABCs and protocols.
+        C#'s interfaces and abstract classes, Python's ABCs and protocols.
 
     generics:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Parameterized types and functions. Go's type parameters and
         constraints, Rust's generics with trait bounds, TypeScript's generics
-        with conditional/mapped types, Java's generics and type erasure,
+        with conditional/mapped types, C#'s reified generics,
         Python's typing.Generic.
 
     concurrency:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [error-handling, interfaces-and-traits]
       variants:
         - goroutines-and-channels
@@ -94,41 +94,41 @@ modules:
 
     memory-and-ownership:
       tier: 3
-      languages: [go, rust, scala, zig]
+      languages: [go, rust, scala, csharp, zig]
       prereqs: [variables-and-types, functions-and-closures]
       description: >
         How languages manage memory. Rust's ownership/borrowing/lifetimes,
-        Go's garbage collector and escape analysis, Java's GC generations.
+        Go's garbage collector and escape analysis, C#'s CLR and GC generations.
         Stack vs heap, value vs reference semantics.
 
     serialization:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Encoding and decoding data. JSON, protobuf, MessagePack.
         Go's struct tags and encoding/json, Rust's serde, TypeScript's
-        Zod and runtime validation, Java's Jackson, Python's pydantic.
+        Zod and runtime validation, C#'s System.Text.Json, Python's pydantic.
         Schema validation and evolution.
 
     testing-fundamentals:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures, error-handling]
       description: >
         Testing philosophy and mechanics. Unit tests, table-driven tests,
         test doubles (mocks, stubs, fakes), assertion patterns, test
         organization. Go's testing package, Rust's built-in tests,
-        Jest/Vitest, JUnit, pytest.
+        Jest/Vitest, xUnit/NUnit, pytest.
 
     modules-and-packages:
       tier: 1
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Code organization. Go modules and packages, Rust's crate/module
-        system, TypeScript's module resolution (ESM/CJS), Java's packages
-        and classpath, Python's import system. Visibility and encapsulation.
+        system, TypeScript's module resolution (ESM/CJS), C#'s namespaces
+        and assemblies, Python's import system. Visibility and encapsulation.
 
   # ===========================================================================
   # PATTERNS
@@ -137,7 +137,7 @@ modules:
   patterns:
     strategy:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Swap behavior at runtime via interchangeable implementations behind
@@ -146,7 +146,7 @@ modules:
 
     observer:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Notify dependents of state changes without tight coupling.
@@ -154,7 +154,7 @@ modules:
 
     factory:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Controlled construction of objects/values. Factory functions,
@@ -163,7 +163,7 @@ modules:
 
     builder:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits]
       description: >
         Step-by-step construction of complex objects. Fluent APIs,
@@ -172,7 +172,7 @@ modules:
 
     decorator-middleware:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures, interfaces-and-traits]
       description: >
         Compose behavior by wrapping. HTTP middleware chains, logging
@@ -181,7 +181,7 @@ modules:
 
     repository:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits, error-handling]
       description: >
         Abstract data access behind a clean interface. Decouple business
@@ -190,25 +190,25 @@ modules:
 
     dependency-injection:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits, factory]
       description: >
         Invert control of dependencies. Constructor injection, functional
-        injection, wire/dig in Go, tsyringe in TS, Spring in Java.
+        injection, wire/dig in Go, tsyringe in TS, C#'s built-in DI.
         When to use a container vs manual wiring.
 
     iterator-generator:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures]
       description: >
         Lazy evaluation and streaming. Go's iter package and channel-based
         iterators, TypeScript's generators and async iterators, Rust's
-        Iterator trait, Python's generators and itertools, Java's Stream API.
+        Iterator trait, Python's generators and itertools, C#'s LINQ and IEnumerable.
 
     pub-sub:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [observer, concurrency]
       description: >
         Decouple producers from consumers. In-process event buses,
@@ -217,7 +217,7 @@ modules:
 
     circuit-breaker:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [error-handling, concurrency]
       description: >
         Prevent cascading failures. States (closed, open, half-open),
@@ -226,7 +226,7 @@ modules:
 
     chain-of-responsibility:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [interfaces-and-traits, decorator-middleware]
       description: >
         Pass requests through a chain of handlers. Validation pipelines,
@@ -240,7 +240,7 @@ modules:
   architecture:
     layered:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [repository, decorator-middleware, dependency-injection]
       description: >
         Traditional layered architecture. Presentation, business logic,
@@ -249,7 +249,7 @@ modules:
 
     hexagonal:
       tier: 5
-      languages: [go, typescript, rust, scala]
+      languages: [go, typescript, rust, scala, csharp]
       prereqs: [layered, strategy, repository, dependency-injection]
       description: >
         Ports and adapters. Core domain isolated from infrastructure.
@@ -258,7 +258,7 @@ modules:
 
     cqrs:
       tier: 5
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [hexagonal, observer, pub-sub]
       description: >
         Separate read and write models. Command handlers, query handlers,
@@ -267,7 +267,7 @@ modules:
 
     event-driven:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [pub-sub, observer]
       description: >
         Architecture built around events. Event producers, consumers,
@@ -276,7 +276,7 @@ modules:
 
     event-sourcing:
       tier: 5
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [cqrs, event-driven]
       description: >
         Store state as a sequence of events. Event stores, projections,
@@ -284,7 +284,7 @@ modules:
 
     microservices:
       tier: 5
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [hexagonal, event-driven, circuit-breaker]
       description: >
         Service decomposition. Bounded contexts, API contracts,
@@ -293,7 +293,7 @@ modules:
 
     api-gateway-bff:
       tier: 4
-      languages: [go, typescript]
+      languages: [go, typescript, csharp]
       prereqs: [layered, decorator-middleware]
       description: >
         Edge routing and aggregation. API gateway responsibilities,
@@ -302,7 +302,7 @@ modules:
 
     clean-architecture:
       tier: 5
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [hexagonal, dependency-injection]
       description: >
         Uncle Bob's concentric layers. Entities, use cases, interface
@@ -315,7 +315,7 @@ modules:
   dsa:
     arrays-and-hashing:
       tier: 1
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [variables-and-types]
       description: >
         Array manipulation, hash maps, sets. Two pointers, sliding window,
@@ -323,7 +323,7 @@ modules:
 
     linked-lists:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [variables-and-types, control-flow]
       description: >
         Singly and doubly linked lists. Pointer manipulation, fast/slow
@@ -332,7 +332,7 @@ modules:
 
     stacks-and-queues:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [arrays-and-hashing]
       description: >
         LIFO and FIFO structures. Monotonic stacks, priority queues,
@@ -340,7 +340,7 @@ modules:
 
     trees:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [stacks-and-queues]
       description: >
         Binary trees, BSTs, balanced trees. Traversal (inorder, preorder,
@@ -349,7 +349,7 @@ modules:
 
     graphs:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [trees, stacks-and-queues]
       description: >
         Representations (adjacency list/matrix). BFS, DFS, topological
@@ -358,7 +358,7 @@ modules:
 
     sorting:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [arrays-and-hashing]
       description: >
         Comparison sorts (merge, quick, heap). Non-comparison sorts
@@ -367,7 +367,7 @@ modules:
 
     searching:
       tier: 2
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [sorting]
       description: >
         Binary search and its variations. Search in rotated arrays,
@@ -375,7 +375,7 @@ modules:
 
     dynamic-programming:
       tier: 4
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [arrays-and-hashing, trees]
       description: >
         Overlapping subproblems and optimal substructure. Memoization
@@ -384,7 +384,7 @@ modules:
 
     recursion-and-backtracking:
       tier: 3
-      languages: [go, typescript, rust, python, scala, zig, haskell]
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
       prereqs: [functions-and-closures, trees]
       description: >
         Recursive thinking, base cases, recursive decomposition.
@@ -398,7 +398,7 @@ modules:
   system-design:
     resilience-patterns:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [circuit-breaker, error-handling, concurrency]
       description: >
         Building reliable systems. Circuit breakers, retries with
@@ -407,7 +407,7 @@ modules:
 
     caching:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [repository]
       description: >
         Cache strategies (aside, through, behind). TTL, eviction policies
@@ -425,7 +425,7 @@ modules:
 
     message-queues:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [pub-sub, concurrency]
       description: >
         Queue semantics (at-most-once, at-least-once, exactly-once).
@@ -434,7 +434,7 @@ modules:
 
     database-patterns:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [repository]
       description: >
         SQL fundamentals: joins, indexing, query plans, N+1 detection.
@@ -443,7 +443,7 @@ modules:
 
     observability:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [decorator-middleware, error-handling]
       description: >
         Structured logging, metrics, distributed tracing. OpenTelemetry.
@@ -452,7 +452,7 @@ modules:
 
     security-fundamentals:
       tier: 4
-      languages: [go, typescript, scala]
+      languages: [go, typescript, scala, csharp]
       prereqs: [decorator-middleware, error-handling]
       description: >
         Authentication vs authorization. JWT, OAuth2/OIDC flows.

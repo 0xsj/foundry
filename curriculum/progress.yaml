@@ -12,7 +12,7 @@
 #   exercises_done: [list]
 #   time_spent_minutes: N        # Optional tracking
 
-current_focus: zig
+current_focus: null
 sessions_completed: 0
 last_session: null
 
@@ -24,7 +24,7 @@ modules:
   go:
     fundamentals:
       variables-and-types:
-        status: in_progress
+        status: not_started
         exercises_done: []
         last_reviewed: null
       control-flow:
@@ -410,7 +410,7 @@ modules:
   rust:
     fundamentals:
       variables-and-types:
-        status: in_progress
+        status: not_started
         exercises_done: []
         last_reviewed: null
       control-flow:
@@ -671,10 +671,205 @@ modules:
         last_reviewed: null
 
   # ===========================================================================
-  # SCALA (replacing Java for JVM ecosystem learning)
+  # SCALA
   # ===========================================================================
 
   scala:
+    fundamentals:
+      variables-and-types:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      control-flow:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      functions-and-closures:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      error-handling:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      interfaces-and-traits:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      generics:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      concurrency:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      memory-and-ownership:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      serialization:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      testing-fundamentals:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      modules-and-packages:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    patterns:
+      strategy:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      observer:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      factory:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      builder:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      decorator-middleware:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      repository:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      dependency-injection:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      iterator-generator:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      pub-sub:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      circuit-breaker:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      chain-of-responsibility:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    architecture:
+      layered:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      hexagonal:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      cqrs:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      event-driven:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      event-sourcing:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      microservices:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      api-gateway-bff:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      clean-architecture:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    dsa:
+      arrays-and-hashing:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      linked-lists:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      stacks-and-queues:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      trees:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      graphs:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      sorting:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      searching:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      dynamic-programming:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      recursion-and-backtracking:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+    system-design:
+      resilience-patterns:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      caching:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      load-balancing:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      message-queues:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      database-patterns:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      observability:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      security-fundamentals:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+
+  # ===========================================================================
+  # C#
+  # ===========================================================================
+
+  csharp:
     fundamentals:
       variables-and-types:
         status: not_started
@@ -872,8 +1067,7 @@ modules:
   zig:
     fundamentals:
       variables-and-types:
-        status: in_progress
-        started_date: 2026-02-11
+        status: not_started
         exercises_done: []
         last_reviewed: null
       control-flow:
@@ -917,8 +1111,7 @@ modules:
   haskell:
     fundamentals:
       variables-and-types:
-        status: in_progress
-        started_date: 2026-02-11
+        status: not_started
         exercises_done: []
         last_reviewed: null
       functions-and-closures:
@@ -951,201 +1144,6 @@ modules:
         exercises_done: []
         last_reviewed: null
       parser-combinators:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-
-  # ===========================================================================
-  # C# (keeping for .NET ecosystem)
-  # ===========================================================================
-
-  csharp:
-    fundamentals:
-      variables-and-types:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      control-flow:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      functions-and-closures:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      error-handling:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      interfaces-and-traits:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      generics:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      concurrency:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      memory-and-ownership:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      serialization:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      testing-fundamentals:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      modules-and-packages:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-    patterns:
-      strategy:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      observer:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      factory:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      builder:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      decorator-middleware:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      repository:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      dependency-injection:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      iterator-generator:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      pub-sub:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      circuit-breaker:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      chain-of-responsibility:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-    architecture:
-      layered:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      hexagonal:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      cqrs:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      event-driven:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      event-sourcing:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      microservices:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      api-gateway-bff:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      clean-architecture:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-    dsa:
-      arrays-and-hashing:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      linked-lists:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      stacks-and-queues:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      trees:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      graphs:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      sorting:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      searching:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      dynamic-programming:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      recursion-and-backtracking:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-    system-design:
-      resilience-patterns:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      caching:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      load-balancing:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      message-queues:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      database-patterns:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      observability:
-        status: not_started
-        exercises_done: []
-        last_reviewed: null
-      security-fundamentals:
         status: not_started
         exercises_done: []
         last_reviewed: null
