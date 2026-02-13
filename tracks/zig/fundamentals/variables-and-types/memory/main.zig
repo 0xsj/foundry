@@ -149,7 +149,7 @@ pub fn main() void {
     // 7. UNDEFINED vs ZEROED
     // ========================================================================
 
-    var zeroed: [8]u8 = std.mem.zeroes([8]u8);
+    const zeroed: [8]u8 = std.mem.zeroes([8]u8);
     // var undef: [8]u8 = undefined;  // dangerous — would contain garbage
 
     print("\n=== Zero Init ===\n", .{});

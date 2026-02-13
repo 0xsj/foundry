@@ -94,6 +94,11 @@ dist-newstyle/
 .cabal-sandbox/
 cabal.sandbox.config
 .ghc.environment.*
+*.prof
+*.hp
+*.eventlog
+*.tix
+.hpc/
 
 # ===========================================================================
 # JVM shared (Scala / legacy Java artifacts)
@@ -110,6 +115,16 @@ gradlew.bat
 vault/.obsidian/workspace.json
 vault/.obsidian/workspaces.json
 vault/.obsidian/app.json
+
+# ===========================================================================
+# Misc
+# ===========================================================================
+.ipynb_checkpoints/
+*.tmp
+*.bak
+
+# Compiled binaries from exercises (no extension, platform-specific)
+/tmp/
 
 # ===========================================================================
 # Foundry

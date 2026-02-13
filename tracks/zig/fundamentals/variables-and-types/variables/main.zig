@@ -139,7 +139,7 @@ pub fn main() void {
         warn,
         err,
 
-        pub fn isImportant(self: LogLevel) bool {
+        pub fn isImportant(self: @This()) bool {
             return switch (self) {
                 .debug, .info => false,
                 .warn, .err => true,
@@ -198,6 +198,11 @@ pub fn main() void {
     //     .boolean => |b| print("bool: {}\n", .{b}),
     //     .null_val => print("null\n", .{}),
     // }
+
+    // Suppress unused warnings for type definitions (used when TODOs are filled in)
+    _ = Config;
+    _ = LogLevel;
+    _ = Token;
 
     print("done\n", .{});
 }
