@@ -92,14 +92,27 @@ Located at: `tracks/<language>/<category>/<module-name>/`
    - Runnable examples demonstrating key concepts from the lesson
    - Should compile/run successfully
    - Serve as both learning artifacts and quick reference
+   - **Go/Zig/Haskell:** Each runnable file with its own entry point (`func main()`, `pub fn main()`, `main =`) must go in its own subdirectory to avoid redeclaration errors. Name the subdirectory after the concept and use `main.go` (or equivalent) inside.
+   - **TypeScript/Python/Rust/Scala/C#:** Multiple files in the same directory is fine since each file can be run independently (e.g., `ts-node variables.ts`, `python variables.py`, `cargo run --example variables`).
 
 **Example structure for `variables-and-types`:**
+
+Go (each runnable example in its own subdirectory):
 ```
 tracks/go/fundamentals/variables-and-types/
-├── lesson.md           # Tutorial: how variables work, memory model, etc.
-├── reference.md        # Go spec extract: variable declarations, types, constants
-├── variables.go        # Examples: declarations, zero values, type inference
-└── memory.go           # Examples: stack vs heap, escape analysis
+├── lesson.md
+├── reference.md
+├── variables/main.go   # Run with: go run ./variables/
+└── memory/main.go      # Run with: go run ./memory/
+```
+
+TypeScript (multiple files in same directory is fine):
+```
+tracks/typescript/fundamentals/variables-and-types/
+├── lesson.md
+├── reference.md
+├── variables.ts        # Run with: npx ts-node variables.ts
+└── memory.ts           # Run with: npx ts-node memory.ts
 ```
 
 ### Cross-Language Vault Notes
@@ -151,21 +164,124 @@ When the user says "let's do variables and types in Rust" or similar:
 
 **Important:** When creating lesson.md and reference.md, generate the full content immediately. Do not create empty files or stubs. The lesson should be complete and ready to read. The reference should be a comprehensive extract from official docs.
 
+### Exercise Generation Workflow
+
+When the user asks for exercises (or when moving to the exercise phase of a module):
+
+1. **Create the topic exercise directory** at `tracks/<language>/exercises/<topic>/`
+2. **Create the index README** (`README.md`) listing all exercise types with status (Available, Not yet generated, N/A). This is always the first file created.
+3. **Generate the standard exercise** — always created. Includes `standard/README.md`, `standard/starter/`, `standard/solutions/` (with reference implementation), and `standard/my-solution/` (empty for user work).
+4. **Generate the debugging exercise** — create for any topic that has common gotchas, zero value traps, or type pitfalls. Includes `debugging/README.md` (symptoms only, not root cause), `debugging/buggy.{ext}`, `debugging/buggy_test.{ext}`, and `debugging/solution.md`.
+5. **Generate the code review exercise** — create for any topic where reading/reviewing code is valuable. Includes `code-review/README.md`, `code-review/proposed.{ext}`, `code-review/my-review.md` (template), and `code-review/expert-review.md`.
+6. **Mark remaining types** as N/A with reason in the index README if they don't apply to this topic/tier.
+
+**Key rules:**
+- **Solutions are always included at generation time.** Some learners build from scratch, some type along with the reference. Both are valid. Never withhold the solution.
+- **Each exercise type reinforces the same concepts from a different angle.** Standard = building, Debugging = fixing, Code Review = reading. The overlap is intentional.
+- **Debugging and code review exercises should contain bugs/issues that map to concepts from the lesson.** If the lesson covers zero values and pointer semantics, the bugs should involve zero values and pointer semantics.
+- **The index README is the user's entry point.** It must be clear, linkable, and always up to date. When adding a new exercise type to an existing topic, update the index.
+
+### Module Completion Checklist
+
+A module for a given language is complete when:
+
+1. `lesson.md` and `reference.md` exist with full content
+2. Code example files exist and are runnable
+3. Exercises exist with index README (at minimum: standard + one of debugging/code-review)
+4. At least one exercise has been attempted by the user
+5. `curriculum/progress.yaml` is updated with status, date, and exercises_done
+6. Supporting materials prompted (pitfalls, rosetta, interview-prep)
+
 ---
 
 ## Exercise Structure
 
-### Standard Exercises
+All exercises for a topic are co-located under a single directory with an **index README** that lists what's available. This makes exercise types discoverable — the user sees all options when they open the topic directory.
+
+### Directory Layout
 
 Located at: `tracks/<language>/exercises/<topic>/`
 
 ```
 exercises/<topic>/
+├── README.md              # INDEX: lists all exercise types + status
+├── standard/              # Build from scratch
+│   ├── README.md          # Scenario, acceptance criteria, hints
+│   ├── starter/           # Scaffold code with TODOs
+│   ├── solutions/         # Reference implementations
+│   └── my-solution/       # User's work
+├── debugging/             # Find and fix bugs
+│   ├── README.md          # Symptoms and context (not the root cause)
+│   ├── buggy.go           # Code with intentional bug(s)
+│   ├── buggy_test.go      # Failing tests
+│   └── solution.md        # Explanation of bug, fix, and prevention
+├── refactoring/           # Improve working-but-messy code
+│   ├── README.md          # Context and refactoring goals
+│   ├── before.go          # Working but poorly structured code
+│   ├── before_test.go     # Tests (must pass before and after)
+│   ├── after.go           # Refactored with pattern applied
+│   └── analysis.md        # Code smells identified + why refactor improves it
+├── code-review/           # Review a PR, spot issues
+│   ├── README.md          # PR context and what to review
+│   ├── proposed-changes.diff
+│   ├── codebase/          # Surrounding context
+│   ├── my-review.md       # Your review
+│   ├── review-guide.md    # Progressive hints
+│   └── expert-review.md   # Sample expert review for comparison
+└── api-design/            # Design clean interfaces
+    ├── README.md          # Requirements and constraints
+    ├── starter/           # Empty interface files
+    ├── my-design/         # Your API design
+    ├── designs/           # Multiple valid approaches
+    └── evolution.md       # How each design would evolve over time
+```
+
+Not every topic needs all exercise types. The index README makes it clear what's available and what's not applicable.
+
+### Index README Format
+
+The top-level `README.md` for each topic exercise directory uses this format:
+
+```markdown
+# Exercises: <Topic Name>
+
+| Type | Status | Description |
+|------|--------|-------------|
+| Standard | Available | <brief description> |
+| Debugging | Available | <brief description> |
+| Code Review | Not yet generated | <brief description or "ask to generate"> |
+| Refactoring | N/A | <reason why not applicable> |
+| API Design | N/A | <reason why not applicable> |
+| Codebase Navigation | N/A | <reason why not applicable> |
+```
+
+**Status values:**
+- **Available** — Exercise exists and is ready
+- **Not yet generated** — Exercise can be created on request
+- **N/A** — Not applicable for this topic/tier (with brief reason)
+
+### When to Generate Which Types
+
+| Exercise Type | Best For | Skip When |
+|---------------|----------|-----------|
+| Standard | Every topic — the core exercise | Never skip |
+| Debugging | Topics with common gotchas (zero values, type conversions, nil) | Purely conceptual topics |
+| Refactoring | Topics with clear "before/after" improvements | Tier 1 fundamentals (not enough patterns yet) |
+| Code Review | Topics where reading code matters as much as writing it | Very early modules |
+| API Design | Interfaces, patterns, architecture topics | Low-level fundamentals |
+| Codebase Navigation | After multiple modules completed | Early in curriculum |
+
+**Generation rule:** When creating exercises for a topic, always generate the **standard** exercise and the **index README**. Mark other types with their status (available, not yet generated, or N/A). Generate debugging exercises for any topic with common pitfalls. Other types are generated on request or when the topic warrants it.
+
+### Standard Exercise Details
+
+```
+standard/
 ├── README.md              # Exercise description, scenario, acceptance criteria
 ├── starter/               # Scaffold code with TODOs
 │   ├── main.go
 │   └── main_test.go
-├── solutions/             # Reference implementations
+├── solutions/             # Reference implementations (always included)
 │   ├── solution.go        # Idiomatic solution with detailed comments
 │   ├── solution_test.go   # Complete test suite
 │   ├── solution_bench_test.go  # Benchmarks (where relevant)
@@ -173,7 +289,7 @@ exercises/<topic>/
 │       ├── optimized.go   # Performance-focused variant
 │       ├── functional.go  # Different paradigm/style
 │       └── README.md      # Compares trade-offs between variants
-└── my-solution/           # User's work (git-ignored)
+└── my-solution/           # User's work
     ├── implementation.go
     └── review.md          # Self-review notes
 ```
@@ -184,6 +300,8 @@ exercises/<topic>/
 - **Acceptance Criteria**: Concrete, testable requirements
 - **Constraints**: Edge cases, performance requirements, or limitations
 - **Hints**: Optional progressive hints (hidden behind details tags)
+
+**solutions/ are always generated with the exercise** — some learners work from scratch, others learn by typing along with the reference. Both approaches are valid.
 
 **solutions/README.md format:**
 - Overview of the reference solution approach
@@ -216,17 +334,7 @@ exercises/<topic>/
 [What would you do differently?]
 ```
 
-### Debugging Exercises
-
-Located at: `tracks/<language>/exercises/debugging/<scenario>/`
-
-```
-debugging/<scenario>/
-├── README.md              # Symptoms and context (not the root cause)
-├── buggy.go               # Code with intentional bug
-├── buggy_test.go          # Failing tests
-└── solution.md            # Explanation of bug, fix, and prevention
-```
+### Debugging Exercise Details
 
 **Purpose:** Build debugging skills distinct from writing from scratch. Teaches:
 - Reading unfamiliar code
@@ -239,18 +347,7 @@ debugging/<scenario>/
 - **Intermediate**: Logic error requiring tracing (wrong algorithm, incorrect state)
 - **Advanced**: Subtle bug (race condition, memory leak, edge case)
 
-### Refactoring Exercises
-
-Located at: `tracks/<language>/exercises/refactoring/<scenario>/`
-
-```
-refactoring/<scenario>/
-├── README.md              # Context and refactoring goals
-├── before.go              # Working but poorly structured code
-├── before_test.go         # Tests (must pass before and after)
-├── after.go               # Refactored with pattern applied
-└── analysis.md            # Code smells identified + why refactor improves it
-```
+### Refactoring Exercise Details
 
 **Purpose:** Teaches when/why to apply patterns, not just how. Closer to real-world work.
 
@@ -266,19 +363,7 @@ refactoring/<scenario>/
 - Before/after comparison
 - Trade-offs (did complexity increase anywhere?)
 
-### Code Review Exercises
-
-Located at: `tracks/<language>/exercises/code-review/<scenario>/`
-
-```
-code-review/<scenario>/
-├── README.md              # PR context and what to review
-├── proposed-changes.diff  # The diff to review (or link to files)
-├── codebase/              # Surrounding context (relevant files)
-├── my-review.md           # Your review (template provided)
-├── review-guide.md        # What to look for (progressive hints)
-└── expert-review.md       # Sample expert review for comparison
-```
+### Code Review Exercise Details
 
 **Purpose:** Build code reading and critical analysis skills. Teaches:
 - Reading unfamiliar code quickly
@@ -300,9 +385,9 @@ code-review/<scenario>/
 
 **Template:** `vault/templates/code-review-exercise.md`
 
-### Codebase Navigation Exercises
+### Codebase Navigation Exercise Details
 
-Located at: `vault/examples/codebase-navigation/<project>/`
+Located at: `vault/examples/codebase-navigation/<project>/` (cross-language, not per-track)
 
 ```
 codebase-navigation/<project>/
@@ -338,24 +423,7 @@ codebase-navigation/<project>/
 
 **Template:** `vault/templates/codebase-navigation-exercise.md`
 
-### API Design Exercises
-
-Located at: `tracks/<language>/exercises/api-design/<scenario>/`
-
-```
-api-design/<scenario>/
-├── README.md              # Requirements and constraints
-├── starter/               # Empty interface files
-├── my-design/             # Your API design
-│   ├── interface.{ext}    # The public API
-│   ├── usage-examples.{ext}  # Example usage code
-│   └── design-notes.md    # Your design decisions
-├── designs/               # Multiple valid approaches
-│   ├── fluent-api/
-│   ├── functional/
-│   └── object-oriented/
-└── evolution.md           # How each design would evolve over time
-```
+### API Design Exercise Details
 
 **Purpose:** Learn to design clean, maintainable interfaces. Teaches:
 - Interface design principles
@@ -1120,18 +1188,25 @@ Consult `curriculum/progress.yaml` and `curriculum/map.yaml`. Suggest the next u
 Present the suggestion with a brief description of what the module covers and what exercises it will involve. Wait for confirmation before starting.
 
 ### `exercise [topic] [language]`
-Generate a realistic exercise for the given topic and language. If topic or language is omitted, infer from current session context or ask.
+Generate exercises for the given topic and language. If topic or language is omitted, infer from current session context or ask.
 
-Every exercise must include:
+Follow the **Exercise Generation Workflow** (see Module Structure section). This generates:
+
+1. **Index README** at `tracks/<language>/exercises/<topic>/README.md` — lists all exercise types with availability status
+2. **Standard exercise** (`standard/`) — build from scratch. Includes starter scaffold, full test suite, reference solution, and my-solution directory.
+3. **Debugging exercise** (`debugging/`) — find and fix bugs. Includes buggy code with intentional bugs tied to module concepts, failing tests, and solution explanation. Generate for any topic with common gotchas.
+4. **Code review exercise** (`code-review/`) — review a PR. Includes proposed code with issues, review template, and expert review. Generate for any topic where reading code matters.
+5. **Other types** — mark as N/A with reason in index if not applicable to this topic/tier.
+
+Every standard exercise must include:
 - **Scenario**: A realistic production context (2-3 sentences)
 - **Brief**: What the user needs to implement
 - **Acceptance criteria**: Concrete, testable requirements
 - **Starter code**: Scaffold with types/interfaces defined, implementation left empty
-- **Test stubs**: Test file with test cases defined but not implemented (offer to write full tests if the user wants)
+- **Tests**: Full test suite (not stubs — complete, runnable tests)
+- **Reference solution**: Always included alongside starter. Solutions are never withheld.
 
-Place exercise files in `tracks/<language>/exercises/<topic>/`.
-
-If the topic is testable (most are), offer to write tests. Do not write implementation code unless asked.
+Place all exercise files in `tracks/<language>/exercises/<topic>/` using the co-located structure with subdirectories per exercise type.
 
 ### `review`
 Run an in-session quiz. Generate 3-5 rapid-fire questions covering recently completed modules. Mix question types:
@@ -1202,11 +1277,15 @@ When generating exercises, follow these principles:
 
 2. **Progressive complexity within a module**: First exercise in a module should be focused and achievable in 10-15 minutes. Subsequent exercises should layer in complexity, edge cases, and integration with other concepts.
 
-3. **No hand-holding**: Provide the scaffold and acceptance criteria, not the solution. If the user is stuck, ask guiding questions before offering hints. If they're really stuck, offer a single hint at a time.
+3. **Solutions always included**: Reference solutions are generated alongside starter code. Learners choose their approach — build from scratch, peek when stuck, or type along. All are valid learning strategies. If the user is stuck during an attempt, ask guiding questions before pointing them to the solution.
 
-4. **Tests are first-class**: Every exercise should be testable. Offer to write tests. If the user writes their own tests, review them.
+4. **Tests are first-class**: Every standard exercise includes a full, runnable test suite (not stubs). Debugging exercises include failing tests that pass once bugs are fixed. If the user writes their own tests, review them.
 
-5. **Connect to the bigger picture**: After completing an exercise, briefly note how this concept connects to other modules — "This error handling approach pairs well with the Repository pattern you'll see later" or "Notice how this is essentially the strategy pattern applied to serialization."
+5. **Multiple exercise types per topic**: Generate standard + debugging + code review where applicable (see Exercise Generation Workflow). Each type reinforces the same concepts from a different angle: building, fixing, and reading. The bugs in debugging exercises and issues in code review exercises should directly map to concepts covered in the lesson.
+
+6. **Index README is mandatory**: Every topic exercise directory must have a top-level README.md that lists all exercise types with status. This is the user's discovery mechanism — they should never have to guess what exercises are available.
+
+7. **Connect to the bigger picture**: After completing an exercise, briefly note how this concept connects to other modules — "This error handling approach pairs well with the Repository pattern you'll see later" or "Notice how this is essentially the strategy pattern applied to serialization."
 
 ## Note-Taking Rules
 
