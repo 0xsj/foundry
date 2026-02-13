@@ -1,413 +1,449 @@
 # Variables and Types — Haskell
 
-## The Haskell Mindset
+## The Big Shift: Bindings, Not Variables
 
-Haskell is a fundamentally different beast from everything else in this curriculum. A few ground rules before we start:
+In Go, a variable is a named storage location that you can read from and write to:
 
-- **Everything is immutable.** There is no `var`, no reassignment, no mutation. A "variable" in Haskell is a name bound to a value, forever. If you want a different value, you create a new binding.
-- **Everything is an expression.** There are no statements. `if/else` returns a value. `let` returns a value. Even a function definition is an expression.
-- **Functions are the core building block.** Not classes, not structs, not objects. Functions that take values and return values. That's it.
-- **Types are inferred but powerful.** Haskell's type system is far stronger than Go, TypeScript, or Zig. It can express things those type systems can't.
-
-Coming from JS/TS: imagine if `const` was the only keyword, everything was an expression, and the type system was 10x more powerful. That's Haskell.
-
-Coming from Go/Zig: imagine giving up all control over memory layout in exchange for a type system that catches entire categories of bugs at compile time and a language that's extremely concise.
-
----
-
-## Bindings, Not Variables
-
-### Let and Where
-
-Haskell doesn't have variables in the imperative sense. It has **bindings** — names attached to values.
-
-```haskell
--- Top-level binding (visible in the whole module)
-greeting :: String
-greeting = "hello"
-
--- greeting = "world"   -- ERROR: multiple declarations of 'greeting'
+```go
+x := 42
+x = 100  // mutate — x now holds a different value
 ```
 
-You can't reassign. Ever. This is not like JS's `const` where the binding is fixed but the value might be mutable (objects). In Haskell, the value itself is immutable too. There's nothing to mutate.
-
-Inside functions, you use `let...in` or `where`:
+In Haskell, there are no variables. There are **bindings** — a name bound to a value, permanently. Once bound, it never changes.
 
 ```haskell
-circleArea :: Double -> Double
-circleArea radius =
-    let pi = 3.14159
-        radiusSquared = radius * radius
-    in  pi * radiusSquared
-
--- Or equivalently with where:
-circleArea' :: Double -> Double
-circleArea' radius = pi * radiusSquared
-  where
-    pi = 3.14159
-    radiusSquared = radius * radius
+x = 42
+-- x = 100  -- ERROR: Multiple declarations of 'x'
 ```
 
-`let...in` defines bindings and then uses them. `where` puts the bindings after the expression. Same result, different reading order. `where` reads more like natural language ("the area is pi times r squared, where pi is 3.14...").
+This isn't a limitation. It's the foundation of everything in Haskell. When `x = 42`, you can replace every occurrence of `x` with `42` and the program behaves identically. This property is called **referential transparency** — and it's why Haskell programs are easier to reason about, test, and parallelize.
 
-| | JS/TS | Go | Zig | Haskell |
-|---|---|---|---|---|
-| Immutable binding | `const` (shallow) | No direct equiv | `const` (deep) | Everything (no keyword needed) |
-| Mutable binding | `let` | `var` / `:=` | `var` | Doesn't exist |
-| Reassignment | `let` only | Yes | `var` only | Never |
+### Mental Model
+
+| | Go/TS | Haskell |
+|---|---|---|
+| `x = 42` | "Put 42 in the box labeled x" | "x is the name for the value 42" |
+| Mutation | Change what's in the box | Not possible — define a new binding |
+| Identity | x is a *location* that holds values | x *is* the value |
+
+Think of Haskell bindings like `const` in JS/TS — except there's no `let` or `var` alternative. Everything is `const`, always.
 
 ### Your notes
 <!-- -->
-
 
 ---
 
 ## Type System
 
-### Static, Inferred, Strong — Extremely Strong
+### Static, Strong, Inferred
 
 Haskell's type system is:
-- **Static**: all types known at compile time
-- **Inferred**: you almost never need to write type annotations (but you should for top-level definitions — it's good documentation)
-- **Strong**: no implicit conversions whatsoever
-- **Parametrically polymorphic**: generics are the default, not the exception
+- **Static**: types checked at compile time (like Go, unlike Python)
+- **Strong**: no implicit conversions (like Go, unlike JS)
+- **Inferred**: you rarely need to write types — the compiler figures them out (unlike Go where `:=` infers but function signatures require types)
 
 ```haskell
-x = 42          -- Haskell infers: x :: Num a => a (polymorphic!)
-y = 42 :: Int   -- explicitly Int
-z = 42 :: Double -- explicitly Double
-
--- These are different types and cannot be mixed:
--- y + z         -- ERROR: no instance for (Num Int) arising from (+) with Double
+x = 42          -- compiler infers: x :: Integer (by default)
+y = 3.14        -- compiler infers: y :: Double
+name = "hello"  -- compiler infers: name :: String (which is [Char])
+flag = True     -- compiler infers: flag :: Bool
 ```
 
-Notice something unusual: `x = 42` without a type annotation doesn't infer a concrete type like `Int`. Haskell infers the most general type: `Num a => a`, meaning "any numeric type." The concrete type is decided when `x` is actually used. This is called **polymorphism** and it's pervasive in Haskell.
-
-### Primitive Types
-
-| Type | Description | Examples | Equivalent in Go/TS |
-|---|---|---|---|
-| `Int` | Fixed-precision integer (at least 30 bits, usually 64-bit) | `42`, `-7` | `int` / `number` |
-| `Integer` | Arbitrary-precision integer (unlimited) | `2^100` | `big.Int` / `BigInt` |
-| `Float` | Single-precision float | `3.14` | `float32` / — |
-| `Double` | Double-precision float | `3.14` | `float64` / `number` |
-| `Char` | Single Unicode character | `'a'`, `'λ'` | `rune` / — |
-| `Bool` | Boolean | `True`, `False` | `bool` / `boolean` |
-| `()` | Unit (like void) | `()` | — / `void` |
-
-Key differences from other languages:
-- **`Int` vs `Integer`**: `Int` is machine-sized (fast, can overflow). `Integer` is arbitrary precision (slower, never overflows). Most languages only give you one or the other.
-- **`Char`** is a full Unicode codepoint, not a byte. `'λ'` is a valid `Char`.
-- **`()`** is the unit type — it has exactly one value, also written `()`. It's used where other languages use `void`.
-
-### Type Annotations
-
-Type annotations go on a separate line above the definition, using `::` ("has type"):
+You *can* add type annotations, and it's considered good practice for top-level definitions:
 
 ```haskell
-age :: Int
-age = 30
+x :: Int
+x = 42
 
-name :: String        -- String is an alias for [Char]
-name = "hello"
+greeting :: String
+greeting = "hello"
+```
 
-isValid :: Bool
-isValid = True
+The `::` reads as "has type". So `x :: Int` means "x has type Int".
 
--- Functions
+### Hindley-Milner Type Inference
+
+Haskell uses the **Hindley-Milner** type inference algorithm. It can figure out the types of almost everything without annotations. This is fundamentally more powerful than Go's `:=` or TypeScript's type inference:
+
+```haskell
+-- No type annotation needed. Compiler infers:
+-- double :: Num a => a -> a
+double x = x + x
+
+-- Works with Int, Double, Integer, any numeric type
+-- The constraint "Num a =>" means "for any type a that supports arithmetic"
+```
+
+In Go, you'd need to write separate functions or use generics. In Haskell, this is the default behavior — functions are polymorphic unless you constrain them.
+
+### Your notes
+<!-- -->
+
+---
+
+## Basic Types
+
+### Numeric Types
+
+| Type | What it is | Go equivalent | Notes |
+|---|---|---|---|
+| `Int` | Machine-width integer | `int` | At least 30 bits, typically 64 bits |
+| `Integer` | Arbitrary-precision integer | `*big.Int` | No overflow, unlimited size |
+| `Float` | 32-bit floating point | `float32` | Rarely used |
+| `Double` | 64-bit floating point | `float64` | Default for decimal literals |
+
+```haskell
+smallNum :: Int
+smallNum = 42
+
+bigNum :: Integer
+bigNum = 2^100  -- no overflow, this just works
+
+pi' :: Double
+pi' = 3.14159265358979
+```
+
+**Key difference from Go:** Haskell numeric literals are polymorphic. `42` isn't an `Int` or an `Integer` — it's `Num a => a`, meaning "any numeric type." The concrete type is determined by context:
+
+```haskell
+x = 42           -- Integer (default for integer literals)
+y = 42 :: Int    -- Int (explicitly constrained)
+z = 42 :: Double -- Double (yes, 42 becomes 42.0)
+```
+
+In Go, `42` is always `int` (or an untyped constant that defaults to `int`). In Haskell, `42` adapts. This is closer to Go's untyped constants, but more powerful.
+
+### Other Primitive Types
+
+| Type | What it is | Go equivalent | Literal example |
+|---|---|---|---|
+| `Bool` | Boolean | `bool` | `True`, `False` |
+| `Char` | Single Unicode character | `rune` | `'a'`, `'λ'` |
+| `String` | List of characters (`[Char]`) | `string` | `"hello"` |
+| `()` | Unit (empty tuple) | `struct{}` | `()` |
+
+### Strings: A Linked List of Characters
+
+This is where Haskell gets weird compared to Go:
+
+```haskell
+-- String is defined as:
+type String = [Char]
+
+-- So "hello" is actually: ['h', 'e', 'l', 'l', 'o']
+-- Which is a linked list: 'h' : 'e' : 'l' : 'l' : 'o' : []
+```
+
+| | Go | Haskell (String) |
+|---|---|---|
+| Internal structure | Pointer + length (16 bytes) | Linked list of Char |
+| `len`/`length` | O(1) | **O(n)** — must traverse the list |
+| Character access | `s[i]` is O(1) byte access | `s !! i` is **O(n)** |
+| Memory efficiency | Compact byte array | ~24 bytes per character (list node overhead) |
+| Immutable? | Yes | Yes |
+
+This is why Haskell has `Text` (from the `text` package) for real programs — it's a packed UTF-16 array, much closer to Go's string. But for learning, `String` as `[Char]` is simpler and teaches list thinking.
+
+```haskell
+-- length is O(n) — it walks the linked list
+length "hello"  -- 5
+
+-- String operations are list operations
+head "hello"    -- 'h'
+tail "hello"    -- "ello"
+"hello" ++ " world"  -- "hello world" (list concatenation)
+```
+
+### Your notes
+<!-- -->
+
+---
+
+## Bindings and Scope
+
+### Top-Level Bindings
+
+```haskell
+-- These are module-level bindings, visible everywhere in the file
+port :: Int
+port = 8080
+
+host :: String
+host = "localhost"
+```
+
+### Let Bindings (Local Scope)
+
+```haskell
+circleArea :: Double -> Double
+circleArea radius =
+  let pi' = 3.14159
+      radiusSq = radius * radius
+  in pi' * radiusSq
+```
+
+`let ... in ...` introduces local bindings. The names only exist within the `in` expression.
+
+### Where Clauses
+
+```haskell
+circleArea :: Double -> Double
+circleArea radius = pi' * radiusSq
+  where
+    pi' = 3.14159
+    radiusSq = radius * radius
+```
+
+`where` does the same thing as `let`, but the definitions come after the expression. It's stylistic — `where` reads more naturally for top-down thinkers.
+
+### Let vs Where
+
+| | `let ... in` | `where` |
+|---|---|---|
+| Position | Before the expression | After the expression |
+| Works in | Any expression | Function definitions, case expressions |
+| Style | Bottom-up (define then use) | Top-down (use then define) |
+
+Both are used in practice. Neither is "better."
+
+### Your notes
+<!-- -->
+
+---
+
+## Type Annotations and Signatures
+
+### Function Signatures
+
+```haskell
 add :: Int -> Int -> Int
 add x y = x + y
 ```
 
-The `->` in function types reads as "takes X and returns Y." `Int -> Int -> Int` means "takes an Int, then another Int, and returns an Int." (This is actually currying — we'll cover it in functions-and-closures.)
+Read `Int -> Int -> Int` as: "takes an `Int`, then another `Int`, and returns an `Int`." The arrows separate parameters. The last type is always the return type.
+
+This is actually **currying** — every function takes exactly one argument and returns a new function:
+
+```haskell
+add :: Int -> (Int -> Int)   -- same thing, parens are implicit
+-- add 3 returns a function (Int -> Int) that adds 3 to its argument
+```
+
+This is fundamentally different from Go's `func add(x, y int) int`. In Haskell, `add 3` is a valid expression — it's a function that adds 3 to whatever you give it. In Go, `add(3)` is a compile error (wrong number of arguments).
+
+### Type Variables (Generics)
+
+```haskell
+identity :: a -> a
+identity x = x
+```
+
+Lowercase `a` is a **type variable** — it stands for any type. This is like Go's generics but built into the language from day one:
+
+```go
+// Go equivalent (since Go 1.18)
+func Identity[T any](x T) T { return x }
+```
+
+In Haskell, generics aren't a feature — they're the default. You opt *out* of generics by specifying a concrete type.
+
+### Type Constraints
+
+```haskell
+double :: Num a => a -> a
+double x = x + x
+```
+
+`Num a =>` is a **constraint**: "for any type `a` that implements the `Num` type class." Type classes are like Go interfaces — they define a set of operations a type must support. We'll cover them in depth in the type-classes module.
+
+For now: `Num` means "supports `+`, `-`, `*`, and a few others." `Eq` means "supports `==` and `/=`." `Ord` means "supports `<`, `>`, `<=`, `>=`."
 
 ### Your notes
 <!-- -->
-
-
----
-
-## Strings and Characters
-
-### String = [Char]
-
-In Haskell, `String` is a type alias for `[Char]` — a linked list of characters. This is elegant but **slow** for real work.
-
-```haskell
-greeting :: String        -- same as [Char]
-greeting = "hello"
-
--- A string is literally a list of characters:
--- "hello" == ['h', 'e', 'l', 'l', 'o']
-
-firstChar :: Char
-firstChar = head greeting   -- 'h'
-
-len :: Int
-len = length greeting       -- 5
-
--- String concatenation with ++
-full :: String
-full = "hello" ++ " " ++ "world"
-```
-
-| | JS/TS | Go | Zig | Haskell |
-|---|---|---|---|---|
-| String type | `string` (UTF-16) | `string` (bytes) | `[]const u8` (bytes) | `String` = `[Char]` (linked list) |
-| Character type | None (single-char string) | `rune` (int32) | `u8` (byte) | `Char` (Unicode codepoint) |
-| Performance | Good | Good | Great | Poor (linked list) |
-| Real-world alternative | — | — | — | `Text` (from `Data.Text`) |
-
-For production Haskell, you'd use `Data.Text` (packed UTF-16) or `Data.ByteString` (raw bytes). But `String` is fine for learning and is what the standard library uses.
-
-### Your notes
-<!-- -->
-
-
----
-
-## Lists
-
-Lists are the fundamental collection in Haskell. They're **singly-linked lists**, not arrays.
-
-```haskell
-numbers :: [Int]
-numbers = [1, 2, 3, 4, 5]
-
--- The : operator (cons) prepends an element
-moreNumbers :: [Int]
-moreNumbers = 0 : numbers   -- [0, 1, 2, 3, 4, 5]
-
--- ++ concatenates two lists
-combined :: [Int]
-combined = [1, 2] ++ [3, 4]  -- [1, 2, 3, 4]
-
--- Common operations
-hd = head numbers      -- 1 (first element)
-tl = tail numbers      -- [2, 3, 4, 5] (everything after first)
-ln = length numbers    -- 5
-isEmpty = null numbers -- False
-rev = reverse numbers  -- [5, 4, 3, 2, 1]
-```
-
-### List Comprehensions
-
-Haskell has list comprehensions similar to Python:
-
-```haskell
-evens :: [Int]
-evens = [x | x <- [1..20], even x]   -- [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-
-pairs :: [(Int, Int)]
-pairs = [(x, y) | x <- [1..3], y <- [1..3], x /= y]
--- [(1,2), (1,3), (2,1), (2,3), (3,1), (3,2)]
-```
-
-### Infinite Lists (Lazy Evaluation Preview)
-
-Because Haskell is lazy, lists can be infinite:
-
-```haskell
-nats :: [Int]
-nats = [1..]              -- infinite list: 1, 2, 3, 4, ...
-
-firstTen :: [Int]
-firstTen = take 10 nats   -- [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
--- This doesn't crash because Haskell only evaluates what's needed
-```
-
-This is impossible in Go, Zig, or TypeScript (without generators). Haskell's laziness means values aren't computed until they're actually used. We'll cover this in depth in the lazy-evaluation module.
-
-| | JS/TS array | Go slice | Zig array/slice | Haskell list |
-|---|---|---|---|---|
-| Structure | Dynamic array | Dynamic array (ptr+len+cap) | Fixed array / view | Singly-linked list |
-| Indexing | O(1) | O(1) | O(1) | O(n) |
-| Prepend | O(n) | O(n) | N/A | O(1) |
-| Append | O(1) amortized | O(1) amortized | N/A | O(n) |
-| Lazy? | No | No | No | Yes |
-| Infinite? | No | No | No | Yes |
-
-### Your notes
-<!-- -->
-
 
 ---
 
 ## Tuples
 
-Tuples are fixed-size collections of different types. Unlike lists (which are homogeneous and variable-length), tuples are heterogeneous and fixed-length.
+Tuples are fixed-size, heterogeneous collections — like a Go struct with no field names:
 
 ```haskell
-point :: (Double, Double)
-point = (3.0, 4.0)
+point :: (Int, Int)
+point = (3, 4)
 
 person :: (String, Int, Bool)
 person = ("Alice", 30, True)
 
--- Access with fst and snd (only for 2-tuples)
-x = fst point    -- 3.0
-y = snd point    -- 4.0
+-- Access with pattern matching (not indexing)
+fst (3, 4)  -- 3 (only for 2-tuples)
+snd (3, 4)  -- 4 (only for 2-tuples)
 
 -- For larger tuples, use pattern matching
 getName :: (String, Int, Bool) -> String
 getName (name, _, _) = name
 ```
 
-Tuples are closer to Go's multiple return values than to any JS concept:
+| | Go | Haskell |
+|---|---|---|
+| Multiple return | `func f() (int, error)` | Return a tuple: `f :: ... -> (Int, String)` |
+| Access | Named fields or positional | Pattern matching |
+| Heterogeneous? | Only in structs | Yes, tuples are naturally heterogeneous |
 
-```go
-// Go
-func divide(a, b int) (int, error) { ... }
-```
+### Your notes
+<!-- -->
+
+---
+
+## Lists
+
+Lists are Haskell's most fundamental data structure. Every element must be the same type (unlike tuples).
+
 ```haskell
--- Haskell
-divide :: Int -> Int -> (Int, Int)  -- returns (quotient, remainder)
-divide a b = (a `div` b, a `mod` b)
+nums :: [Int]
+nums = [1, 2, 3, 4, 5]
+
+chars :: [Char]    -- same as String
+chars = "hello"
+
+empty :: [Int]
+empty = []
+```
+
+### List Construction
+
+```haskell
+-- (:) is "cons" — prepend an element to a list
+-- This is O(1)
+1 : [2, 3]    -- [1, 2, 3]
+
+-- [1, 2, 3] is syntactic sugar for:
+1 : 2 : 3 : []
+
+-- (++) concatenates two lists — O(n) in the left list
+[1, 2] ++ [3, 4]  -- [1, 2, 3, 4]
+```
+
+### List Operations
+
+```haskell
+head [1, 2, 3]    -- 1 (first element — crashes on empty list!)
+tail [1, 2, 3]    -- [2, 3] (everything except first)
+length [1, 2, 3]  -- 3 (O(n) — linked list traversal)
+null []            -- True (safe emptiness check)
+reverse [1, 2, 3] -- [3, 2, 1]
+take 2 [1, 2, 3]  -- [1, 2]
+drop 2 [1, 2, 3]  -- [3]
+```
+
+### List Comparison to Go Slices
+
+| | Go slice | Haskell list |
+|---|---|---|
+| Structure | Contiguous array | Linked list |
+| Prepend | O(n) copy | **O(1)** cons |
+| Append | Amortized O(1) | O(n) |
+| Index access | O(1) | O(n) |
+| Length | O(1) | O(n) |
+| Immutable? | No | Yes — operations return new lists |
+
+Haskell lists are great for sequential processing (map, filter, fold) but terrible for random access. For array-like performance, use `Data.Vector`.
+
+### Your notes
+<!-- -->
+
+---
+
+## Type Aliases and Newtype
+
+### Type Synonyms (`type`)
+
+```haskell
+type Name = String
+type Age = Int
+type Person = (Name, Age)
+
+greet :: Person -> String
+greet (name, _) = "Hello, " ++ name
+```
+
+`type` creates an alias — `Name` and `String` are **the same type**. No safety gain, just readability. Like Go's `type Celsius = float64` (alias, not new type).
+
+### Newtype
+
+```haskell
+newtype Celsius = Celsius Double
+newtype Fahrenheit = Fahrenheit Double
+
+-- These are DIFFERENT types. Can't accidentally mix them.
+-- convert :: Celsius -> Fahrenheit  -- type-safe conversion
+```
+
+`newtype` creates a **distinct type** with zero runtime cost. It's erased at compile time. This is like Go's `type Celsius float64` (new type, not alias) — you can't pass a `Celsius` where `Fahrenheit` is expected.
+
+| | Haskell | Go |
+|---|---|---|
+| Alias (same type) | `type Name = String` | `type Name = string` |
+| New type (distinct) | `newtype Celsius = Celsius Double` | `type Celsius float64` |
+| Runtime cost of new type | Zero | Zero |
+
+### Your notes
+<!-- -->
+
+---
+
+## No Zero Values — Maybe Instead
+
+Go's design gives every type a zero value. Haskell takes the opposite approach: if a value might not exist, you must say so explicitly with `Maybe`.
+
+```haskell
+-- This always has a value
+port :: Int
+port = 8080
+
+-- This might not have a value
+configuredPort :: Maybe Int
+configuredPort = Just 8080    -- has a value
+-- or
+-- configuredPort = Nothing   -- no value
+```
+
+| | Go | Haskell |
+|---|---|---|
+| Optional int | `*int` (nil or pointer to value) | `Maybe Int` (Nothing or Just value) |
+| Missing string | `""` (is it empty or unset?) | `Maybe String` (Nothing is unambiguous) |
+| Checking | `if p != nil` | Pattern matching on `Just x` / `Nothing` |
+| Forgetting to check | Runtime nil panic | **Compile error** — you must handle both cases |
+
+This is the core advantage: the compiler forces you to handle the missing case. In Go, forgetting a nil check is a runtime panic. In Haskell, it's a compile error.
+
+```haskell
+-- You MUST handle both cases
+showPort :: Maybe Int -> String
+showPort Nothing  = "no port configured"
+showPort (Just p) = "port: " ++ show p
+
+-- This won't compile — non-exhaustive pattern match warning:
+-- showPort (Just p) = "port: " ++ show p
 ```
 
 ### Your notes
 <!-- -->
 
-
 ---
 
-## Algebraic Data Types (Preview)
+## Putting It Together: Comparison Table
 
-This gets its own module, but you'll see it everywhere so here's the core idea. Haskell lets you define custom types with `data`:
-
-### Sum Types (OR — like enums)
-
-```haskell
-data Direction = North | South | East | West
-  deriving (Show)   -- auto-generates string representation
-
-data Color = Red | Green | Blue
-  deriving (Show, Eq)   -- Show + equality comparison
-```
-
-This is like Zig's `enum` or TypeScript's union types. A `Direction` is one of four values.
-
-### Product Types (AND — like structs)
-
-```haskell
-data Point = Point Double Double
-  deriving (Show)
-
-data Person = Person
-  { personName :: String
-  , personAge  :: Int
-  , personActive :: Bool
-  } deriving (Show)
-
--- Create a Person
-alice :: Person
-alice = Person { personName = "Alice", personAge = 30, personActive = True }
-
--- Access fields
-aliceName = personName alice   -- "Alice"
-```
-
-Record syntax (with `{ }`) gives you accessor functions for free. `personName` is a function `Person -> String`.
-
-### Sum + Product (the real power)
-
-```haskell
-data Shape
-  = Circle Double              -- radius
-  | Rectangle Double Double    -- width, height
-  | Triangle Double Double Double  -- three sides
-  deriving (Show)
-
-area :: Shape -> Double
-area (Circle r) = pi * r * r
-area (Rectangle w h) = w * h
-area (Triangle a b c) =                    -- Heron's formula
-  let s = (a + b + c) / 2
-  in  sqrt (s * (s - a) * (s - b) * (s - c))
-```
-
-This is like Zig's tagged unions or Rust's enums — each variant can carry different data, and pattern matching is exhaustive. But Haskell's version is more concise and deeply integrated into the language.
-
-| | TS discriminated union | Go (interface + types) | Zig tagged union | Rust enum | Haskell data |
-|---|---|---|---|---|---|
-| Syntax | `type A = B \| C` | Interface + struct per variant | `union(enum)` | `enum A { B, C }` | `data A = B \| C` |
-| Exhaustive? | With narrowing | No | Yes | Yes | Yes |
-| Built-in? | Sort of | No | Yes | Yes | Yes |
-
-### Your notes
-<!-- -->
-
-
----
-
-## Type Classes (Preview)
-
-When you see `deriving (Show, Eq)`, those are **type classes** — Haskell's version of interfaces/traits. A type class defines behavior that types can implement.
-
-```haskell
--- Show: can be converted to a String
--- Eq: can be compared with == and /=
--- Ord: can be ordered with <, >, <=, >=
--- Num: supports +, -, *, etc.
-```
-
-When Haskell infers `x = 42 :: Num a => a`, the `Num a =>` part is a **constraint** saying "the type `a` must implement the `Num` type class." This is like Go's interface constraints or Rust's trait bounds.
-
-We'll cover type classes in depth in their own module.
-
-### Your notes
-<!-- -->
-
-
----
-
-## Pattern Matching (Preview)
-
-Pattern matching is how you destructure and branch in Haskell. It replaces if/else chains, switch statements, and manual field access:
-
-```haskell
--- On function arguments
-greet :: String -> String
-greet "Alice" = "Hi, Alice!"
-greet "Bob"   = "Hey, Bob!"
-greet name    = "Hello, " ++ name
-
--- On lists
-describeList :: [a] -> String
-describeList []     = "empty"
-describeList [_]    = "one element"
-describeList [_,_]  = "two elements"
-describeList _      = "many elements"
-
--- On tuples
-addPair :: (Int, Int) -> Int
-addPair (x, y) = x + y
-```
-
-This is the primary control flow mechanism in Haskell. We'll use it extensively in control-flow and beyond.
-
-### Your notes
-<!-- -->
-
-
----
-
-## IO (Preview)
-
-Haskell separates pure computation from side effects using the `IO` type. Printing to the screen, reading files, network calls — all wrapped in `IO`.
-
-```haskell
-main :: IO ()
-main = do
-    putStrLn "What is your name?"
-    name <- getLine
-    putStrLn ("Hello, " ++ name ++ "!")
-```
-
-The `do` notation makes IO look imperative, but under the hood it's a chain of function compositions. The type `IO ()` means "an IO action that produces unit (nothing useful)." `IO String` would mean "an IO action that produces a String."
-
-This is the biggest mental shift from every other language in the curriculum. In Go, TS, Zig — functions can do IO whenever they want. In Haskell, a function's type tells you whether it can do IO. A function `Int -> Int` is *guaranteed* to be pure — no side effects, no network calls, no file writes. This is enforced by the compiler.
+| Concept | Go | TypeScript | Haskell |
+|---|---|---|---|
+| Binding | `x := 42` | `const x = 42` | `x = 42` |
+| Mutable | `var x = 42; x = 100` | `let x = 42; x = 100` | Not possible |
+| Type annotation | `var x int = 42` | `const x: number = 42` | `x :: Int; x = 42` |
+| Type inference | `:=` for locals | Most expressions | Everything (Hindley-Milner) |
+| String type | `string` (byte slice header) | `string` (UTF-16) | `String` = `[Char]` (linked list) |
+| Optional value | `*int` (nil pointer) | `number \| undefined` | `Maybe Int` |
+| Zero value | Every type has one | `undefined` | No zero values — use `Maybe` |
+| Generics | `func F[T any](x T) T` | `function f<T>(x: T): T` | `f :: a -> a` (default) |
+| Multiple return | `(int, error)` | Tuple or object | Tuple: `(Int, String)` |
 
 ### Your notes
 <!-- -->
