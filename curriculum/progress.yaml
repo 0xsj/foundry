@@ -56,7 +56,8 @@ modules:
         exercises_done: []
         last_reviewed: null
       serialization:
-        status: not_started
+        status: in_progress
+        started_date: 2026-02-18
         exercises_done: []
         last_reviewed: null
       testing-fundamentals:
@@ -64,6 +65,27 @@ modules:
         exercises_done: []
         last_reviewed: null
       modules-and-packages:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: in_progress
+        started_date: 2026-02-18
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      pointers-and-smart-pointers:
         status: not_started
         exercises_done: []
         last_reviewed: null
@@ -258,6 +280,22 @@ modules:
         status: not_started
         exercises_done: []
         last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
     patterns:
       strategy:
         status: not_started
@@ -442,14 +480,36 @@ modules:
         exercises_done: []
         last_reviewed: null
       serialization:
-        status: not_started
+        status: in_progress
+        started_date: 2026-02-18
         exercises_done: []
         last_reviewed: null
       testing-fundamentals:
-        status: not_started
+        status: in_progress
+        started_date: 2026-02-18
         exercises_done: []
         last_reviewed: null
       modules-and-packages:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      pointers-and-smart-pointers:
         status: not_started
         exercises_done: []
         last_reviewed: null
@@ -587,6 +647,22 @@ modules:
         status: not_started
         exercises_done: []
         last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
     patterns:
       strategy:
         status: not_started
@@ -717,6 +793,22 @@ modules:
         exercises_done: []
         last_reviewed: null
       modules-and-packages:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
         status: not_started
         exercises_done: []
         last_reviewed: null
@@ -915,6 +1007,26 @@ modules:
         status: not_started
         exercises_done: []
         last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      pointers-and-smart-pointers:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
     patterns:
       strategy:
         status: not_started
@@ -1094,6 +1206,26 @@ modules:
         status: not_started
         exercises_done: []
         last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      pointers-and-smart-pointers:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
     patterns:
       allocator-pattern:
         status: not_started
@@ -1135,6 +1267,22 @@ modules:
         exercises_done: []
         last_reviewed: null
       testing-fundamentals:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      structs-methods-and-enums:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      collections:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      strings-and-text:
+        status: not_started
+        exercises_done: []
+        last_reviewed: null
+      io-and-files:
         status: not_started
         exercises_done: []
         last_reviewed: null

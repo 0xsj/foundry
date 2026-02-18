@@ -1,0 +1,12 @@
+[package]
+name = "url-shortener"
+version = "0.1.0"
+edition = "2021"
+description = "URL shortener CLI — refactored into a multi-module library crate"
+
+# Cargo infers:
+#   [lib] path = "src/lib.rs"
+#   [[bin]] path = "src/main.rs"
+
+[dependencies]
+# No external dependencies — stdlib only

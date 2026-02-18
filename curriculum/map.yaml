@@ -36,6 +36,29 @@ modules:
         higher-order functions, variadic arguments. Go's defer,
         Rust's Fn/FnMut/FnOnce, C#'s delegates and lambdas.
 
+    structs-methods-and-enums:
+      tier: 1
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
+      prereqs: [variables-and-types]
+      description: >
+        Defining composite data types and attaching behavior. Go: structs,
+        methods, pointer vs value receivers, embedding/composition. Rust:
+        structs, enums (algebraic data types), impl blocks, associated
+        functions, Option/Result as enums. Pattern matching on enums.
+        When to use composition over inheritance.
+
+    collections:
+      tier: 1
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
+      prereqs: [variables-and-types]
+      description: >
+        Core data structures for daily use. Arrays, slices/vectors,
+        maps/hashmaps, sets. Internal mechanics (capacity, growth,
+        hashing), common operations, iteration patterns. Go: slice
+        internals (len vs cap, append reallocation, backing arrays),
+        nil vs empty slice, map iteration order. Rust: Vec, HashMap,
+        HashSet, BTreeMap, slice borrowing rules, entry API.
+
     error-handling:
       tier: 2
       languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
@@ -57,7 +80,7 @@ modules:
     interfaces-and-traits:
       tier: 2
       languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
-      prereqs: [functions-and-closures]
+      prereqs: [functions-and-closures, structs-methods-and-enums]
       description: >
         Contracts and polymorphism. Go's implicit interfaces, Rust's traits
         and trait bounds, TypeScript's structural typing and interfaces,
@@ -95,7 +118,7 @@ modules:
     memory-and-ownership:
       tier: 3
       languages: [go, rust, scala, csharp, zig]
-      prereqs: [variables-and-types, functions-and-closures]
+      prereqs: [pointers-and-smart-pointers, functions-and-closures]
       description: >
         How languages manage memory. Rust's ownership/borrowing/lifetimes,
         Go's garbage collector and escape analysis, C#'s CLR and GC generations.
@@ -110,6 +133,40 @@ modules:
         Go's struct tags and encoding/json, Rust's serde, TypeScript's
         Zod and runtime validation, C#'s System.Text.Json, Python's pydantic.
         Schema validation and evolution.
+
+    strings-and-text:
+      tier: 2
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
+      prereqs: [collections]
+      description: >
+        String internals and encoding (UTF-8, UTF-16). Manipulation,
+        formatting, parsing, and regular expressions. Go: string vs
+        []byte vs []rune, strings/bytes packages, fmt verbs.
+        Rust: String vs &str, OsString, formatting macros, string
+        slicing safety (panics on non-char boundaries). Text templates
+        and interpolation patterns.
+
+    io-and-files:
+      tier: 2
+      languages: [go, typescript, rust, python, scala, csharp, zig, haskell]
+      prereqs: [error-handling]
+      description: >
+        Reading and writing data. Stream abstractions, buffered I/O,
+        file operations, stdin/stdout, environment variables. Go:
+        io.Reader/io.Writer composition, bufio, os package, embed.
+        Rust: Read/Write traits, BufReader/BufWriter, std::fs,
+        Path/PathBuf. Resource cleanup (defer, Drop/RAII).
+
+    pointers-and-smart-pointers:
+      tier: 2
+      languages: [go, rust, zig, csharp]
+      prereqs: [structs-methods-and-enums]
+      description: >
+        Indirection and heap allocation. Go: pointer semantics (*T, &x),
+        nil pointers, when to use pointers, pointer vs value receivers.
+        Rust: references (&T, &mut T), Box<T>, Rc<T>, Arc<T>,
+        RefCell<T>, Cell<T>, Cow<T>. Interior mutability pattern.
+        When to reach for each smart pointer type.
 
     testing-fundamentals:
       tier: 2
