@@ -1,0 +1,11 @@
+{
+  "focus": "go",
+  "started": "2026-08-29",
+  "sessions": 0,
+  "modules": {
+    "go/00-values-and-types": {
+      "stage": 1,
+      "started": "2026-08-30"
+    }
+  }
+}

@@ -1,0 +1,374 @@
+[
+  {
+    "id": "go-slice-vs-array",
+    "topic": "fundamentals",
+    "lang": "go",
+    "level": "junior",
+    "question": "What is the difference between an array and a slice in Go?",
+    "probes": [
+      "What happens when you pass each to a function?",
+      "What does append do when capacity runs out?"
+    ],
+    "reference": "An array's length is part of its type: [3]int and [4]int are different types, and assigning or passing an array copies every element. A slice is a three-word header (pointer, length, capacity) viewing a backing array, so copying a slice copies only the header and both copies alias the same memory. When append exceeds capacity it allocates a new backing array and copies, which silently breaks the aliasing."
+  },
+  {
+    "id": "go-typed-nil",
+    "topic": "fundamentals",
+    "lang": "go",
+    "level": "senior",
+    "question": "Why can a Go interface holding a nil pointer compare as non-nil?",
+    "probes": [
+      "How would you write a function that avoids this?",
+      "How does this interact with errors.Is?"
+    ],
+    "reference": "An interface value is a pair: a type descriptor and a data pointer. It equals nil only when both halves are nil. Returning a nil *MyError from a function declared to return error stores the type half, so err != nil is true and the caller takes the error branch on success. The fix is to return a literal nil error rather than a typed nil variable."
+  },
+  {
+    "id": "go-goroutine-vs-thread",
+    "topic": "concurrency",
+    "lang": "go",
+    "level": "mid",
+    "question": "How does a goroutine differ from an OS thread?",
+    "probes": [
+      "What is the G-M-P model?",
+      "What happens on a blocking syscall?"
+    ],
+    "reference": "Goroutines are scheduled in user space by the Go runtime and multiplexed onto OS threads, so creating one costs a few hundred nanoseconds rather than a syscall. They start with a small growable stack (about 2KB) versus megabytes for a thread, which is why millions are practical. In the G-M-P model, G is the goroutine, M the OS thread, P the scheduling context; a blocking syscall detaches the M and hands its P to another thread so work continues."
+  },
+  {
+    "id": "go-defer-semantics",
+    "topic": "fundamentals",
+    "lang": "go",
+    "level": "junior",
+    "question": "When do deferred calls run, and when are their arguments evaluated?",
+    "probes": [
+      "What does defer do during a panic?",
+      "Why is defer in a loop a smell?"
+    ],
+    "reference": "Deferred calls run LIFO when the surrounding function returns, including when it returns because of a panic, which is what makes recover possible. Arguments are evaluated at the moment defer executes, not when the deferred call runs, so defer fmt.Println(i) captures i's current value. Defer inside a loop accumulates until the function exits, so file handles opened in a loop are held far longer than intended."
+  },
+  {
+    "id": "go-channel-buffering",
+    "topic": "concurrency",
+    "lang": "go",
+    "level": "mid",
+    "question": "When would you use a buffered channel over an unbuffered one?",
+    "probes": [
+      "What does an unbuffered send guarantee?",
+      "What causes a deadlock in each case?"
+    ],
+    "reference": "An unbuffered send blocks until a receiver is ready, so it is a synchronization point: the send completing proves the receiver reached the receive. A buffered channel decouples the two up to its capacity, which is right for absorbing bursts or limiting concurrency via a semaphore pattern. Buffering hides backpressure, so choosing a size larger than the real concurrency limit usually trades a visible deadlock for an invisible queue."
+  },
+  {
+    "id": "go-context",
+    "topic": "concurrency",
+    "lang": "go",
+    "level": "mid",
+    "question": "What problem does context.Context solve, and what are its limits?",
+    "probes": [
+      "Why is it always the first parameter?",
+      "What should never go in a context value?"
+    ],
+    "reference": "Context propagates cancellation, deadlines and request-scoped values down a call tree, so cancelling one request unwinds every goroutine it spawned. It is cooperative: cancelling closes the Done channel but nothing is forcibly stopped, so code that never selects on Done keeps running. Context values should carry request metadata like trace IDs, never optional parameters, because they are untyped and invisible to the compiler."
+  },
+  {
+    "id": "go-escape-analysis",
+    "topic": "runtime",
+    "lang": "go",
+    "level": "senior",
+    "question": "What is escape analysis and how does it affect performance?",
+    "probes": [
+      "How do you inspect the compiler's decisions?",
+      "Name a case where a value unexpectedly escapes."
+    ],
+    "reference": "The compiler determines statically whether a value can outlive its stack frame; if not, it is stack-allocated and freed for nothing when the frame pops. Values that escape go to the heap and become GC work. Returning a pointer to a local, storing into an interface, or capturing in a closure that outlives the frame all cause escapes; go build -gcflags='-m' prints the decisions."
+  },
+  {
+    "id": "go-map-concurrency",
+    "topic": "concurrency",
+    "lang": "go",
+    "level": "mid",
+    "question": "What happens if two goroutines write to the same map, and what are your options?",
+    "probes": [
+      "Why does Go panic rather than corrupt silently?",
+      "When is sync.Map the right choice?"
+    ],
+    "reference": "The runtime detects concurrent map writes and deliberately panics with a fatal error that recover cannot catch, because silent corruption would be far worse to debug. The usual fix is a sync.RWMutex around the map. sync.Map is only faster in narrow cases \u2014 disjoint key sets per goroutine, or a write-once read-many pattern \u2014 and is slower than a mutex-guarded map for general workloads."
+  },
+  {
+    "id": "go-error-wrapping",
+    "topic": "fundamentals",
+    "lang": "go",
+    "level": "mid",
+    "question": "How does error wrapping work in Go and when should you wrap?",
+    "probes": [
+      "Difference between errors.Is and errors.As?",
+      "When should you not wrap?"
+    ],
+    "reference": "fmt.Errorf with %w stores the original error so errors.Is can walk the chain for a sentinel value and errors.As can extract a concrete type. Wrap when you are adding context the caller cannot reconstruct, such as which file or which request failed. Do not wrap at every layer \u2014 each wrap makes the message longer and couples callers to your internal error types."
+  },
+  {
+    "id": "ts-type-vs-interface",
+    "topic": "fundamentals",
+    "lang": "typescript",
+    "level": "junior",
+    "question": "When would you use a type alias versus an interface?",
+    "probes": [
+      "Which one supports declaration merging?",
+      "Which can express a union?"
+    ],
+    "reference": "Interfaces support declaration merging and are the convention for object shapes meant to be extended or augmented, including patching third-party types. Type aliases can express anything the type system can produce \u2014 unions, intersections, mapped and conditional types, tuples, primitives \u2014 which interfaces cannot. In practice: interface for public object contracts, type for everything else."
+  },
+  {
+    "id": "ts-any-vs-unknown",
+    "topic": "fundamentals",
+    "lang": "typescript",
+    "level": "junior",
+    "question": "What is the difference between any and unknown?",
+    "probes": [
+      "Which is safe at an API boundary?",
+      "How do you narrow unknown?"
+    ],
+    "reference": "any disables type checking entirely and propagates: anything derived from it is also unchecked, so one any can silently erode safety across a codebase. unknown is the safe top type \u2014 every value is assignable to it, but you can do nothing with it until you narrow via typeof, instanceof, or a type guard. Parsed JSON and external input should be typed unknown, then validated."
+  },
+  {
+    "id": "ts-event-loop",
+    "topic": "runtime",
+    "lang": "typescript",
+    "level": "mid",
+    "question": "Explain the difference between a macrotask and a microtask.",
+    "probes": [
+      "Where does await schedule?",
+      "Can a microtask starve the event loop?"
+    ],
+    "reference": "Macrotasks are the main queue \u2014 timers, I/O callbacks, setImmediate \u2014 and one runs per loop iteration. Microtasks are promise continuations and queueMicrotask, and the entire microtask queue is drained after each macrotask and before rendering or the next macrotask. Because the drain is exhaustive, a promise chain that keeps enqueuing microtasks can starve timers and I/O indefinitely."
+  },
+  {
+    "id": "ts-closure-leak",
+    "topic": "runtime",
+    "lang": "typescript",
+    "level": "senior",
+    "question": "How can a closure cause a memory leak in JavaScript?",
+    "probes": [
+      "What role does the shared scope object play?",
+      "How does WeakMap help?"
+    ],
+    "reference": "Closures over a scope retain everything in that scope, not just the variables actually referenced, because engines commonly allocate one context object per scope. A small callback registered as a long-lived listener can therefore pin a large object that it never touches. Removing listeners on teardown, narrowing the closure to the values it needs, or holding references in a WeakMap all break the retention."
+  },
+  {
+    "id": "ts-type-erasure",
+    "topic": "fundamentals",
+    "lang": "typescript",
+    "level": "mid",
+    "question": "What does it mean that TypeScript types are erased?",
+    "probes": [
+      "Why can't you write `if (x instanceof MyInterface)`?",
+      "What does this imply for validating API responses?"
+    ],
+    "reference": "Types exist only during compilation; the emitted JavaScript contains no type information, so nothing is checked at runtime. Interfaces and type aliases have no runtime representation at all, which is why instanceof only works on classes. Any value crossing a runtime boundary \u2014 a fetch response, a JSON.parse, process.env \u2014 is unchecked, and a type assertion on it is a claim, not a verification."
+  },
+  {
+    "id": "ts-structural-typing",
+    "topic": "fundamentals",
+    "lang": "typescript",
+    "level": "mid",
+    "question": "What is structural typing and how does it differ from nominal typing?",
+    "probes": [
+      "How do you fake nominal typing?",
+      "What is excess property checking?"
+    ],
+    "reference": "TypeScript compares types by shape, not by name: any object with the required members satisfies a type, whether or not it declares any relationship to it. This makes the type system flexible but means two semantically different types with identical shapes \u2014 a UserId and an OrderId both being string \u2014 are interchangeable. Branded types, intersecting with a unique phantom field, restore nominal behavior where it matters."
+  },
+  {
+    "id": "py-gil",
+    "topic": "concurrency",
+    "lang": "python",
+    "level": "mid",
+    "question": "What is the GIL and what does it actually prevent?",
+    "probes": [
+      "Does it make your code thread-safe?",
+      "What changed in 3.13 and 3.14?"
+    ],
+    "reference": "The Global Interpreter Lock allows only one thread to execute Python bytecode at a time, so threads give no CPU parallelism for pure-Python work; multiprocessing or C extensions that release the lock are the usual answers. It does not make your code thread-safe \u2014 the interpreter can switch between bytecodes, so a read-modify-write on shared state still races. Free-threaded builds without the GIL became an officially supported configuration in 3.14."
+  },
+  {
+    "id": "py-mutable-default",
+    "topic": "fundamentals",
+    "lang": "python",
+    "level": "junior",
+    "question": "Why is a mutable default argument dangerous?",
+    "probes": [
+      "When is the default evaluated?",
+      "What is the correct pattern?"
+    ],
+    "reference": "Default arguments are evaluated once when the def statement executes, not on each call, so a default of [] or {} is a single object shared by every call. Mutating it inside the function makes state leak across unrelated calls, which usually surfaces as a function that mysteriously accumulates results. The fix is a None sentinel with the real default constructed inside the body."
+  },
+  {
+    "id": "py-refcount-gc",
+    "topic": "runtime",
+    "lang": "python",
+    "level": "senior",
+    "question": "How does CPython manage memory?",
+    "probes": [
+      "What does the cycle collector add?",
+      "Why is __del__ unreliable?"
+    ],
+    "reference": "CPython primarily uses reference counting: every object tracks how many references point at it and is freed immediately at zero, which makes deallocation deterministic and prompt. Reference cycles never reach zero, so a generational cycle collector periodically finds and breaks them. __del__ is unreliable because it runs at an unpredictable time for cyclic garbage, may run during interpreter shutdown when globals are already gone, and exceptions inside it are swallowed."
+  },
+  {
+    "id": "py-is-vs-equals",
+    "topic": "fundamentals",
+    "lang": "python",
+    "level": "junior",
+    "question": "What is the difference between `is` and `==`?",
+    "probes": [
+      "Why does `256 is 256` differ from `257 is 257`?",
+      "When is `is` correct?"
+    ],
+    "reference": "`==` calls __eq__ and asks whether two objects are equivalent; `is` compares identity, asking whether they are the same object in memory. CPython caches small integers (-5 to 256) and interns some strings, so identity comparisons on them appear to work by accident and then fail on larger values. Use `is` only for singletons: None, True, False, and sentinel objects."
+  },
+  {
+    "id": "py-generators",
+    "topic": "fundamentals",
+    "lang": "python",
+    "level": "mid",
+    "question": "What does a generator give you over returning a list?",
+    "probes": [
+      "What does yield do to the function?",
+      "When is a list actually better?"
+    ],
+    "reference": "A generator produces values lazily, holding one item plus its frame in memory instead of the whole sequence, which makes streaming a large file or an infinite sequence possible. Calling a function containing yield returns a generator object without executing the body; each next() resumes the suspended frame. A list is better when you need random access, length, or multiple passes, since a generator is single-use and exhausts."
+  },
+  {
+    "id": "py-mro",
+    "topic": "fundamentals",
+    "lang": "python",
+    "level": "senior",
+    "question": "How does Python resolve method calls under multiple inheritance?",
+    "probes": [
+      "What is C3 linearization?",
+      "What does super() actually do?"
+    ],
+    "reference": "Each class has a method resolution order computed by C3 linearization, which produces a consistent ordering preserving each parent's own order and local precedence, raising a TypeError when no such order exists. Attribute lookup walks that list in order. super() does not mean 'the parent class' \u2014 it means 'the next class in the MRO of the instance's type', which is why cooperative multiple inheritance works and why super() in a diamond can reach a sibling rather than an ancestor."
+  },
+  {
+    "id": "py-eafp",
+    "topic": "fundamentals",
+    "lang": "python",
+    "level": "junior",
+    "question": "What does EAFP mean and why does Python prefer it?",
+    "probes": [
+      "What race does LBYL introduce?",
+      "When is LBYL still right?"
+    ],
+    "reference": "Easier to Ask Forgiveness than Permission: attempt the operation and handle the exception, rather than checking preconditions first (Look Before You Leap). EAFP avoids a time-of-check-to-time-of-use race \u2014 a file that exists when you check it can be gone when you open it \u2014 and avoids paying for the check on the common path. LBYL is still right when the failure is expected and frequent, since exceptions are costly relative to a cheap test."
+  },
+  {
+    "id": "py-asyncio-blocking",
+    "topic": "concurrency",
+    "lang": "python",
+    "level": "mid",
+    "question": "What happens if you make a blocking call inside an async function?",
+    "probes": [
+      "How do you detect it?",
+      "What is the correct escape hatch?"
+    ],
+    "reference": "The coroutine never yields to the event loop, so every other task on that loop stops until the call returns \u2014 one blocking database driver can stall an entire server. asyncio's debug mode logs callbacks that run too long, which is the usual way it is caught. Move the work to a thread with asyncio.to_thread, or to a process pool if it is CPU-bound and holds the GIL."
+  },
+  {
+    "id": "gen-idempotency",
+    "topic": "systems",
+    "lang": "general",
+    "level": "mid",
+    "question": "What does idempotency mean in an API, and how do you implement it?",
+    "probes": [
+      "Which HTTP methods are idempotent?",
+      "How long do you keep the key?"
+    ],
+    "reference": "An idempotent operation produces the same result whether applied once or many times, which is what makes retries safe when a response is lost. GET, PUT and DELETE are idempotent by definition; POST is not, so it needs an explicit idempotency key that the server stores with the result and replays on a repeat. The key must be retained at least as long as clients may retry, and the stored outcome must include failures, or a retry after an error will execute twice."
+  },
+  {
+    "id": "gen-index-tradeoff",
+    "topic": "systems",
+    "lang": "general",
+    "level": "mid",
+    "question": "What does adding a database index cost you?",
+    "probes": [
+      "What is a covering index?",
+      "Why might the planner ignore your index?"
+    ],
+    "reference": "Every index is a second structure that must be updated on insert, update and delete, so writes get slower and storage grows. Indexes also compete for buffer cache with the table data itself. The planner will skip an index when it estimates a large fraction of rows will match, because a sequential scan beats random I/O past roughly 5-20% selectivity, and it will skip it entirely if statistics are stale."
+  },
+  {
+    "id": "gen-cache-invalidation",
+    "topic": "systems",
+    "lang": "general",
+    "level": "senior",
+    "question": "Why is cache invalidation hard, and what strategies exist?",
+    "probes": [
+      "Compare TTL, write-through and explicit invalidation.",
+      "What is a thundering herd?"
+    ],
+    "reference": "The difficulty is that correctness requires knowing every dependency of a cached value, and those dependencies usually live in code you do not control. TTL is simple and self-healing but serves stale data for the window; write-through keeps the cache correct but couples every writer to the cache; explicit invalidation is precise but silently rots as new write paths are added. When a popular key expires, every request misses at once and stampedes the origin, which is why you want jittered TTLs or a single-flight lock."
+  },
+  {
+    "id": "gen-retry-backoff",
+    "topic": "systems",
+    "lang": "general",
+    "level": "mid",
+    "question": "How should a client retry a failed request?",
+    "probes": [
+      "Why add jitter?",
+      "Which errors should never be retried?"
+    ],
+    "reference": "Retry only idempotent or idempotency-keyed operations, with exponential backoff and a bounded attempt count. Jitter is essential: without it, clients that failed together retry together and reconverge into synchronized waves that keep the service down. Do not retry 4xx client errors \u2014 the request will fail identically \u2014 and prefer a circuit breaker over retries when a dependency is broadly down, since retrying adds load to an already failing system."
+  },
+  {
+    "id": "gen-amortized",
+    "topic": "dsa",
+    "lang": "general",
+    "level": "mid",
+    "question": "What does amortized O(1) mean for a dynamic array append?",
+    "probes": [
+      "Why doubling rather than a fixed increment?",
+      "How does this differ from average case?"
+    ],
+    "reference": "Most appends are O(1), but when capacity is exhausted the array reallocates and copies every element, which is O(n). Doubling means the copies happen exponentially less often, so n appends cost O(n) total and each is O(1) amortized. This is a worst-case guarantee over a sequence of operations, unlike average case, which is a claim about a probability distribution over inputs."
+  },
+  {
+    "id": "gen-hashmap",
+    "topic": "dsa",
+    "lang": "general",
+    "level": "junior",
+    "question": "Why is a hash map O(1) on average but O(n) in the worst case?",
+    "probes": [
+      "How do implementations handle collisions?",
+      "When would you use a tree map instead?"
+    ],
+    "reference": "Average case assumes the hash function distributes keys uniformly, so each bucket holds a constant number of entries. Adversarial or degenerate inputs can collide into one bucket, degrading lookup to a linear scan \u2014 the basis of hash-flooding denial of service, which is why runtimes randomize their hash seeds. A balanced tree gives a worst-case O(log n) guarantee and ordered iteration, at the cost of a slower constant factor."
+  },
+  {
+    "id": "gen-isolation",
+    "topic": "systems",
+    "lang": "general",
+    "level": "senior",
+    "question": "What do database isolation levels actually protect against?",
+    "probes": [
+      "What is a phantom read?",
+      "What does 'repeatable read' mean in practice?"
+    ],
+    "reference": "Isolation levels define which concurrency anomalies are permitted: read uncommitted allows dirty reads, read committed prevents those but allows non-repeatable reads, repeatable read prevents those but classically allows phantoms, and serializable prevents all of them. The names are from the SQL standard and engines interpret them differently \u2014 PostgreSQL's repeatable read is snapshot isolation and does prevent phantoms, while MySQL's differs. You cannot reason about isolation without knowing which engine you are on."
+  },
+  {
+    "id": "gen-connection-pool",
+    "topic": "systems",
+    "lang": "general",
+    "level": "mid",
+    "question": "Why does a service need a connection pool, and how do you size it?",
+    "probes": [
+      "What happens when the pool is exhausted?",
+      "How does this interact with a serverless deployment?"
+    ],
+    "reference": "Opening a database connection costs a TCP handshake, authentication and server-side session setup, so pooling amortizes that across requests and bounds how many connections the database must serve. Size it from the database's capacity divided across instances, not from expected request volume \u2014 a pool larger than the database can handle just moves queueing into the database. When the pool is exhausted, requests should block with a timeout rather than opening more, which turns an overload into visible latency instead of a crashed database."
+  }
+]

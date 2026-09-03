@@ -1,0 +1,1575 @@
+{
+  "version": 1,
+  "languages": [
+    "go",
+    "typescript",
+    "python",
+    "scala"
+  ],
+  "tiers": [
+    {
+      "id": 0,
+      "name": "syntax",
+      "goal": "Type the language without thinking about it."
+    },
+    {
+      "id": 1,
+      "name": "data",
+      "goal": "Know what a value actually is in memory."
+    },
+    {
+      "id": 2,
+      "name": "organization",
+      "goal": "Structure code so it survives being changed."
+    },
+    {
+      "id": 3,
+      "name": "runtime",
+      "goal": "Know what the machine does while your code runs."
+    },
+    {
+      "id": 4,
+      "name": "patterns",
+      "goal": "Recognize the shape of a problem, then pick the idiomatic answer."
+    },
+    {
+      "id": 5,
+      "name": "builds",
+      "goal": "Ship something small and complete."
+    }
+  ],
+  "modules": {
+    "go": [
+      {
+        "id": "00-values-and-types",
+        "tier": 0,
+        "title": "Values and Types",
+        "mechanism": [
+          "zero values",
+          "static sizing",
+          "type identity vs assignability"
+        ],
+        "stdlib": [
+          "fmt"
+        ],
+        "variants": [
+          {
+            "name": "var with explicit type",
+            "when": "you want the zero value, or the type is not obvious from the right-hand side"
+          },
+          {
+            "name": "short declaration",
+            "when": "inside a function where the value makes the type obvious"
+          }
+        ]
+      },
+      {
+        "id": "01-operators-and-expressions",
+        "tier": 0,
+        "title": "Operators and Expressions",
+        "mechanism": [
+          "integer overflow wraps",
+          "untyped constants",
+          "evaluation order"
+        ],
+        "stdlib": [
+          "math"
+        ]
+      },
+      {
+        "id": "02-control-flow",
+        "tier": 0,
+        "title": "Control Flow",
+        "mechanism": [
+          "no implicit fallthrough",
+          "labeled break",
+          "defer ordering"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "03-functions",
+        "tier": 0,
+        "title": "Functions",
+        "mechanism": [
+          "everything is pass by value",
+          "multiple returns",
+          "closures capture variables not values"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "naked returns",
+            "when": "short functions where the names document the result"
+          },
+          {
+            "name": "explicit returns",
+            "when": "anything long enough that you lose track of what is named"
+          }
+        ]
+      },
+      {
+        "id": "04-arrays-slices-maps",
+        "tier": 1,
+        "title": "Arrays, Slices, Maps",
+        "mechanism": [
+          "slice header is ptr+len+cap",
+          "append reallocation",
+          "map iteration is randomized"
+        ],
+        "stdlib": [
+          "slices",
+          "maps",
+          "sort"
+        ]
+      },
+      {
+        "id": "05-strings-and-bytes",
+        "tier": 1,
+        "title": "Strings and Bytes",
+        "mechanism": [
+          "strings are immutable byte slices",
+          "rune vs byte",
+          "UTF-8 decoding cost"
+        ],
+        "stdlib": [
+          "strings",
+          "bytes",
+          "unicode/utf8"
+        ]
+      },
+      {
+        "id": "06-structs-and-methods",
+        "tier": 1,
+        "title": "Structs and Methods",
+        "mechanism": [
+          "field alignment and padding",
+          "value vs pointer receivers",
+          "embedding is not inheritance"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "value receivers",
+            "when": "small immutable types where copying is cheap and safe"
+          },
+          {
+            "name": "pointer receivers",
+            "when": "mutation, large structs, or any type with a mutex"
+          },
+          {
+            "name": "mixed receivers",
+            "when": "almost never — it confuses the method set rules"
+          }
+        ]
+      },
+      {
+        "id": "07-pointers",
+        "tier": 1,
+        "title": "Pointers",
+        "mechanism": [
+          "escape analysis",
+          "stack vs heap",
+          "nil dereference"
+        ],
+        "stdlib": [
+          "unsafe"
+        ]
+      },
+      {
+        "id": "08-packages-and-modules",
+        "tier": 2,
+        "title": "Packages and Modules",
+        "mechanism": [
+          "export via capitalization",
+          "init order",
+          "module resolution and MVS"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "09-interfaces",
+        "tier": 2,
+        "title": "Interfaces",
+        "mechanism": [
+          "itab and dynamic dispatch",
+          "the typed-nil trap",
+          "implicit satisfaction"
+        ],
+        "stdlib": [
+          "io"
+        ],
+        "variants": [
+          {
+            "name": "accept interfaces, return structs",
+            "when": "library code that must stay flexible for callers"
+          },
+          {
+            "name": "small single-method interfaces",
+            "when": "testing seams and composition, the Go default"
+          },
+          {
+            "name": "large service interfaces",
+            "when": "rarely right; usually a Java habit leaking in"
+          }
+        ]
+      },
+      {
+        "id": "10-errors",
+        "tier": 2,
+        "title": "Errors",
+        "mechanism": [
+          "error is just an interface",
+          "wrapping and unwrapping",
+          "panic vs error"
+        ],
+        "stdlib": [
+          "errors"
+        ],
+        "variants": [
+          {
+            "name": "sentinel errors",
+            "when": "callers must test for one specific known failure: errors.Is"
+          },
+          {
+            "name": "typed errors",
+            "when": "callers need structured data off the failure: errors.As"
+          },
+          {
+            "name": "opaque wrapped errors",
+            "when": "the caller only logs it; keeps your internals private"
+          },
+          {
+            "name": "Result-style generic type",
+            "when": "forces handling at the type level, fights every stdlib signature"
+          },
+          {
+            "name": "panic and recover",
+            "when": "truly unrecoverable invariants, and package boundaries only"
+          }
+        ]
+      },
+      {
+        "id": "11-generics",
+        "tier": 2,
+        "title": "Generics",
+        "mechanism": [
+          "GC shape stenciling",
+          "constraint sets",
+          "when generics cost you"
+        ],
+        "stdlib": [
+          "cmp"
+        ],
+        "variants": [
+          {
+            "name": "generic function",
+            "when": "the same algorithm over many types, checked at compile time"
+          },
+          {
+            "name": "interface parameter",
+            "when": "behaviour varies per type; dynamic dispatch is the point"
+          },
+          {
+            "name": "any plus type switch",
+            "when": "few known types, and you want them all in one place"
+          },
+          {
+            "name": "code generation",
+            "when": "you need per-type optimisation the compiler will not give you"
+          }
+        ]
+      },
+      {
+        "id": "12-memory-and-gc",
+        "tier": 3,
+        "title": "Memory and GC",
+        "mechanism": [
+          "tricolor mark and sweep",
+          "allocation cost",
+          "reading pprof"
+        ],
+        "stdlib": [
+          "runtime"
+        ]
+      },
+      {
+        "id": "13-concurrency",
+        "tier": 3,
+        "title": "Concurrency",
+        "mechanism": [
+          "goroutine scheduling GMP",
+          "channel internals",
+          "happens-before"
+        ],
+        "stdlib": [
+          "sync",
+          "context"
+        ],
+        "variants": [
+          {
+            "name": "channels",
+            "when": "transferring ownership of data between goroutines"
+          },
+          {
+            "name": "mutex over shared state",
+            "when": "protecting a struct field; usually simpler than a channel"
+          },
+          {
+            "name": "errgroup",
+            "when": "fan-out where the first failure should cancel the rest"
+          },
+          {
+            "name": "worker pool",
+            "when": "bounded concurrency over an unbounded queue of work"
+          }
+        ]
+      },
+      {
+        "id": "14-io-and-files",
+        "tier": 3,
+        "title": "I/O and Files",
+        "mechanism": [
+          "Reader/Writer composition",
+          "buffering",
+          "syscall boundaries"
+        ],
+        "stdlib": [
+          "os",
+          "bufio",
+          "io"
+        ]
+      },
+      {
+        "id": "15-serialization",
+        "tier": 3,
+        "title": "Serialization",
+        "mechanism": [
+          "reflection-driven encoding",
+          "struct tags",
+          "streaming vs buffered"
+        ],
+        "stdlib": [
+          "encoding/json"
+        ],
+        "variants": [
+          {
+            "name": "struct tags",
+            "when": "the default; declarative and enough for most payloads"
+          },
+          {
+            "name": "custom MarshalJSON",
+            "when": "the wire format genuinely differs from your struct"
+          },
+          {
+            "name": "intermediate DTO type",
+            "when": "the API contract must not move when the domain type does"
+          },
+          {
+            "name": "code generation",
+            "when": "hot paths where reflection cost actually shows in a profile"
+          }
+        ]
+      },
+      {
+        "id": "16-composition",
+        "tier": 4,
+        "title": "Composition over Inheritance",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "17-functional-options",
+        "tier": 4,
+        "title": "Functional Options",
+        "mechanism": [],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "functional options",
+            "when": "many optional settings, and the API must stay additive"
+          },
+          {
+            "name": "config struct",
+            "when": "few settings, all known up front; far less machinery"
+          },
+          {
+            "name": "builder with method chaining",
+            "when": "rare in Go; reads well but hides the error path"
+          },
+          {
+            "name": "variadic plain args",
+            "when": "two or three options that will never grow"
+          }
+        ]
+      },
+      {
+        "id": "18-strategy",
+        "tier": 4,
+        "title": "Strategy via Interfaces",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "19-middleware",
+        "tier": 4,
+        "title": "Decorator and Middleware",
+        "mechanism": [],
+        "stdlib": [
+          "net/http"
+        ]
+      },
+      {
+        "id": "20-boundaries",
+        "tier": 4,
+        "title": "Repository and Boundaries",
+        "mechanism": [],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "repository interface",
+            "when": "you need to swap or fake the store in tests"
+          },
+          {
+            "name": "direct queries in the service",
+            "when": "small services where the indirection buys nothing"
+          },
+          {
+            "name": "query object",
+            "when": "complex read paths that do not fit a CRUD-shaped interface"
+          }
+        ]
+      },
+      {
+        "id": "21-concurrency-patterns",
+        "tier": 4,
+        "title": "Concurrency Patterns",
+        "mechanism": [],
+        "stdlib": [
+          "golang.org/x/sync"
+        ]
+      },
+      {
+        "id": "22-cli-tool",
+        "tier": 5,
+        "title": "Build: CLI Tool",
+        "mechanism": [],
+        "stdlib": [
+          "flag"
+        ]
+      },
+      {
+        "id": "23-http-service",
+        "tier": 5,
+        "title": "Build: HTTP Service",
+        "mechanism": [],
+        "stdlib": [
+          "net/http"
+        ]
+      },
+      {
+        "id": "24-worker-pipeline",
+        "tier": 5,
+        "title": "Build: Worker Pipeline",
+        "mechanism": [],
+        "stdlib": []
+      }
+    ],
+    "python": [
+      {
+        "id": "00-values-and-types",
+        "tier": 0,
+        "title": "Values and Types",
+        "mechanism": [
+          "everything is an object with a refcount",
+          "names bind, they do not store",
+          "small int and string interning"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "01-operators-and-expressions",
+        "tier": 0,
+        "title": "Operators and Expressions",
+        "mechanism": [
+          "operators dispatch to dunder methods",
+          "ints are arbitrary precision",
+          "truthiness is __bool__ then __len__"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "02-control-flow",
+        "tier": 0,
+        "title": "Control Flow",
+        "mechanism": [
+          "for is the iterator protocol",
+          "no block scope, only function scope",
+          "for/else and while/else"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "03-functions",
+        "tier": 0,
+        "title": "Functions",
+        "mechanism": [
+          "default args evaluate once at def time",
+          "LEGB name resolution",
+          "*args and **kwargs unpacking"
+        ],
+        "stdlib": [
+          "functools"
+        ]
+      },
+      {
+        "id": "04-lists-dicts-sets",
+        "tier": 1,
+        "title": "Lists, Dicts, Sets",
+        "mechanism": [
+          "list over-allocates on growth",
+          "dicts are compact and insertion ordered",
+          "hash collisions and open addressing"
+        ],
+        "stdlib": [
+          "collections"
+        ]
+      },
+      {
+        "id": "05-strings",
+        "tier": 1,
+        "title": "Strings",
+        "mechanism": [
+          "str is immutable and sometimes interned",
+          "PEP 393 flexible representation",
+          "t-strings are new in 3.14"
+        ],
+        "stdlib": [
+          "re"
+        ]
+      },
+      {
+        "id": "06-classes-and-objects",
+        "tier": 1,
+        "title": "Classes and Objects",
+        "mechanism": [
+          "__dict__ per instance and __slots__",
+          "C3 linearization for the MRO",
+          "descriptors underpin property"
+        ],
+        "stdlib": [
+          "dataclasses"
+        ],
+        "variants": [
+          {
+            "name": "plain class",
+            "when": "behaviour and invariants matter more than the data"
+          },
+          {
+            "name": "dataclass",
+            "when": "records with some behaviour; the default for most value types"
+          },
+          {
+            "name": "NamedTuple",
+            "when": "immutable, tuple-compatible, cheap"
+          },
+          {
+            "name": "TypedDict",
+            "when": "the data is already a dict and must stay one, such as JSON"
+          }
+        ]
+      },
+      {
+        "id": "07-references-and-mutation",
+        "tier": 1,
+        "title": "References and Mutation",
+        "mechanism": [
+          "assignment never copies",
+          "the mutable default argument trap",
+          "copy versus deepcopy"
+        ],
+        "stdlib": [
+          "copy"
+        ]
+      },
+      {
+        "id": "08-modules-and-packages",
+        "tier": 2,
+        "title": "Modules and Packages",
+        "mechanism": [
+          "the import system and sys.modules cache",
+          "__init__.py and namespace packages",
+          "circular imports"
+        ],
+        "stdlib": [
+          "importlib"
+        ]
+      },
+      {
+        "id": "09-protocols-and-typing",
+        "tier": 2,
+        "title": "Protocols and Typing",
+        "mechanism": [
+          "Protocol gives structural typing",
+          "annotations are deferred as of 3.14",
+          "hints do nothing at runtime"
+        ],
+        "stdlib": [
+          "typing"
+        ],
+        "variants": [
+          {
+            "name": "Protocol",
+            "when": "structural typing; the implementer need not know about you"
+          },
+          {
+            "name": "ABC",
+            "when": "you want registration and an explicit inheritance relationship"
+          },
+          {
+            "name": "duck typing with no annotation",
+            "when": "internal code where the contract is obvious"
+          }
+        ]
+      },
+      {
+        "id": "10-errors",
+        "tier": 2,
+        "title": "Errors",
+        "mechanism": [
+          "exceptions are ordinary control flow",
+          "EAFP over LBYL",
+          "exception groups and except*"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "raise an exception",
+            "when": "the Python default; failures propagate until someone cares"
+          },
+          {
+            "name": "return None",
+            "when": "one failure mode, and the caller will obviously check"
+          },
+          {
+            "name": "Result type",
+            "when": "you want the type checker to force handling; fights the ecosystem"
+          },
+          {
+            "name": "exception groups",
+            "when": "concurrent work where several things can fail at once"
+          }
+        ]
+      },
+      {
+        "id": "11-generics",
+        "tier": 2,
+        "title": "Generics",
+        "mechanism": [
+          "PEP 695 type parameter syntax",
+          "TypeVar and variance",
+          "erased entirely at runtime"
+        ],
+        "stdlib": [
+          "typing"
+        ]
+      },
+      {
+        "id": "12-memory-and-gc",
+        "tier": 3,
+        "title": "Memory and GC",
+        "mechanism": [
+          "reference counting is the primary mechanism",
+          "the cycle collector handles the rest",
+          "__del__ is not a destructor"
+        ],
+        "stdlib": [
+          "gc",
+          "sys"
+        ]
+      },
+      {
+        "id": "13-concurrency-and-asyncio",
+        "tier": 3,
+        "title": "Concurrency and asyncio",
+        "mechanism": [
+          "the GIL and what it does not protect",
+          "free-threaded builds are supported in 3.14",
+          "the event loop and coroutine scheduling"
+        ],
+        "stdlib": [
+          "asyncio",
+          "threading"
+        ],
+        "variants": [
+          {
+            "name": "asyncio",
+            "when": "many concurrent I/O waits in one thread"
+          },
+          {
+            "name": "threads",
+            "when": "blocking I/O in libraries that are not async-aware"
+          },
+          {
+            "name": "multiprocessing",
+            "when": "CPU-bound work under the GIL"
+          },
+          {
+            "name": "free-threaded build",
+            "when": "3.14 onward; real threads for CPU work, ecosystem still catching up"
+          }
+        ]
+      },
+      {
+        "id": "14-io-and-files",
+        "tier": 3,
+        "title": "I/O and Files",
+        "mechanism": [
+          "buffered versus raw io layers",
+          "context managers and __exit__",
+          "pathlib over os.path"
+        ],
+        "stdlib": [
+          "pathlib",
+          "io"
+        ]
+      },
+      {
+        "id": "15-serialization",
+        "tier": 3,
+        "title": "Serialization",
+        "mechanism": [
+          "json has a C accelerator",
+          "pickle executes arbitrary code",
+          "runtime validation is on you"
+        ],
+        "stdlib": [
+          "json"
+        ]
+      },
+      {
+        "id": "16-composition",
+        "tier": 4,
+        "title": "Composition over Inheritance",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "17-builder-and-options",
+        "tier": 4,
+        "title": "Builder and Options",
+        "mechanism": [],
+        "stdlib": [
+          "dataclasses"
+        ]
+      },
+      {
+        "id": "18-strategy",
+        "tier": 4,
+        "title": "Strategy via Protocols",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "19-decorators",
+        "tier": 4,
+        "title": "Decorators and Middleware",
+        "mechanism": [],
+        "stdlib": [
+          "functools"
+        ],
+        "variants": [
+          {
+            "name": "function decorator",
+            "when": "cross-cutting behaviour with no state"
+          },
+          {
+            "name": "class decorator",
+            "when": "you need to modify the type itself"
+          },
+          {
+            "name": "context manager",
+            "when": "the concern is setup and teardown around a block"
+          },
+          {
+            "name": "explicit wrapper call",
+            "when": "the indirection would hide something the reader needs"
+          }
+        ]
+      },
+      {
+        "id": "20-boundaries",
+        "tier": 4,
+        "title": "Repository and Boundaries",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "21-async-patterns",
+        "tier": 4,
+        "title": "Async Patterns",
+        "mechanism": [],
+        "stdlib": [
+          "asyncio"
+        ]
+      },
+      {
+        "id": "22-cli-tool",
+        "tier": 5,
+        "title": "Build: CLI Tool",
+        "mechanism": [],
+        "stdlib": [
+          "argparse"
+        ]
+      },
+      {
+        "id": "23-http-service",
+        "tier": 5,
+        "title": "Build: HTTP Service",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "24-worker-pipeline",
+        "tier": 5,
+        "title": "Build: Worker Pipeline",
+        "mechanism": [],
+        "stdlib": []
+      }
+    ],
+    "scala": [
+      {
+        "id": "00-values-and-types",
+        "tier": 0,
+        "title": "Values and Types",
+        "mechanism": [
+          "everything is an object, including Int",
+          "val is a stable reference, not deep immutability",
+          "Any, AnyVal, AnyRef and the unified hierarchy"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "val",
+            "when": "the default — a binding that will not be reassigned"
+          },
+          {
+            "name": "var",
+            "when": "genuinely mutating local state, and almost nowhere else"
+          },
+          {
+            "name": "lazy val",
+            "when": "expensive to compute and possibly never needed"
+          },
+          {
+            "name": "def",
+            "when": "recomputed on every access; no memoisation"
+          }
+        ]
+      },
+      {
+        "id": "01-operators-and-expressions",
+        "tier": 0,
+        "title": "Operators and Expressions",
+        "mechanism": [
+          "operators are just methods",
+          "right-associative methods end in a colon",
+          "extension methods replace implicit classes"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "02-control-flow",
+        "tier": 0,
+        "title": "Control Flow",
+        "mechanism": [
+          "if and match are expressions that return values",
+          "significant indentation is optional in 3",
+          "no statement/expression split"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "03-functions",
+        "tier": 0,
+        "title": "Functions",
+        "mechanism": [
+          "functions are objects implementing FunctionN",
+          "by-name parameters delay evaluation",
+          "eta-expansion turns a method into a function"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "04-collections",
+        "tier": 1,
+        "title": "Collections",
+        "mechanism": [
+          "immutable is the default import",
+          "List is a linked list, Vector is a trie",
+          "views are lazy, iterators are single-use"
+        ],
+        "stdlib": [
+          "scala.collection"
+        ],
+        "variants": [
+          {
+            "name": "List",
+            "when": "sequential access, pattern matching, prepend-heavy work"
+          },
+          {
+            "name": "Vector",
+            "when": "random access and append; the general-purpose default"
+          },
+          {
+            "name": "Array",
+            "when": "interop with Java, or primitives without boxing"
+          },
+          {
+            "name": "LazyList",
+            "when": "infinite or expensive sequences consumed partially"
+          }
+        ]
+      },
+      {
+        "id": "05-strings",
+        "tier": 1,
+        "title": "Strings",
+        "mechanism": [
+          "String is java.lang.String",
+          "s, f and raw interpolators are compile-time",
+          "StringOps is added by extension"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "06-classes-and-objects",
+        "tier": 1,
+        "title": "Classes and Objects",
+        "mechanism": [
+          "case classes generate equals, hashCode, copy and unapply",
+          "companion objects hold what would be statics",
+          "enums in 3 replace sealed trait hierarchies"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "case class",
+            "when": "immutable data with structural equality; the default"
+          },
+          {
+            "name": "plain class",
+            "when": "identity matters, or you control equality yourself"
+          },
+          {
+            "name": "enum",
+            "when": "a closed set of alternatives — 3's replacement for sealed traits"
+          },
+          {
+            "name": "opaque type",
+            "when": "a zero-cost wrapper that stops a String being any String"
+          }
+        ]
+      },
+      {
+        "id": "07-references-and-mutation",
+        "tier": 1,
+        "title": "References and Mutation",
+        "mechanism": [
+          "val prevents reassignment, not mutation of the referent",
+          "copy gives a shallow clone",
+          "structural sharing in immutable collections"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "08-modules-and-packages",
+        "tier": 2,
+        "title": "Modules and Packages",
+        "mechanism": [
+          "top-level definitions replace package objects",
+          "export clauses forward members",
+          "given instances are found by scope, not import alone"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "09-traits-and-given",
+        "tier": 2,
+        "title": "Traits and Given",
+        "mechanism": [
+          "traits can take parameters in 3",
+          "given and using replace implicit",
+          "type classes are given instances plus extension methods"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "trait",
+            "when": "shared behaviour an implementer opts into by extending"
+          },
+          {
+            "name": "given instance",
+            "when": "type class evidence supplied at the call site"
+          },
+          {
+            "name": "abstract class",
+            "when": "you need constructor parameters and single inheritance is fine"
+          },
+          {
+            "name": "plain function parameter",
+            "when": "when the indirection buys nothing over passing it"
+          }
+        ]
+      },
+      {
+        "id": "10-errors",
+        "tier": 2,
+        "title": "Errors",
+        "mechanism": [
+          "exceptions are unchecked on the JVM",
+          "Either and Try are values, not control flow",
+          "for-comprehensions desugar to flatMap"
+        ],
+        "stdlib": [
+          "scala.util"
+        ],
+        "variants": [
+          {
+            "name": "Either",
+            "when": "expected failures with a typed error the caller must handle"
+          },
+          {
+            "name": "Try",
+            "when": "wrapping code that throws, especially Java interop"
+          },
+          {
+            "name": "Option",
+            "when": "absence with no explanation needed"
+          },
+          {
+            "name": "throw",
+            "when": "truly exceptional; the caller is not expected to recover"
+          },
+          {
+            "name": "effect type such as IO",
+            "when": "errors, resources and concurrency handled as one thing"
+          }
+        ]
+      },
+      {
+        "id": "11-generics",
+        "tier": 2,
+        "title": "Generics",
+        "mechanism": [
+          "variance annotations are declaration-site",
+          "context bounds desugar to using parameters",
+          "match types compute types from types"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "12-memory-and-jvm",
+        "tier": 3,
+        "title": "Memory and the JVM",
+        "mechanism": [
+          "AnyVal boxes when used generically",
+          "generational GC and escape analysis",
+          "the 2.13 stdlib underneath Scala 3"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "13-concurrency",
+        "tier": 3,
+        "title": "Concurrency",
+        "mechanism": [
+          "Future needs an ExecutionContext in scope",
+          "Future is eager, IO is not",
+          "virtual threads change the blocking calculus"
+        ],
+        "stdlib": [
+          "scala.concurrent"
+        ],
+        "variants": [
+          {
+            "name": "Future",
+            "when": "simple async on the stdlib with no dependency"
+          },
+          {
+            "name": "cats-effect IO",
+            "when": "referentially transparent effects, cancellation, resource safety"
+          },
+          {
+            "name": "ZIO",
+            "when": "typed errors and dependencies baked into the effect"
+          },
+          {
+            "name": "virtual threads",
+            "when": "JDK 21 onward; blocking code that no longer costs a thread"
+          }
+        ]
+      },
+      {
+        "id": "14-io-and-files",
+        "tier": 3,
+        "title": "I/O and Files",
+        "mechanism": [
+          "Using manages resources deterministically",
+          "Source must be closed explicitly",
+          "java.nio underneath everything"
+        ],
+        "stdlib": [
+          "scala.io",
+          "scala.util.Using"
+        ]
+      },
+      {
+        "id": "15-serialization",
+        "tier": 3,
+        "title": "Serialization",
+        "mechanism": [
+          "no JSON in the standard library",
+          "Mirror enables automatic derivation",
+          "derivation is compile-time, not reflection"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "circe",
+            "when": "the common choice; derivation plus a rich combinator API"
+          },
+          {
+            "name": "upickle",
+            "when": "less ceremony and fewer dependencies"
+          },
+          {
+            "name": "jsoniter-scala",
+            "when": "hot paths where allocation actually shows in a profile"
+          },
+          {
+            "name": "hand-written codecs",
+            "when": "the wire format and the domain type genuinely diverge"
+          }
+        ]
+      },
+      {
+        "id": "16-composition",
+        "tier": 4,
+        "title": "Composition over Inheritance",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "17-builder-and-options",
+        "tier": 4,
+        "title": "Builder and Options",
+        "mechanism": [],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "case class with defaults",
+            "when": "the usual answer; named arguments do the work"
+          },
+          {
+            "name": "builder",
+            "when": "a long construction sequence with validation at the end"
+          },
+          {
+            "name": "phantom-typed builder",
+            "when": "the compiler should reject an incomplete build"
+          }
+        ]
+      },
+      {
+        "id": "18-strategy",
+        "tier": 4,
+        "title": "Strategy via Traits and Given",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "19-middleware",
+        "tier": 4,
+        "title": "Decorator and Middleware",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "20-boundaries",
+        "tier": 4,
+        "title": "Repository and Boundaries",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "21-async-patterns",
+        "tier": 4,
+        "title": "Async Patterns",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "22-cli-tool",
+        "tier": 5,
+        "title": "Build: CLI Tool",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "23-http-service",
+        "tier": 5,
+        "title": "Build: HTTP Service",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "24-worker-pipeline",
+        "tier": 5,
+        "title": "Build: Worker Pipeline",
+        "mechanism": [],
+        "stdlib": []
+      }
+    ],
+    "typescript": [
+      {
+        "id": "00-values-and-types",
+        "tier": 0,
+        "title": "Values and Types",
+        "mechanism": [
+          "structural typing",
+          "types erase at runtime",
+          "undefined vs null"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "01-operators-and-expressions",
+        "tier": 0,
+        "title": "Operators and Expressions",
+        "mechanism": [
+          "coercion rules",
+          "== vs ===",
+          "?? vs ||"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "02-control-flow",
+        "tier": 0,
+        "title": "Control Flow",
+        "mechanism": [
+          "truthiness",
+          "control-flow narrowing",
+          "labeled break"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "03-functions",
+        "tier": 0,
+        "title": "Functions",
+        "mechanism": [
+          "this binding",
+          "closures over let vs var",
+          "arity is not enforced"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "04-arrays-objects-maps",
+        "tier": 1,
+        "title": "Arrays, Objects, Maps",
+        "mechanism": [
+          "arrays are objects",
+          "hidden classes",
+          "Map vs object keys"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "05-strings",
+        "tier": 1,
+        "title": "Strings",
+        "mechanism": [
+          "UTF-16 code units",
+          "surrogate pairs",
+          "string interning"
+        ],
+        "stdlib": [
+          "Intl"
+        ]
+      },
+      {
+        "id": "06-objects-and-classes",
+        "tier": 1,
+        "title": "Objects and Classes",
+        "mechanism": [
+          "prototype chain",
+          "classes are sugar",
+          "private fields"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "class",
+            "when": "identity, inheritance, or instanceof checks actually matter"
+          },
+          {
+            "name": "factory function with closures",
+            "when": "true privacy and no this binding to get wrong"
+          },
+          {
+            "name": "plain object plus functions",
+            "when": "data and behaviour are genuinely separate"
+          }
+        ]
+      },
+      {
+        "id": "07-references-and-mutation",
+        "tier": 1,
+        "title": "References and Mutation",
+        "mechanism": [
+          "reference vs value semantics",
+          "shallow vs deep copy",
+          "structuredClone"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "08-modules",
+        "tier": 2,
+        "title": "Modules",
+        "mechanism": [
+          "ESM vs CJS",
+          "live bindings",
+          "resolution and side effects"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "09-types-and-interfaces",
+        "tier": 2,
+        "title": "Types and Interfaces",
+        "mechanism": [
+          "type vs interface",
+          "unions and narrowing",
+          "declaration merging"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "interface",
+            "when": "object contracts meant to be extended or augmented"
+          },
+          {
+            "name": "type alias",
+            "when": "unions, intersections, mapped and conditional types"
+          },
+          {
+            "name": "branded type",
+            "when": "you need nominal typing so UserId cannot be an OrderId"
+          }
+        ]
+      },
+      {
+        "id": "10-errors",
+        "tier": 2,
+        "title": "Errors",
+        "mechanism": [
+          "throw is untyped",
+          "Error.cause",
+          "Result types by hand"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "throw",
+            "when": "exceptional paths the caller is not expected to handle locally"
+          },
+          {
+            "name": "Result union type",
+            "when": "expected failures you want the compiler to force you to handle"
+          },
+          {
+            "name": "discriminated union on a status field",
+            "when": "several outcomes, not just ok and error"
+          },
+          {
+            "name": "null or undefined return",
+            "when": "one failure mode with no useful detail"
+          }
+        ]
+      },
+      {
+        "id": "11-generics",
+        "tier": 2,
+        "title": "Generics",
+        "mechanism": [
+          "inference",
+          "conditional types",
+          "variance"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "generic function",
+            "when": "one implementation across many types"
+          },
+          {
+            "name": "function overloads",
+            "when": "the return type depends on the argument in a non-generic way"
+          },
+          {
+            "name": "conditional types",
+            "when": "the type must be computed from another type"
+          }
+        ]
+      },
+      {
+        "id": "12-memory-and-gc",
+        "tier": 3,
+        "title": "Memory and GC",
+        "mechanism": [
+          "generational GC",
+          "closure retention leaks",
+          "WeakMap"
+        ],
+        "stdlib": []
+      },
+      {
+        "id": "13-async-and-event-loop",
+        "tier": 3,
+        "title": "Async and the Event Loop",
+        "mechanism": [
+          "macrotasks vs microtasks",
+          "promise resolution",
+          "await is a scheduling point"
+        ],
+        "stdlib": [],
+        "variants": [
+          {
+            "name": "async and await",
+            "when": "the default; sequential-looking code with real error boundaries"
+          },
+          {
+            "name": "promise combinators",
+            "when": "concurrent work: all, allSettled, race, any"
+          },
+          {
+            "name": "async iterators",
+            "when": "streams and paginated sources"
+          },
+          {
+            "name": "callbacks",
+            "when": "legacy interop only"
+          }
+        ]
+      },
+      {
+        "id": "14-io-and-files",
+        "tier": 3,
+        "title": "I/O and Files",
+        "mechanism": [
+          "streams and backpressure",
+          "buffers",
+          "the libuv thread pool"
+        ],
+        "stdlib": [
+          "node:fs",
+          "node:stream"
+        ]
+      },
+      {
+        "id": "15-serialization",
+        "tier": 3,
+        "title": "Serialization",
+        "mechanism": [
+          "JSON round-trip loss",
+          "toJSON hooks",
+          "runtime validation"
+        ],
+        "stdlib": [
+          "JSON"
+        ],
+        "variants": [
+          {
+            "name": "JSON.parse plus a type assertion",
+            "when": "fast and unsafe; you are trusting the source"
+          },
+          {
+            "name": "runtime schema validation",
+            "when": "any external boundary; the assertion is a lie without it"
+          },
+          {
+            "name": "hand-written type guards",
+            "when": "few shapes, no dependency wanted"
+          }
+        ]
+      },
+      {
+        "id": "16-composition",
+        "tier": 4,
+        "title": "Composition over Inheritance",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "17-builder-and-options",
+        "tier": 4,
+        "title": "Builder and Options",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "18-strategy",
+        "tier": 4,
+        "title": "Strategy via Types",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "19-middleware",
+        "tier": 4,
+        "title": "Decorator and Middleware",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "20-boundaries",
+        "tier": 4,
+        "title": "Repository and Boundaries",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "21-async-patterns",
+        "tier": 4,
+        "title": "Async Patterns",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "22-cli-tool",
+        "tier": 5,
+        "title": "Build: CLI Tool",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "23-http-service",
+        "tier": 5,
+        "title": "Build: HTTP Service",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "24-worker-pipeline",
+        "tier": 5,
+        "title": "Build: Worker Pipeline",
+        "mechanism": [],
+        "stdlib": []
+      }
+    ]
+  }
+}

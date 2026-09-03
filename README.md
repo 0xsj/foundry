@@ -1,97 +1,102 @@
 # Foundry
 
-A progressive, multi-language learning system for programming fundamentals, design patterns, software architecture, data structures & algorithms, and system design.
+A learning repo for Go, TypeScript, Python and Scala 3, run from day one, built around
+retyping code from memory rather than reading about it.
 
-## What This Is
+## Why it works this way
 
-Foundry is a personal learning environment designed to build and maintain deep programming knowledge across multiple languages. It's structured as a monorepo with a curriculum engine powered by Claude Code.
+Reading a lesson feels like learning and mostly is not. The retention here comes from
+one mechanic: you type the canonical example, then a session or two later you type it
+again with the reference hidden, and a diff tells you exactly what you lost.
 
-The goal isn't to collect tutorials — it's to develop muscle memory through realistic exercises, spaced repetition, and building real systems.
+Everything else — the lessons, the mechanism deep-dives, the notes — exists to make
+that example worth having in muscle memory.
 
-## Languages
+## The loop
 
-- **Go** — primary (systems, concurrency, simplicity)
-- **TypeScript** — primary (web, productivity, type safety)
-- **Rust** — systems programming, memory safety
-- **Python** — data, scripting, ecosystem
-- **Scala** — JVM ecosystem, functional + OOP (replaces Java)
-- **Zig** — low-level systems, manual memory, comptime
-- **Haskell** — pure functional programming, type theory
+| Stage | You | Checked by |
+|-------|-----|------------|
+| Read | one screenful on what it is and why | — |
+| Mechanism | what actually happens underneath | — |
+| Type along | retype `example.go` with it visible | `foundry check` |
+| Recall | retype it later, from memory | `foundry check` |
+| Apply | build something small with it | tests |
 
-## How It Works
-
-Foundry is used through Claude Code in dedicated 30-60 minute sessions. The `claude.md` file acts as the agent's brain — it understands the curriculum, tracks progress, generates exercises, manages notes, and runs reviews.
-
-### Session Flow
-
-1. Open the repo in Claude Code
-2. Say `next` to get a suggested module, or pick a specific topic
-3. Work through exercises with realistic scenarios and acceptance criteria
-4. Ask for `review` for a quick recall quiz
-5. Ask for `anki` to export flashcards for long-term retention
-6. Say you're done — session gets logged, progress gets updated
-
-### Commands
-
-| Command                   | What It Does                                                |
-| ------------------------- | ----------------------------------------------------------- |
-| `next`                    | Suggest the next module based on progress and prerequisites |
-| `exercise [topic] [lang]` | Generate a realistic exercise                               |
-| `review`                  | In-session quiz (3-5 questions)                             |
-| `anki`                    | Export Anki flashcards (TSV)                                |
-| `notes [topic]`           | Create or update Obsidian vault notes                       |
-| `status`                  | Show progress overview                                      |
-| `build [name]`            | Start a larger architecture build                           |
-| `switch [lang]`           | Change active language track                                |
-| `session`                 | Start or resume a session log                               |
-
-## Structure
+## Starting a track
 
 ```
-foundry/
-├── claude.md              # Agent brain — curriculum engine
-├── curriculum/            # Curriculum map, progress, session logs
-├── vault/                 # Obsidian-compatible knowledge base
-├── tracks/                # Language-specific exercises and work
-├── dsa/                   # Cross-language DSA problems
-├── builds/                # Standalone architecture reference builds
-└── review/                # Anki exports and quiz logs
+foundry focus go     # or ts, py, sc
 ```
 
-The structure is a living scaffold. Core categories are stable but everything within them grows organically as new topics are explored.
+Then open the repo in Claude Code and say `go`. That is the entire setup — there is no
+per-module scaffolding step, and nothing to create by hand. The lesson, the example, the
+drill schedule and the notes are all written during the session.
 
-### Vault
+`foundry guide` prints the full manual, and it is offered automatically on a fresh track.
 
-The `vault/` directory is an Obsidian-compatible knowledge base. Notes are built up progressively during sessions and serve as long-term reference material. They use wiki-links for cross-referencing, frontmatter for metadata, and consistent templates for each note type.
+## Using it
 
-### Tracks
+Open the repo in Claude Code. A hook prints where you are:
 
-Each language has its own track under `tracks/<language>/` with directories for fundamentals, patterns, exercises, and builds. This is where implementation work lives.
+```
+foundry — go · tier 0 syntax
+  now   00-values-and-types           read → mechanism → type-along
+  due   2 recall drills               01-operators, 02-control-flow
+  lc    two-pointers · 3 unpulled
+```
 
-### Builds
+Say `go`. That is the whole interface. Progress, drills, and notes are written for you
+at the end of a session — there are no bookkeeping commands to remember.
 
-Larger architecture projects live in `builds/`. These are full service implementations (HTTP servers, GraphQL APIs, Kafka microservices, CQRS systems) that tie together multiple patterns and serve as reusable reference templates.
+## CLI
 
-### Review
+```
+foundry guide               the full manual
+foundry status              where you are, what is due
+foundry focus <lang>        pick the active track (go, ts, py)
+foundry drill <lang> <mod>  set up an attempt (add --blind to hide the reference)
+foundry check <lang> <mod>  diff your attempt against the reference
+foundry lc                  dispense a leetcode problem
+foundry iv                  dispense an interview question
+foundry lc reset            wipe leetcode progress only
+foundry iv reset            wipe interview progress only
+```
 
-Anki card exports (TSV format) and quiz session logs. Cards are tagged by module and language for filtered study.
+`<lang>` is `go`, `ts`, `py` or `sc`. `<mod>` accepts a prefix, so `00` resolves to
+`00-values-and-types`.
 
-## Curriculum
+Build it once: `go build -o foundry ./cmd/foundry`
 
-The curriculum follows a dependency graph defined in `curriculum/map.yaml`. Modules unlock as prerequisites are completed.
+## Interview questions
 
-**Progression tiers:**
+`foundry iv` works the same way the drills do: it hands you a question and a blank file,
+you write the answer out in full, and only then does `foundry iv ref` reveal the model
+answer. It refuses to reveal if you have not written anything.
 
-1. **Fundamentals** — variables, control flow, functions, error handling, concurrency, generics
-2. **Patterns** — strategy, observer, factory, builder, middleware, repository, DI, pub/sub
-3. **Architecture** — layered, hexagonal, CQRS, event-driven, event sourcing, microservices
-4. **DSA** — arrays/hashing, linked lists, trees, graphs, sorting, dynamic programming
-5. **System Design** — resilience, caching, load balancing, message queues, database patterns
+This is deliberate. Answering in your head feels like knowing; composing three
+paragraphs under a question you have not seen is what an interview actually asks for,
+and the gap between the two is the whole point.
 
-The curriculum is not fixed. New modules, topics, and categories are added as they come up naturally.
+## Toolchain
 
-## Getting Started
+Pinned via `.nvmrc` (Node 24), `.python-version` (Python 3.14.7) and `.sdkmanrc`
+(Scala 3.6.4, JDK 17). Go is 1.27. TypeScript runs under `bun` and Scala under
+`scala-cli`, so neither needs a build step.
 
-1. Clone the repo
-2. Open in Claude Code
-3. Say `next` or `status`
+## Layout
+
+```
+foundry.json    curriculum spine, 25 modules per language across 6 tiers
+tracks/         go/, typescript/, python/, scala/ — created as you reach them
+leetcode/       97 problems, 15 patterns, standalone and resettable
+interview/      31 questions, written answers, standalone and resettable
+vault/          Obsidian notes, written as a side effect
+state/          progress, drill schedule, session logs
+```
+
+## History
+
+v1 of this repo generated 858 files across seven languages and recorded zero attempted
+exercises. It is preserved at the `foundry-v1` tag. The lesson taken from it: content is
+cheap to generate and expensive to consume, so nothing here is generated before you
+reach it.
