@@ -4,7 +4,8 @@
     "go",
     "typescript",
     "python",
-    "scala"
+    "scala",
+    "haskell"
   ],
   "tiers": [
     {
@@ -466,6 +467,674 @@
         "stdlib": [
           "net/http"
         ]
+      },
+      {
+        "id": "24-worker-pipeline",
+        "tier": 5,
+        "title": "Build: Worker Pipeline",
+        "mechanism": [],
+        "stdlib": []
+      }
+    ],
+    "haskell": [
+      {
+        "id": "00-values-and-types",
+        "tier": 0,
+        "title": "Values and Types",
+        "mechanism": [
+          "a binding is a definition, not a slot — there is nothing to overwrite and no zero value",
+          "Hindley-Milner infers the most general type; a signature narrows it",
+          "numeric literals are polymorphic, resolved by fromInteger at the use site",
+          "type identity is nominal — a newtype over Int is not an Int"
+        ],
+        "stdlib": [
+          "Prelude"
+        ],
+        "variants": [
+          {
+            "name": "top-level type signature",
+            "when": "always at the top level — it is documentation the compiler checks, and it pins the monomorphism restriction"
+          },
+          {
+            "name": "inferred, no signature",
+            "when": "a local binding in a where or let where the type is obvious and noisy to write"
+          },
+          {
+            "name": "newtype wrapper",
+            "when": "the value needs its own identity so the compiler rejects mixing it with a bare Int"
+          }
+        ]
+      },
+      {
+        "id": "01-operators-and-expressions",
+        "tier": 0,
+        "title": "Operators and Expressions",
+        "mechanism": [
+          "operators are ordinary functions; `div` in backticks and (+) in parens are the same thing",
+          "infixl/infixr fixity declarations are what actually drive parsing",
+          "$ is function application at the lowest precedence, so it deletes trailing parens",
+          "sections partially apply an operator: (2^) and (^2) are different functions"
+        ],
+        "stdlib": [
+          "Prelude"
+        ],
+        "variants": [
+          {
+            "name": "parentheses",
+            "when": "a short expression where nesting is obvious at a glance"
+          },
+          {
+            "name": "$ application",
+            "when": "one deeply nested call where the closing paren pile would be the only hard part to read"
+          },
+          {
+            "name": "(.) composition",
+            "when": "you are naming a pipeline of transformations rather than applying one now"
+          }
+        ]
+      },
+      {
+        "id": "02-control-flow",
+        "tier": 0,
+        "title": "Control Flow",
+        "mechanism": [
+          "if is an expression and both branches are mandatory — there is no statement to fall off",
+          "guards and pattern matches both compile down to case",
+          "case forces the scrutinee to weak head normal form, which is where evaluation actually happens",
+          "where scopes over a whole equation including its guards; let scopes over one expression"
+        ],
+        "stdlib": [
+          "Prelude"
+        ],
+        "variants": [
+          {
+            "name": "pattern match",
+            "when": "dispatching on the shape of a value — the compiler can then check exhaustiveness"
+          },
+          {
+            "name": "guards",
+            "when": "dispatching on a predicate over an already-matched value"
+          },
+          {
+            "name": "if-then-else",
+            "when": "exactly two outcomes and no structure to destructure"
+          }
+        ]
+      },
+      {
+        "id": "03-functions",
+        "tier": 0,
+        "title": "Functions",
+        "mechanism": [
+          "every function takes exactly one argument — currying is the calling convention, not a feature",
+          "partial application therefore needs no special support; a -> b -> c is a -> (b -> c)",
+          "eta reduction and where point-free style stops paying for itself",
+          "lambdas close over the environment; GHC allocates a closure for the captured free variables"
+        ],
+        "stdlib": [
+          "Prelude"
+        ],
+        "variants": [
+          {
+            "name": "explicit arguments",
+            "when": "the argument names carry meaning the types do not"
+          },
+          {
+            "name": "point-free",
+            "when": "a short composition where naming the argument adds nothing"
+          },
+          {
+            "name": "named helper in where",
+            "when": "the sub-expression is used twice, or deserves a name for the reader"
+          }
+        ]
+      },
+      {
+        "id": "04-lists-and-folds",
+        "tier": 1,
+        "title": "Lists and Folds",
+        "mechanism": [
+          "a list is a lazy chain of cons cells, not an array — indexing is O(n) and there is no bounds check to skip",
+          "foldr builds structure lazily and works on infinite lists; foldl' consumes strictly and works on long ones",
+          "foldl without the bang builds a chain of thunks and is the classic Haskell space leak",
+          "map and filter fuse into a single loop under -O, so the intermediate list is never allocated"
+        ],
+        "stdlib": [
+          "Data.List",
+          "Data.Foldable"
+        ],
+        "variants": [
+          {
+            "name": "foldr",
+            "when": "the combining function is lazy in its second argument, or the input may be infinite"
+          },
+          {
+            "name": "foldl'",
+            "when": "reducing a long finite list to a single strict value"
+          },
+          {
+            "name": "explicit recursion",
+            "when": "the traversal is irregular enough that a fold obscures it"
+          },
+          {
+            "name": "library combinator",
+            "when": "the operation already has a name — sum, any, partition — and reimplementing it is noise"
+          }
+        ]
+      },
+      {
+        "id": "05-strings-and-text",
+        "tier": 1,
+        "title": "Strings and Text",
+        "mechanism": [
+          "String is a type alias for [Char] — a linked list of boxed characters, one cons cell per letter",
+          "Data.Text is a packed UTF-8 array with O(1) length and real slicing",
+          "ByteString is bytes with no encoding attached; treating it as text is where mojibake comes from",
+          "OverloadedStrings makes a literal polymorphic via fromString, chosen by the expected type"
+        ],
+        "stdlib": [
+          "Data.Text",
+          "Data.ByteString",
+          "Data.Char"
+        ],
+        "variants": [
+          {
+            "name": "String",
+            "when": "a tiny amount of text, or an interface you do not control that already speaks String"
+          },
+          {
+            "name": "Data.Text",
+            "when": "any real text handling — it is the default for anything user-facing"
+          },
+          {
+            "name": "ByteString",
+            "when": "bytes off a socket or a file where you have not decided the encoding yet"
+          }
+        ]
+      },
+      {
+        "id": "06-algebraic-data-types",
+        "tier": 1,
+        "title": "Algebraic Data Types",
+        "mechanism": [
+          "sum and product types make cardinality literal arithmetic: Either a b is |a| + |b|, (a, b) is |a| * |b|",
+          "constructors are ordinary functions, so Just is a function of type a -> Maybe a",
+          "newtype is erased at runtime; data allocates a box and adds a layer of laziness",
+          "record syntax generates field accessors that are partial when the type has several constructors"
+        ],
+        "stdlib": [
+          "Data.Maybe",
+          "Data.Either"
+        ],
+        "variants": [
+          {
+            "name": "data with positional constructors",
+            "when": "two or three fields whose order is obvious from the type"
+          },
+          {
+            "name": "data with record syntax",
+            "when": "enough fields that positions stop being readable, and you want update syntax"
+          },
+          {
+            "name": "newtype",
+            "when": "exactly one field, and you want the type distinction with no runtime cost"
+          },
+          {
+            "name": "type alias",
+            "when": "you are shortening a signature, not making a new type — no safety is added"
+          }
+        ]
+      },
+      {
+        "id": "07-laziness-and-thunks",
+        "tier": 1,
+        "title": "Laziness and Thunks",
+        "mechanism": [
+          "a binding is a thunk — an unevaluated closure — until something demands its value",
+          "weak head normal form means the outermost constructor only; NF means all the way down",
+          "seq, bang patterns and strict constructor fields are the three ways to force",
+          "a space leak is an unforced accumulator: the thunk chain is retained instead of the number"
+        ],
+        "stdlib": [
+          "Control.DeepSeq",
+          "Control.Exception"
+        ],
+        "variants": [
+          {
+            "name": "lazy by default",
+            "when": "the value may not be needed, or the structure is infinite or streaming"
+          },
+          {
+            "name": "bang pattern",
+            "when": "forcing one accumulator inside a loop or fold"
+          },
+          {
+            "name": "strict fields in the data type",
+            "when": "the record is a state value that should never hold a thunk"
+          },
+          {
+            "name": "deepseq / force",
+            "when": "pushing evaluation across a boundary — before timing, or before handing work to another thread"
+          }
+        ]
+      },
+      {
+        "id": "08-modules-and-imports",
+        "tier": 2,
+        "title": "Modules and Imports",
+        "mechanism": [
+          "one module per file; the export list is the only thing that makes a name private",
+          "qualified imports avoid clashes without renaming, which is why Data.Map is always qualified",
+          "the Prelude is an implicit unqualified import you can hide from or replace",
+          "modules are a namespace and a compilation unit; packages are the dependency boundary"
+        ],
+        "stdlib": [
+          "Data.Map",
+          "Data.Set"
+        ],
+        "variants": [
+          {
+            "name": "open import",
+            "when": "the module is designed to be imported wholesale, like a Prelude replacement"
+          },
+          {
+            "name": "qualified import",
+            "when": "the module exports names that collide with the Prelude — Map, Text, ByteString"
+          },
+          {
+            "name": "explicit import list",
+            "when": "you want the reader to see exactly which names arrived from where"
+          }
+        ]
+      },
+      {
+        "id": "09-typeclasses",
+        "tier": 2,
+        "title": "Typeclasses",
+        "mechanism": [
+          "a class is a record of functions — a dictionary — that GHC passes implicitly at the call site",
+          "instances are selected by type at compile time, never by a value at runtime",
+          "coherence: one instance per type globally, which is why orphan instances are a problem",
+          "deriving generates the instance mechanically; Functor and Generic go through the type's shape"
+        ],
+        "stdlib": [
+          "Data.Ord",
+          "GHC.Generics"
+        ],
+        "variants": [
+          {
+            "name": "typeclass",
+            "when": "the behaviour genuinely belongs to the type and there is one right instance for it"
+          },
+          {
+            "name": "record of functions",
+            "when": "the caller must be able to choose or swap the implementation at runtime"
+          },
+          {
+            "name": "plain function parameter",
+            "when": "one behaviour varies in one place and a class would be ceremony"
+          }
+        ]
+      },
+      {
+        "id": "10-errors",
+        "tier": 2,
+        "title": "Errors",
+        "mechanism": [
+          "Maybe and Either are ordinary values — failure is data the type system forces you to look at",
+          "exceptions still exist, are untyped at the throw site, and can arrive asynchronously from another thread",
+          "error and undefined are bottoms that inhabit every type, which is how they typecheck anywhere",
+          "ExceptT stacks a failure channel onto another monad and changes what short-circuits"
+        ],
+        "stdlib": [
+          "Control.Exception",
+          "Data.Either",
+          "Control.Monad.Except"
+        ],
+        "variants": [
+          {
+            "name": "Maybe",
+            "when": "absence with exactly one cause, where naming it would add nothing"
+          },
+          {
+            "name": "Either e a",
+            "when": "an expected failure the caller must distinguish and handle"
+          },
+          {
+            "name": "ExceptT over IO",
+            "when": "a pipeline of effectful steps that should stop at the first failure"
+          },
+          {
+            "name": "throwIO / Control.Exception",
+            "when": "genuinely exceptional, or crossing an IO boundary that already speaks exceptions"
+          },
+          {
+            "name": "error / bottom",
+            "when": "an invariant that cannot be false — a bug, not a failure mode"
+          }
+        ]
+      },
+      {
+        "id": "11-parametric-polymorphism",
+        "tier": 2,
+        "title": "Parametric Polymorphism",
+        "mechanism": [
+          "parametricity: a -> a has exactly one total implementation, so a signature constrains behaviour",
+          "kinds classify types — Int has kind Type, Maybe has kind Type -> Type",
+          "a constraint is a dictionary argument, so Ord a => a -> a is a function of two arguments underneath",
+          "rank-2 types need an explicit forall because inference cannot guess where to generalise"
+        ],
+        "stdlib": [
+          "Data.Kind",
+          "Data.Proxy"
+        ],
+        "variants": [
+          {
+            "name": "fully parametric",
+            "when": "the function does not care what the value is — the widest, most provable signature"
+          },
+          {
+            "name": "constrained",
+            "when": "you need one capability, and the constraint documents exactly which"
+          },
+          {
+            "name": "concrete type",
+            "when": "the function is genuinely about that type and generality would be speculative"
+          }
+        ]
+      },
+      {
+        "id": "12-evaluation-and-memory",
+        "tier": 3,
+        "title": "Evaluation and Memory",
+        "mechanism": [
+          "GHC compiles to STG and evaluates by graph reduction — a thunk is overwritten in place once forced",
+          "boxed Int is a pointer to a heap object; Int# is the machine word, and unboxing is what -O buys you",
+          "the generational GC is tuned for very high allocation of very short-lived objects",
+          "reading +RTS -s: allocation rate, copied bytes, and productivity are the three numbers that matter"
+        ],
+        "stdlib": [
+          "GHC.Stats",
+          "System.Mem"
+        ]
+      },
+      {
+        "id": "13-io-and-the-rts",
+        "tier": 3,
+        "title": "IO and the Runtime",
+        "mechanism": [
+          "IO a is a description of an effect, an inert value — nothing happens until the runtime runs it",
+          "main is the single IO value the RTS executes; everything else is reachable from it or dead",
+          "do notation is sugar for >>= and >>, and desugars identically for every monad",
+          "unsafePerformIO breaks referential transparency and exists for FFI and top-level caches"
+        ],
+        "stdlib": [
+          "System.IO",
+          "System.Environment"
+        ]
+      },
+      {
+        "id": "14-concurrency",
+        "tier": 3,
+        "title": "Concurrency",
+        "mechanism": [
+          "forkIO makes a green thread: a few hundred bytes and microseconds, scheduled by the RTS onto capabilities",
+          "MVar is a mutex and a one-slot box at once; an empty MVar blocks the reader",
+          "STM composes — two correct transactions combine into a correct one, which locks never do",
+          "async ties a thread's lifetime to a scope and rethrows its exception in the waiter"
+        ],
+        "stdlib": [
+          "Control.Concurrent",
+          "Control.Concurrent.STM",
+          "Control.Exception"
+        ],
+        "variants": [
+          {
+            "name": "MVar",
+            "when": "one piece of mutable state with one owner at a time"
+          },
+          {
+            "name": "STM / TVar",
+            "when": "several pieces of state that must change together, or a retry condition"
+          },
+          {
+            "name": "Chan / TQueue",
+            "when": "handing work between producer and consumer threads"
+          },
+          {
+            "name": "forkIO alone",
+            "when": "fire-and-forget work whose failure genuinely does not matter — rare, and usually a bug"
+          }
+        ]
+      },
+      {
+        "id": "15-serialization",
+        "tier": 3,
+        "title": "Serialization",
+        "mechanism": [
+          "a decoder is a total function from bytes to Either error a — parse failure is a value, not an exception",
+          "the usual shape is a Value ADT built first, then converted into your own type",
+          "generic deriving walks the type's shape at compile time via GHC.Generics and costs compile time, not runtime",
+          "encoding is a fold to a Builder, which appends in O(1) instead of concatenating strings"
+        ],
+        "stdlib": [
+          "Data.ByteString.Builder",
+          "GHC.Generics"
+        ],
+        "variants": [
+          {
+            "name": "hand-written encoder and parser",
+            "when": "a small, fixed format where the dependency is not worth it"
+          },
+          {
+            "name": "generic deriving",
+            "when": "the wire shape matches the Haskell type and you want it to stay in sync automatically"
+          },
+          {
+            "name": "explicit instances",
+            "when": "the wire format is fixed by someone else and does not match your field names"
+          }
+        ]
+      },
+      {
+        "id": "16-functor-applicative-monad",
+        "tier": 4,
+        "title": "Functor, Applicative, Monad",
+        "mechanism": [
+          "one abstraction at three strengths: map over a context, combine independent contexts, sequence dependent ones",
+          "the laws are not trivia — they are what makes refactoring a pipeline safe",
+          "do notation is monad-agnostic sugar; the same block works for Maybe, Either, IO and lists",
+          "Applicative can collect every error because the steps are independent; Monad short-circuits at the first"
+        ],
+        "stdlib": [
+          "Data.Functor",
+          "Control.Applicative",
+          "Control.Monad",
+          "Data.Traversable"
+        ],
+        "variants": [
+          {
+            "name": "fmap",
+            "when": "one value in a context, one transformation, no failure to combine"
+          },
+          {
+            "name": "Applicative style",
+            "when": "several independent pieces — validating a config where you want every error, not the first"
+          },
+          {
+            "name": "Monad / do notation",
+            "when": "a later step needs the result of an earlier one"
+          },
+          {
+            "name": "traverse",
+            "when": "you have a container of values and an effectful function, and want the effect outside"
+          }
+        ]
+      },
+      {
+        "id": "17-monad-transformers",
+        "tier": 4,
+        "title": "Monad Transformers",
+        "mechanism": [
+          "a transformer adds one capability to a monad underneath: StateT s IO is state on top of IO",
+          "lift moves an action one layer up the stack, which is the boilerplate mtl exists to remove",
+          "mtl removes the lifts with typeclasses at the cost of n-squared instances and worse error messages",
+          "ReaderT env IO is the shape most production Haskell converges on, because it stays inspectable"
+        ],
+        "stdlib": [
+          "Control.Monad.Reader",
+          "Control.Monad.State",
+          "Control.Monad.Trans.Class"
+        ],
+        "variants": [
+          {
+            "name": "ReaderT over IO",
+            "when": "an application with configuration and effects — the default production choice"
+          },
+          {
+            "name": "concrete transformer stack",
+            "when": "a small, self-contained computation where naming the stack is clearer than abstracting it"
+          },
+          {
+            "name": "mtl-style constraints",
+            "when": "you want each function to declare only the capabilities it actually uses"
+          },
+          {
+            "name": "no transformer at all",
+            "when": "passing the argument explicitly is shorter than the machinery to hide it"
+          }
+        ]
+      },
+      {
+        "id": "18-smart-constructors",
+        "tier": 4,
+        "title": "Smart Constructors and Illegal States",
+        "mechanism": [
+          "hiding a constructor from the export list is the entire enforcement mechanism — there is no other access",
+          "newtype plus a validating function moves a runtime check to a place that runs once",
+          "making illegal states unrepresentable trades a class of test for a class of type",
+          "the cost is real: wrapping, unwrapping, and a constructor you now have to maintain"
+        ],
+        "stdlib": [
+          "Data.Maybe"
+        ],
+        "variants": [
+          {
+            "name": "smart constructor",
+            "when": "the invariant is cheap to check once and expensive to re-check everywhere"
+          },
+          {
+            "name": "restructure the type",
+            "when": "the illegal state can be designed out entirely — the strictly better fix when available"
+          },
+          {
+            "name": "validate at the boundary",
+            "when": "the value comes from outside and the inside can then assume it is good"
+          }
+        ]
+      },
+      {
+        "id": "19-parser-combinators",
+        "tier": 4,
+        "title": "Parser Combinators",
+        "mechanism": [
+          "a parser is a function from input to a result plus the rest of the input, wrapped in a monad",
+          "the combinators are ordinary values, so the grammar is a first-class thing you can build and reuse",
+          "backtracking is explicit — try is what makes an alternative reconsider consumed input",
+          "the Applicative parts of a grammar can be analysed statically; the Monad parts cannot"
+        ],
+        "stdlib": [
+          "Text.Parsec",
+          "Data.Char"
+        ],
+        "variants": [
+          {
+            "name": "parser combinators",
+            "when": "a grammar with structure — nesting, recursion, or good error messages needed"
+          },
+          {
+            "name": "hand-written recursive descent",
+            "when": "a hot path where you need control over allocation and backtracking"
+          },
+          {
+            "name": "splitting on delimiters",
+            "when": "the format is genuinely flat and a parser would be over-engineering"
+          }
+        ]
+      },
+      {
+        "id": "20-boundaries",
+        "tier": 4,
+        "title": "Functional Core, Imperative Shell",
+        "mechanism": [
+          "IO lives at the edges; the middle is pure functions that are trivially testable",
+          "a record of functions passed in is dependency injection with no framework",
+          "a typeclass-per-effect moves the choice to compile time and out of the call site",
+          "the boundary is where you decide what is a value and what is an effect — everything downstream follows"
+        ],
+        "stdlib": [
+          "Data.IORef"
+        ],
+        "variants": [
+          {
+            "name": "handle / record of functions",
+            "when": "the implementation is chosen at runtime — a real one and a fake for tests"
+          },
+          {
+            "name": "typeclass constraint per effect",
+            "when": "each function should declare which effects it can perform"
+          },
+          {
+            "name": "plain pure functions plus IO at main",
+            "when": "the program is small enough that a seam would be speculative"
+          }
+        ]
+      },
+      {
+        "id": "21-effect-systems",
+        "tier": 4,
+        "title": "Effect Systems",
+        "mechanism": [
+          "a free monad turns commands into a data structure that an interpreter walks later",
+          "extensible effects put an open union of effects in one type parameter",
+          "modern libraries compile back down to ReaderT over IO, so the runtime cost is mostly gone",
+          "the cost that remains is type inference and the size of the error message when it fails"
+        ],
+        "stdlib": [
+          "Control.Monad.Free"
+        ],
+        "variants": [
+          {
+            "name": "ReaderT over IO",
+            "when": "you want effects to be obvious and the stack trace to stay readable"
+          },
+          {
+            "name": "mtl constraints",
+            "when": "capability-per-function typing without adopting a new library"
+          },
+          {
+            "name": "free monad",
+            "when": "the program must be inspected or reinterpreted — multiple backends, or a test interpreter"
+          },
+          {
+            "name": "algebraic effect library",
+            "when": "a large application where the effect set changes often and the boilerplate has become the cost"
+          }
+        ]
+      },
+      {
+        "id": "22-cli-tool",
+        "tier": 5,
+        "title": "Build: CLI Tool",
+        "mechanism": [],
+        "stdlib": []
+      },
+      {
+        "id": "23-http-service",
+        "tier": 5,
+        "title": "Build: HTTP Service",
+        "mechanism": [],
+        "stdlib": []
       },
       {
         "id": "24-worker-pipeline",

@@ -1,6 +1,7 @@
 # Foundry
 
-A learning repo for one person, starting from day one, in Go, TypeScript and Python.
+A learning repo for one person, starting from day one, in Go, TypeScript, Python,
+Scala 3 and Haskell.
 
 ## What you are
 
@@ -8,16 +9,49 @@ A pair-programming tutor. You teach by making the user *type code and reproduce 
 memory*, not by lecturing and not by quizzing. The user learns kinesthetically: read,
 see it, type it, type it again without looking, then apply it.
 
-Four languages: **Go**, **TypeScript**, **Python**, **Scala 3**.
+Five languages: **Go**, **TypeScript**, **Python**, **Scala 3**, **Haskell**.
 
-Go and TypeScript are the primaries. Python and Scala 3 are third and fourth tracks with
-the same tier structure, so the same concept can be compared four ways. Scala earns its
-place by being the only one of the four with a genuinely different default — immutability,
-expressions over statements, and type classes rather than interfaces.
+Go and TypeScript are the primaries. Python, Scala 3 and Haskell follow, on the same tier
+structure, so the same concept can be compared five ways. Scala earns its place by
+defaulting differently — immutability, expressions over statements, and type classes
+rather than interfaces. Haskell earns its by refusing the alternative outright: no
+mutation to reach for, evaluation that does not happen until demanded, and effects that
+are values you build rather than statements you run. Where Scala shows a different
+preference, Haskell shows a different set of options.
 
 Toolchain is pinned: `.nvmrc` Node 24, `.python-version` Python 3.14.7, `.sdkmanrc`
-Scala 3.6.4 on JDK 17. Run TypeScript with `bun` and Scala with `scala-cli` — neither
-needs a build step. If `python3` errors here, run `pyenv install 3.14.7`.
+Scala 3.8.4 on JDK 25, `.ghc-version` GHC 9.14.1 (Homebrew). Run TypeScript with `bun`,
+Scala with `scala-cli` and Haskell with `runghc` — none needs a build step. If `python3`
+errors here, run `pyenv install 3.14.7`.
+
+**Haskell only lines up with the others through tier 0.** `00`-`03` share module ids with
+every other track, because values, operators, control flow and functions are genuinely the
+same subject. From tier 1 the ids diverge — there is no `07-references-and-mutation` to
+teach, and there is `07-laziness-and-thunks` that no other track has. Compare where the
+concept is shared and do not manufacture a parallel where there is none.
+
+GHC's global package database covers tiers 0-4: `text`, `bytestring`, `containers`, `mtl`,
+`transformers`, `stm`, `parsec`, `deepseq`. Nothing in those tiers may import anything
+else, because `runghc` cannot fetch it and the example would not run. The tier 5 builds
+are the only place `cabal` is needed, and it is not installed yet.
+
+**Haskell examples must not depend on a `{-# LANGUAGE ... #-}` pragma.** The differ sees
+`{-` and strips it as a block comment — the same bargain the Scala using-directives take.
+A pragma that changes what the code means would therefore vanish from the drill and the
+user would never reproduce it. If an example needs `OverloadedStrings`, the module is
+reaching past tier 0-2 and should be rewritten with explicit `Data.Text.pack`.
+
+**Every Scala `example.scala` must open with its own using-directives:**
+
+```scala
+//> using scala 3.8.4
+//> using jvm 25
+```
+
+A `project.scala` in a parent directory does *not* apply when scala-cli runs a single
+file, so without these the example silently compiles against whatever JDK sdkman has
+active. The directives cost nothing in a drill — they start with `//`, so the differ
+strips them as comments.
 
 ## The one rule that matters
 
@@ -103,6 +137,11 @@ v1 had a quiz command. It felt bad because chat-based Q&A tests trivia recall, w
 not how this user learns. It is gone. Retention now runs entirely through stage 4:
 retyping code from memory and getting a diff. Do not ask quiz questions unprompted.
 
+**Every code example must actually run.** Not compile in your head — run. Execute it
+before showing it to the user, with `go run`, `bun`, `python3`, `scala-cli run` or
+`runghc`. `./foundry doctor` runs a real program in all five and exits non-zero if one
+fails; run it when something behaves oddly or after a toolchain change.
+
 ## Sessions
 
 A `SessionStart` hook prints current state when the repo opens. The user says "go" (or
@@ -126,7 +165,8 @@ state/                mutable. progress.json, drills.json, sessions/
 cmd/foundry/          the CLI: status, check, drill, lc
 tracks/<lang>/<module>/
     lesson.md         stages 1-2
-    example.go|ts     the canonical example — the thing that gets retyped
+    example.{go,ts,py,scala,hs}
+                      the canonical example — the thing that gets retyped
     attempt/          the user's typing. gitignored, scratch by design
     apply/            stage 5 scenario plus tests
     variants/         stage 6 — one working implementation per approach,
@@ -143,7 +183,7 @@ vault/                Obsidian notes, written as a side effect of sessions
   retry logic, request routers, log parsers.
 - `example.*` is the artifact the user will retype from memory. Keep it 15-40 lines,
   self-contained, and worth having in muscle memory. Every line should earn its place.
-- Compare the four languages when the same concept differs between them. This is a
+- Compare the languages when the same concept differs between them. This is a
   standing goal, not an occasional aside.
 - Day one means day one. The user is reviewing from scratch. Do not assume `for` loops
   are known in module 00.

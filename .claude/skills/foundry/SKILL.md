@@ -1,6 +1,6 @@
 ---
 name: foundry
-description: Run a Foundry learning session end to end — pick up where the user left off, teach the next concept through read/mechanism/type-along, run any recall drills that are due, and write all progress, drills, and vault notes at the end without being asked. Use whenever the user says "go", "next", "start", "let's learn", or otherwise signals they want to work on Go, TypeScript, Python or Scala in this repo.
+description: Run a Foundry learning session end to end — pick up where the user left off, teach the next concept through read/mechanism/type-along, run any recall drills that are due, and write all progress, drills, and vault notes at the end without being asked. Use whenever the user says "go", "next", "start", "let's learn", or otherwise signals they want to work on Go, TypeScript, Python, Scala or Haskell in this repo.
 ---
 
 # Running a session
@@ -113,10 +113,14 @@ next.
 - **No quizzing.** Retention runs through typed recall. Do not ask trivia questions.
 - **Day one means day one.** In tier 0, assume nothing. Loops are not known in
   module 00 unless module 00 taught them.
-- **Four languages, no more.** Go and TypeScript are primaries; Python and Scala 3 are
-  the third and fourth tracks. The tiers are parallel across all four, so compare freely.
-  Scala is the useful contrast: expressions over statements, immutable by default, type
-  classes instead of interfaces.
+- **Five languages, no more.** Go and TypeScript are primaries; Python, Scala 3 and
+  Haskell follow. The tiers are parallel across all five and tier 0 lines up module for
+  module, so compare freely there. Scala is the useful contrast: expressions over
+  statements, immutable by default, type classes instead of interfaces. Haskell is the
+  sharper one: laziness, no mutation to reach for, and effects as values.
+- **Haskell diverges after tier 0.** Its module ids match the others through
+  `03-functions` and then stop pretending — there is no `07-references-and-mutation` to
+  teach. Compare where the concept is genuinely shared and do not force it elsewhere.
 - **Realistic code only.** Config loaders, retry logic, log parsers, rate limiters.
   Never `Animal`, `Shape`, or `foo`.
-- **Compare the two languages** whenever the same concept differs between them.
+- **Compare the languages** whenever the same concept differs between them.

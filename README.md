@@ -1,7 +1,7 @@
 # Foundry
 
-A learning repo for Go, TypeScript, Python and Scala 3, run from day one, built around
-retyping code from memory rather than reading about it.
+A learning repo for Go, TypeScript, Python, Scala 3 and Haskell, run from day one, built
+around retyping code from memory rather than reading about it.
 
 ## Why it works this way
 
@@ -52,6 +52,7 @@ at the end of a session — there are no bookkeeping commands to remember.
 
 ```
 foundry guide               the full manual
+foundry doctor              verify every track can actually run code
 foundry status              where you are, what is due
 foundry focus <lang>        pick the active track (go, ts, py)
 foundry drill <lang> <mod>  set up an attempt (add --blind to hide the reference)
@@ -79,9 +80,24 @@ and the gap between the two is the whole point.
 
 ## Toolchain
 
-Pinned via `.nvmrc` (Node 24), `.python-version` (Python 3.14.7) and `.sdkmanrc`
-(Scala 3.6.4, JDK 17). Go is 1.27. TypeScript runs under `bun` and Scala under
-`scala-cli`, so neither needs a build step.
+Pinned via `.nvmrc` (Node 24), `.python-version` (Python 3.14.7), `.sdkmanrc`
+(Scala 3.8.4, JDK 25) and `.ghc-version` (GHC 9.14.1, installed with Homebrew). Go is
+1.27. TypeScript runs under `bun`, Scala under `scala-cli` and Haskell under `runghc`,
+so none of the three needs a build step.
+
+`foundry doctor` compiles and runs a real program in all five:
+
+```
+go          ok   go version go1.27.1 darwin/arm64 (407ms)
+typescript  ok   1.3.11 (89ms)
+python      ok   Python 3.14.7 (149ms)
+scala       ok   1.16.0 (881ms)
+haskell     ok   9.14.1 (307ms)
+```
+
+GHC ships `text`, `bytestring`, `containers`, `mtl`, `transformers`, `stm`, `parsec`
+and `deepseq` in its global package database, which covers tiers 0-4. The tier 5 builds
+are the only modules that need `cabal` installed.
 
 ## Layout
 

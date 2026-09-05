@@ -39,6 +39,8 @@ func main() {
 		cmdErr = cmdStage(root, os.Args[2:])
 	case "variants":
 		cmdErr = cmdVariants(root, os.Args[2:])
+	case "doctor":
+		cmdErr = cmdDoctor(root, os.Args[2:])
 	case "guide", "manual":
 		cmdErr = cmdGuide(root)
 	case "help", "-h", "--help":
@@ -54,9 +56,10 @@ func main() {
 }
 
 func usage() {
-	fmt.Print(`foundry — Go, TypeScript and Python, from day one
+	fmt.Print(`foundry — Go, TypeScript, Python, Scala and Haskell, from day one
 
   guide                     the full manual — start here
+  doctor                    run a real program in every track
   status                    where you are and what recall is due
   focus <lang>              pick the active track
   drill <lang> <module>     set up an attempt; --blind hides the reference
@@ -66,7 +69,7 @@ func usage() {
   lc [next|done|focus|reset|list]       leetcode dispenser
   iv [next|ref|done|focus|reset|list]   interview questions
 
-  lang is go, ts or py. module may be a prefix, so "00" resolves to
+  lang is go, ts, py, sc or hs. module may be a prefix, so "00" resolves to
   00-values-and-types.
 `)
 }

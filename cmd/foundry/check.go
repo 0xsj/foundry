@@ -9,8 +9,8 @@ import (
 )
 
 // commentSyntax describes how a language marks comments and strings. Go and
-// TypeScript share a shape; Python does not, so the stripper is parameterised
-// rather than assuming C-style syntax.
+// TypeScript share a shape; Python and Haskell do not, so the stripper is
+// parameterised rather than assuming C-style syntax.
 type commentSyntax struct {
 	line       string
 	blockOpen  string
@@ -25,6 +25,11 @@ var syntaxFor = map[string]commentSyntax{
 	"python":     {line: "#", strings: []string{`"""`, `'''`, `"`, `'`}},
 	"scala": {line: "//", blockOpen: "/*", blockClose: "*/", nestBlocks: true,
 		strings: []string{`"""`, `"`, `'`}},
+	// Haskell deliberately omits ' as a string delimiter. It is a legal
+	// identifier character — foldl', xs' — so treating it as one would swallow
+	// the rest of the line looking for a partner that never comes.
+	"haskell": {line: "--", blockOpen: "{-", blockClose: "-}", nestBlocks: true,
+		strings: []string{`"`}},
 }
 
 // stripComments removes comments while respecting string literals, so a // in a
@@ -66,8 +71,9 @@ func stripComments(src string, syn commentSyntax) string {
 }
 
 // blockCommentEnd returns the index just past the comment opening at start.
-// Scala nests block comments, so a depth counter is needed rather than a search
-// for the first close delimiter. An unterminated comment runs to end of input.
+// Scala and Haskell nest block comments, so a depth counter is needed rather
+// than a search for the first close delimiter. An unterminated comment runs to
+// end of input.
 func blockCommentEnd(src string, start int, syn commentSyntax) int {
 	depth := 0
 	i := start

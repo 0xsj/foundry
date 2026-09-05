@@ -159,6 +159,12 @@ func cmdGuide(root string) error {
 
     Write the answer out in full. Answering in your head feels like knowing.
 
+  TOOLCHAIN
+    foundry doctor              run a real program in every track
+
+    Checks that each language actually executes here, not just that a
+    binary exists. Exits non-zero if any track is broken.
+
   BOOKKEEPING
     foundry status              where you are and what is due
     foundry stage go 00 3       record stage progress (the agent does this)

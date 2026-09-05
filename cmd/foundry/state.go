@@ -169,8 +169,10 @@ func normLang(s string) (string, error) {
 		return "python", nil
 	case "sc", "scala":
 		return "scala", nil
+	case "hs", "haskell":
+		return "haskell", nil
 	}
-	return "", fmt.Errorf("unknown language %q (use go, ts, py or sc)", s)
+	return "", fmt.Errorf("unknown language %q (use go, ts, py, sc or hs)", s)
 }
 
 // resolveModule matches on full id first, then unique prefix, so "00" works.
@@ -211,6 +213,7 @@ var sourceExt = map[string]string{
 	"typescript": "ts",
 	"python":     "py",
 	"scala":      "scala",
+	"haskell":    "hs",
 }
 
 // exampleFile finds the reference file a drill targets. Each module has exactly

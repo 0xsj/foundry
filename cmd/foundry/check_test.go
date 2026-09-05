@@ -151,3 +151,39 @@ func TestScalaTripleQuoted(t *testing.T) {
 		`val q = """has // slashes and /* stars */"""`,
 	})
 }
+
+func TestSignificantHaskell(t *testing.T) {
+	src := "-- leading comment\n" +
+		"host :: String\n" +
+		"host = \"127.0.0.1\" -- trailing\n" +
+		"url = \"http://\" ++ host ++ \"/api\"\n"
+	eq(t, texts(significant(src, syntaxFor["haskell"])), []string{
+		"host :: String",
+		`host = "127.0.0.1"`,
+		`url = "http://" ++ host ++ "/api"`,
+	})
+}
+
+// A prime is a legal identifier character, so it must not open a string. If it
+// did, foldl' would swallow the rest of the drill looking for a closing quote.
+func TestHaskellPrimeIsNotAStringDelimiter(t *testing.T) {
+	src := "total = foldl' (+) 0 xs\nxs' = map succ xs\n"
+	eq(t, texts(significant(src, syntaxFor["haskell"])), []string{
+		"total = foldl' (+) 0 xs",
+		"xs' = map succ xs",
+	})
+}
+
+// Haskell nests block comments, so the inner -} must not end the outer comment.
+func TestHaskellNestedBlockComment(t *testing.T) {
+	src := "a = 1\n{- outer {- inner -} still comment -}\nb = 2\n"
+	eq(t, texts(significant(src, syntaxFor["haskell"])), []string{"a = 1", "b = 2"})
+}
+
+// A LANGUAGE pragma is spelled as a block comment, so the differ strips it —
+// the same bargain Scala's using-directives get. Examples must not depend on
+// one silently, because a drill will never reproduce it.
+func TestHaskellPragmaIsStripped(t *testing.T) {
+	src := "{-# LANGUAGE OverloadedStrings #-}\nname = \"foundry\"\n"
+	eq(t, texts(significant(src, syntaxFor["haskell"])), []string{`name = "foundry"`})
+}
